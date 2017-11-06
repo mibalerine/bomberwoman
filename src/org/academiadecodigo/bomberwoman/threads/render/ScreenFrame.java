@@ -46,14 +46,11 @@ class ScreenFrame {
         }
     }
 
-    int x = 0;
     void update() {
 
         updateContent();
 
         clearBoard();
-
-        putStringAt("X", x++, 3);
     }
 
     private void updateContent() {
