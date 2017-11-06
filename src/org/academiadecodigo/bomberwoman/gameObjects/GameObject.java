@@ -26,11 +26,11 @@ public class GameObject {
 
     public void setPosition(int x, int y) {
 
-        position.setPosition(x, y);
+        // position.setPosition(x, y);
     }
 
     public void translate(int x, int y) {
 
-        position.translate(x, y);
+        // position.translate(x, y);
     }
 }
