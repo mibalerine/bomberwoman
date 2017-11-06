@@ -26,7 +26,6 @@ public class Screen {
 
     public void putObjectInScreen(GameObject gameObject) {
 
-        //TODO WAITING FOR CODE
-        //screenFrame.putStringAt(gameObject.getDrawChar(), gameObject.getX(), gameObject.getY());
+        screenFrame.putStringAt(gameObject.getDrawChar(), gameObject.getX(), gameObject.getY());
     }
 }
