@@ -15,15 +15,21 @@ import java.util.concurrent.Executors;
  */
 public class Game {
 
-    public static final int WIDTH = 120;
-    public static final int HEIGHT = 30;
+    public static int WIDTH = 120;
+
+    public static int HEIGHT = 30;
 
     private final Vector<GameObject> gameObjects = new Vector<>();
 
-    public void start() {
+    void start() {
+
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        executorService.submit(new RenderThread());
+        int timeToDraw = 100;
+        Utils.rawMode();
+        WIDTH = 50;
+        HEIGHT = 10;
+        executorService.submit(new RenderThread(WIDTH, HEIGHT, timeToDraw));
         executorService.submit(new NetworkThread());
         executorService.submit(new InputThread());
         executorService.submit(new LogicThread());
