@@ -1,4 +1,4 @@
-package org.academiadecodigo.bomberwoman;
+package org.academiadecodigo.bomberwoman.gameObjects;
 
 /**
  * Created by codecadet on 06/11/17.

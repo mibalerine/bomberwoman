@@ -1,4 +1,7 @@
-package org.academiadecodigo.bomberwoman;
+package org.academiadecodigo.bomberwoman.gameObjects;
+
+import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.Utils;
 
 /**
  * Created by codecadet on 06/11/17.

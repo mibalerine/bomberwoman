@@ -1,5 +1,11 @@
 package org.academiadecodigo.bomberwoman;
 
+import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.threads.InputThread;
+import org.academiadecodigo.bomberwoman.threads.LogicThread;
+import org.academiadecodigo.bomberwoman.threads.NetworkThread;
+import org.academiadecodigo.bomberwoman.threads.RenderThread;
+
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
