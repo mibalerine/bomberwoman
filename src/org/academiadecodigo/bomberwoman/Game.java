@@ -4,7 +4,6 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
 import org.academiadecodigo.bomberwoman.threads.LogicThread;
 import org.academiadecodigo.bomberwoman.threads.NetworkThread;
-import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.Vector;
@@ -33,7 +32,7 @@ public class Game {
         WIDTH = 50;
         HEIGHT = 10;
         //executorService.submit(new RenderThread(WIDTH, HEIGHT, timeToDraw));
-        executorService.submit(new NetworkThread());
+        executorService.submit(new NetworkThread(gameObjects));
         executorService.submit(new InputThread(this));
         executorService.submit(logicThread = new LogicThread());
     }

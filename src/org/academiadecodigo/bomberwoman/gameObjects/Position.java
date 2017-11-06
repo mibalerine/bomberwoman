@@ -19,7 +19,7 @@ public class Position {
 
     public void setY(int y) {
 
-        this.y = Utils.clamp(y, 0, Game.HEIGHT - 2);
+        this.y = Utils.clamp(y, 1, Game.HEIGHT - 2);
     }
 
     public int getX() {
@@ -29,6 +29,6 @@ public class Position {
 
     public void setX(int x) {
 
-        this.x = Utils.clamp(x, 0, Game.WIDTH - 2);
+        this.x = Utils.clamp(x, 1, Game.WIDTH - 2);
     }
 }
