@@ -9,10 +9,11 @@
 
 
 # Todo
-- RenderThread;
-- InputThread;
+- RenderThread (miro);
+- InputThread (milena);
 - LogicThread;
-- NetworkThread;
+- NetworkThread (brehm);
+- ServerThread (francisco);
 - Screen;
 - Position (translate, setPosition);
 - Menus;
@@ -21,4 +22,3 @@
 - Destroyable;
 - Bomb;
 - Player;
-- ServerThread;
