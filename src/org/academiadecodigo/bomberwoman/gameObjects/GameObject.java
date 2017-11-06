@@ -13,7 +13,13 @@ public class GameObject {
 
     public GameObject(String representation) {
 
+        this(representation, 0, 0);
+    }
+
+    public GameObject(String representation, int x, int y) {
+
         this.representation = representation;
+        setPosition(x, y);
     }
 
     public int getX() {
