@@ -96,6 +96,7 @@ public class ServerThread implements Runnable {
             while (!clientConnection.isClosed()) {
 
                 try {
+
                     BufferedReader in = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
 
                     String line = in.readLine();

@@ -12,7 +12,7 @@ public class Position {
 
     private int y;
 
-    public int getY() {
+    int getY() {
 
         return y;
     }
@@ -22,7 +22,7 @@ public class Position {
         this.y = Utils.clamp(y, 1, Game.HEIGHT - 2);
     }
 
-    public int getX() {
+    int getX() {
 
         return x;
     }

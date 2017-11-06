@@ -15,18 +15,11 @@ import java.util.Vector;
  */
 public class NetworkThread implements Runnable {
 
-    private final Vector<GameObject> gameObjects;
-
     private Socket clientSocket;
 
     private BufferedReader clientReader;
 
     private PrintWriter clientWriter;
-
-    public NetworkThread(Vector<GameObject> gameObjects) {
-
-        this.gameObjects = gameObjects;
-    }
 
     @Override
     public void run() {
@@ -34,27 +27,26 @@ public class NetworkThread implements Runnable {
         start();
     }
 
-    public void establishConnection(String ipAdress) {
+    public void establishConnection(String idAddress) {
 
         try {
 
-            clientSocket = new Socket(ipAdress, Constants.PORT);
+            clientSocket = new Socket(idAddress, Constants.PORT);
             clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             clientWriter = new PrintWriter(clientSocket.getOutputStream());
-
         }
         catch(IOException e) {
+
             e.printStackTrace();
         }
 
     }
 
-
     public void sendMessage(String message) {
 
         if(!clientSocket.isClosed()) {
 
-            System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\n Remember to call establishConnection()");
+            System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
 
             return;
         }
@@ -63,7 +55,7 @@ public class NetworkThread implements Runnable {
         clientWriter.flush();
     }
 
-    public void start() {
+    private void start() {
 
         while(!clientSocket.isClosed()) {
 
@@ -71,14 +63,15 @@ public class NetworkThread implements Runnable {
 
                 String line = clientReader.readLine();
 
-                if(line != null) {
+                if(line == null) {
 
-                    //TODO: stuff
-
+                    continue;
                 }
 
+                //TODO: stuff
             }
             catch(IOException e) {
+
                 e.printStackTrace();
             }
         }

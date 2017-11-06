@@ -33,4 +33,9 @@ public class GameObject {
 
         //position.translate(x, y);
     }
+
+    public String getDrawChar() {
+
+        return representation;
+    }
 }
