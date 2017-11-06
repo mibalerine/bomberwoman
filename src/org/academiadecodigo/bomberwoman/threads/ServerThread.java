@@ -1,5 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
+import org.academiadecodigo.bomberwoman.Constants;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -32,7 +34,7 @@ public class ServerThread implements Runnable {
 
             try {
 
-                serverSocket = new ServerSocket(8080);
+                serverSocket = new ServerSocket(Constants.PORT);
                 clientConnections[numberOfConnections] = serverSocket.accept();
 
             } catch (IOException e) {
