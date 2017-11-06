@@ -14,6 +14,8 @@ public class Constants {
     public static String OBJECT_FLAME = "Θ";
     public static int CMD_QUIT = 3;
 
+    public static int PORT = 8080;
+
     static void setCharMode(boolean charMode) {
 
         if(charMode) {
