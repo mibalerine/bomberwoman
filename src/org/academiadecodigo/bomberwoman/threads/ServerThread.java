@@ -20,6 +20,7 @@ public class ServerThread implements Runnable {
     private ExecutorService threadPool;
 
     public ServerThread(int numberOfPlayers) {
+
         this.numberOfPlayers = numberOfPlayers;
         clientConnections = new Socket[numberOfPlayers];
         threadPool = Executors.newFixedThreadPool(numberOfPlayers);
@@ -29,8 +30,10 @@ public class ServerThread implements Runnable {
     public void run() {
 
         try {
+
             serverSocket = new ServerSocket(Constants.PORT);
         } catch (IOException e) {
+
             e.printStackTrace();
         }
 
@@ -54,11 +57,11 @@ public class ServerThread implements Runnable {
             }
 
             numberOfConnections++;
-            System.out.println(numberOfConnections);
         }
     }
 
     private void startGame() {
+
         broadcast("start");
     }
 
@@ -67,12 +70,13 @@ public class ServerThread implements Runnable {
         for (Socket s : clientConnections) {
 
             try {
+
                 PrintWriter out = new PrintWriter(s.getOutputStream());
 
                 out.write(message);
                 out.flush();
-
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         }
