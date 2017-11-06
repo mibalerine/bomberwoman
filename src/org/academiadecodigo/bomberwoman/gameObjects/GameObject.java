@@ -9,6 +9,8 @@ public class GameObject {
 
     private String representation;
 
+    private int objectId;
+
     public GameObject(String representation) {
 
         this.representation = representation;
@@ -26,12 +28,12 @@ public class GameObject {
 
     public void setPosition(int x, int y) {
 
-        //position.setPosition(x, y);
+        position.setPos(x, y);
     }
 
     public void translate(int x, int y) {
 
-        //position.translate(x, y);
+        position.translate(x, y);
     }
 
     public String getDrawChar() {
