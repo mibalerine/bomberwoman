@@ -15,11 +15,18 @@ import java.util.Vector;
  */
 public class NetworkThread implements Runnable {
 
+    private final Vector<GameObject> gameObjects;
+
     private Socket clientSocket;
 
     private BufferedReader clientReader;
 
     private PrintWriter clientWriter;
+
+    public NetworkThread(Vector<GameObject> gameObjects) {
+
+        this.gameObjects = gameObjects;
+    }
 
     @Override
     public void run() {
