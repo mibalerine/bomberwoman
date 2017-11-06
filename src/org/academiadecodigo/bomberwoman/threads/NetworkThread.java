@@ -20,8 +20,7 @@ public class NetworkThread implements Runnable {
     @Override
     public void run() {
 
-        new Thread(new readerThread()).start();
-
+        new Thread(new ReaderThread()).start();
     }
 
     public NetworkThread(Vector<GameObject> gameObjects) {
@@ -41,9 +40,7 @@ public class NetworkThread implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-
 
     public void sendMessage(String message) {
 
@@ -51,7 +48,6 @@ public class NetworkThread implements Runnable {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!"
                     + "\n Remember to call establishConnection()");
-
             return;
         }
 
@@ -59,8 +55,7 @@ public class NetworkThread implements Runnable {
         clientWriter.flush();
     }
 
-
-    private class readerThread implements Runnable {
+    private class ReaderThread implements Runnable {
 
         @Override
         public void run() {
