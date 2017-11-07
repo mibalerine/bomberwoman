@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.io.IOException;
@@ -24,29 +25,20 @@ public class InputThread implements Runnable {
     @Override
     public void run() {
 
-        while(true) {
+        while (true) {
             try {
 
                 int keyInt = reader.read();
-                game.keyPressed(Keys.getKeyByInt(keyInt));
-                //System.out.println("KEY PRESSED : " + keyInt);
-            }
-            catch(IOException e) {
 
+                game.keyPressed(Keys.getKeyByInt(keyInt));
+
+                System.out.println(keyInt);
+                //System.out.println("KEY PRESSED : " + keyInt);
+            } catch (IOException e) {
+
+                Utils.bufferedMode();
                 e.printStackTrace();
             }
-            finally {
-
-                try {
-
-                    reader.close();
-                }
-                catch(IOException e) {
-
-                    e.printStackTrace();
-                }
-            }
         }
-
     }
 }

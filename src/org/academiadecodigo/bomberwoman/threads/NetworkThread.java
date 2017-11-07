@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 
 import java.io.BufferedReader;
@@ -35,6 +36,7 @@ public class NetworkThread implements Runnable {
     public void run() {
 
         establishConnection(ipAddress);
+
         start();
     }
 
@@ -54,19 +56,19 @@ public class NetworkThread implements Runnable {
 
     public void sendMessage(String message) {
 
-        if(!clientSocket.isClosed() || clientWriter == null) {
+        if(clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
             return;
         }
 
-        clientWriter.write(message);
+        clientWriter.write(message + "\n");
         clientWriter.flush();
     }
 
     private void start() {
 
-        while(!clientSocket.isClosed() || clientReader != null) {
+        while(!clientSocket.isClosed() && clientReader != null) {
 
             try {
 
@@ -81,7 +83,8 @@ public class NetworkThread implements Runnable {
             }
             catch(IOException e) {
 
-                e.printStackTrace();
+                Utils.bufferedMode();
+                System.out.println("I'm out bitch");
             }
         }
     }

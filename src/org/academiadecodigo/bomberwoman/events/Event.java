@@ -47,6 +47,12 @@ public abstract class Event {
         }
     }
 
+    @Override
+    public String toString() {
+
+        return "ev" + Event.SEPARATOR + eventType.ordinal();
+    }
+
     public GameObject getTrigger() {
 
         return gameObject;
