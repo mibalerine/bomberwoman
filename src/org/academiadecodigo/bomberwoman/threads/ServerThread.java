@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 
 import java.io.BufferedReader;
@@ -94,6 +95,8 @@ public class ServerThread implements Runnable {
 
         private Socket clientConnection;
 
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
         private ClientDispatcher(Socket clientConnection) {
 
             this.clientConnection = clientConnection;
@@ -119,6 +122,7 @@ public class ServerThread implements Runnable {
                     }
                 }
                 catch(IOException e) {
+
                     e.printStackTrace();
                 }
             }
