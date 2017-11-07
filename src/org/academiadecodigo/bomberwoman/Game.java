@@ -40,6 +40,7 @@ public class Game {
 
     public void keyPressed(Keys key) {
 
+        //TODO MAYBE handle the keys here?
         logicThread.keyPressed(key);
     }
 }
