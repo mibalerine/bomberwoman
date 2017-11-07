@@ -13,6 +13,6 @@ public class Main {
 
         //Game game = new Game();
         //game.start();
-        new Thread(new ServerThread(1)).start();
+        new Thread(new ServerThread(2)).start();
     }
 }

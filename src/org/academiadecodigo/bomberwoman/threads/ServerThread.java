@@ -4,6 +4,7 @@ import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
+import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
@@ -85,13 +86,14 @@ public class ServerThread implements Runnable {
 
     private void broadcast(String message) {
 
+        System.out.println("Message: " + message);
         for (Socket s : clientConnections) {
 
             try {
 
                 PrintWriter out = new PrintWriter(s.getOutputStream());
 
-                out.write(message);
+                out.write(message + "\n");
                 out.flush();
             } catch (IOException e) {
 
@@ -122,7 +124,6 @@ public class ServerThread implements Runnable {
                     if (line != null) {
 
                         if (!Event.isEvent(line)) {
-
                             continue;
                         }
 
@@ -145,18 +146,23 @@ public class ServerThread implements Runnable {
         switch (eType) {
 
             case OBJECT_SPAWN:
-                int objectTypeNum = Integer.parseInt(eventInfo[2]);
 
-                if (!Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
+                if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
+                    System.out.println("not a number!");
                     return;
                 }
+
+                int objectTypeNum = Integer.parseInt(eventInfo[1]);
                 int x = Integer.parseInt(eventInfo[3]);
                 int y = Integer.parseInt(eventInfo[4]);
 
                 synchronized (gameObjectMap) {
                     GameObjectType goType = GameObjectType.values()[objectTypeNum];
-                    gameObjectMap.put(id++, GameObjectFactory.byType(goType, x, y));
+                    gameObjectMap.put(id, GameObjectFactory.byType(goType, x, y));
+                    broadcast((new ObjectSpawnEvent(goType, id, x, y)).toString());
+                    id++;
                 }
+
                 break;
         }
 

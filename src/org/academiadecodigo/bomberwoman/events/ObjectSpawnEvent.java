@@ -11,6 +11,7 @@ public class ObjectSpawnEvent extends Event {
     private int x;
     private int y;
     private int id;
+    private GameObjectType type;
 
     public ObjectSpawnEvent(GameObjectType gameObjectType, int x, int y) {
         this(gameObjectType, -1, x, y);
