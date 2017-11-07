@@ -10,6 +10,6 @@ public class Main {
     public static void main(String[] args) {
 
         //new Game().start();
-        new Thread(new ServerThread(2)).start();
+        new Thread(new ServerThread(1)).start();
     }
 }

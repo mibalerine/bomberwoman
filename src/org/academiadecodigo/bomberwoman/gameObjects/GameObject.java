@@ -11,7 +11,13 @@ public class GameObject {
 
     public GameObject(String representation) {
 
+        this(representation, 0, 0);
+    }
+
+    public GameObject(String representation, int x, int y) {
+
         this.representation = representation;
+        setPosition(x, y);
     }
 
     public int getX() {
@@ -26,12 +32,12 @@ public class GameObject {
 
     public void setPosition(int x, int y) {
 
-        //position.setPosition(x, y);
+        position.setPos(x, y);
     }
 
     public void translate(int x, int y) {
 
-        //position.translate(x, y);
+        position.translate(x, y);
     }
 
     public String getDrawChar() {

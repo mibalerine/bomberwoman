@@ -5,6 +5,9 @@ package org.academiadecodigo.bomberwoman;
  */
 public class Constants {
 
+    public static final String BRICK_CHAR = "#";
+    public static final String PLAYER_CHAR = "x";
+
     public static String VERTICAL_CHAR = "▓";
     public static String CORNER_CHAR = "▓";
     public static String HORIZONTAL_CHAR = "▓";

@@ -9,16 +9,21 @@
 
 
 # Todo
-- RenderThread (miro);
-- InputThread (milena);
-- LogicThread;
-- NetworkThread (brehm);
-- ServerThread (francisco);
 - Screen;
-- Position (translate, setPosition);
 - Menus;
-- GameObject;
 - Movable;
 - Destroyable;
 - Bomb;
 - Player;
+
+# Doing
+- LogicThread (milena);
+- NetworkThread (brehm);
+- ServerThread (francisco) (needs to change the PrintWriter, don't instantiate a new one every broadcast);
+- Events(miro)
+
+# Done
+- RenderThread (miro);
+- GameObject;
+- InputThread (milena);
+- Position (translate, setPosition);

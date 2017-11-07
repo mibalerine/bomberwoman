@@ -31,4 +31,15 @@ public class Position {
 
         this.x = Utils.clamp(x, 1, Game.WIDTH - 2);
     }
+
+    public void translate(int x, int y) {
+
+        setPos(getX() + x, getY() + y);
+    }
+
+    public void setPos(int x, int y) {
+
+        setX(x);
+        setY(y);
+    }
 }
