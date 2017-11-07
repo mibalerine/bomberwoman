@@ -95,8 +95,6 @@ public class ServerThread implements Runnable {
 
         private Socket clientConnection;
 
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
-
         private ClientDispatcher(Socket clientConnection) {
 
             this.clientConnection = clientConnection;

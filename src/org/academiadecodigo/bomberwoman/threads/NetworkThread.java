@@ -23,14 +23,18 @@ public class NetworkThread implements Runnable {
 
     private PrintWriter clientWriter;
 
-    public NetworkThread(Vector<GameObject> gameObjects) {
+    private String ipAddress;
+
+    public NetworkThread(Vector<GameObject> gameObjects, String ipAddress) {
 
         this.gameObjects = gameObjects;
+        this.ipAddress = ipAddress;
     }
 
     @Override
     public void run() {
 
+        establishConnection(ipAddress);
         start();
     }
 

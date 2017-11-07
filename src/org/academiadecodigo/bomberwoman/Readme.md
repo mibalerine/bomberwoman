@@ -9,7 +9,6 @@
 
 
 # Todo
-- Screen;
 - Menus;
 - Movable;
 - Destroyable;
@@ -18,6 +17,7 @@
 - Events(miro)
 
 # Doing
+- Screen (miro);
 - Client (miro)
 - LogicThread (milena);
 - NetworkThread (brehm);
