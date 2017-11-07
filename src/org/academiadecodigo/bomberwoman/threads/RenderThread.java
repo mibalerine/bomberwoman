@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.levels.LevelLoader;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.MenuScreen;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
@@ -46,7 +47,7 @@ public class RenderThread implements Runnable {
         Game.HEIGHT = screen.getHeight();
     }
 
-    public void enterPressed(Keys enterKey) {
+    public void enterPressed() {
 
         if(screen.isSplash()) {
 

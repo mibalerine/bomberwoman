@@ -16,21 +16,35 @@ public class InputThread implements Runnable {
     private Game game;
 
     public InputThread(Game game) {
+
         reader = new InputStreamReader(System.in);
         this.game = game;
     }
 
     @Override
     public void run() {
+
         while(true) {
             try {
 
                 int keyInt = reader.read();
                 game.keyPressed(Keys.getKeyByInt(keyInt));
                 //System.out.println("KEY PRESSED : " + keyInt);
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
 
                 e.printStackTrace();
+            }
+            finally {
+
+                try {
+
+                    reader.close();
+                }
+                catch(IOException e) {
+
+                    e.printStackTrace();
+                }
             }
         }
 

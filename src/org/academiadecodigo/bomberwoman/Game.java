@@ -32,12 +32,16 @@ public class Game {
         int timeToDraw = 100;
         Utils.rawMode();
 
-        executorService.submit(renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw));
+        renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw);
+        executorService.submit(renderThread);
+
         //executorService.submit(new NetworkThread(gameObjects));
         executorService.submit(new InputThread(this));
-        executorService.submit(logicThread = new LogicThread());
 
-        renderThread.setScreen(new MenuScreen("/menu/Splash.txt", true));
+        logicThread = new LogicThread();
+        executorService.submit(logicThread);
+
+        //renderThread.setScreen(new MenuScreen("/menu/Splash.txt", true));
     }
 
     public void keyPressed(Keys key) {
@@ -48,7 +52,7 @@ public class Game {
                 quit();
                 break;
             case ENTER:
-                renderThread.enterPressed(key);
+                renderThread.enterPressed();
                 break;
             case UP:
                 break;
@@ -60,8 +64,6 @@ public class Game {
                 logicThread.keyPressed(key);
                 break;
         }
-        //TODO MAYBE handle the keys here?
-
     }
 
     private void quit() {
