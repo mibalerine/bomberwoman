@@ -10,8 +10,6 @@
 
 # Todo
 - Menus;
-- Movable;
-- Destroyable;
 - Bomb;
 - Player;
 - Events(miro)
@@ -28,3 +26,5 @@
 - GameObject;
 - InputThread (milena);
 - Position (translate, setPosition);
+- Movable;
+- Destroyable;
