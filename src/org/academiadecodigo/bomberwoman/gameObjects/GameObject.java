@@ -9,8 +9,6 @@ public class GameObject {
 
     private String representation;
 
-    private int objectId;
-
     public GameObject(String representation) {
 
         this(representation, 0, 0);

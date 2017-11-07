@@ -33,7 +33,7 @@ public class Game {
         WIDTH = 50;
         HEIGHT = 10;
         executorService.submit(new RenderThread(WIDTH, HEIGHT, timeToDraw));
-        executorService.submit(new NetworkThread());
+        executorService.submit(new NetworkThread(gameObjects));
         executorService.submit(new InputThread(this));
         executorService.submit(logicThread = new LogicThread());
     }

@@ -2,7 +2,10 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +19,9 @@ public class ServerThread implements Runnable {
     private ServerSocket serverSocket;
 
     private int numberOfPlayers;
+
     private Socket[] clientConnections;
+
     private ExecutorService threadPool;
 
     public ServerThread(int numberOfPlayers) {
@@ -32,7 +37,8 @@ public class ServerThread implements Runnable {
         try {
 
             serverSocket = new ServerSocket(Constants.PORT);
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
 
             e.printStackTrace();
         }
@@ -45,14 +51,14 @@ public class ServerThread implements Runnable {
 
         int numberOfConnections = 0;
 
-        while (numberOfConnections < numberOfPlayers) {
+        while(numberOfConnections < numberOfPlayers) {
 
             try {
 
                 clientConnections[numberOfConnections] = serverSocket.accept();
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections]));
-
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
 
             }
 
@@ -67,7 +73,7 @@ public class ServerThread implements Runnable {
 
     private void broadcast(String message) {
 
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
             try {
 
@@ -75,7 +81,8 @@ public class ServerThread implements Runnable {
 
                 out.write(message);
                 out.flush();
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
 
                 e.printStackTrace();
             }
@@ -87,24 +94,25 @@ public class ServerThread implements Runnable {
         private Socket clientConnection;
 
         private ClientDispatcher(Socket clientConnection) {
+
             this.clientConnection = clientConnection;
         }
 
         @Override
         public void run() {
 
-            while (!clientConnection.isClosed()) {
+            while(!clientConnection.isClosed()) {
 
                 try {
 
                     BufferedReader in = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
 
                     String line = in.readLine();
-                    if (line != null) {
+                    if(line != null) {
                         broadcast(line);
                     }
-
-                } catch (IOException e) {
+                }
+                catch(IOException e) {
                     e.printStackTrace();
                 }
             }

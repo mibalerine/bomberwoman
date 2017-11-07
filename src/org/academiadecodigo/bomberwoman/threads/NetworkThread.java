@@ -46,7 +46,6 @@ public class NetworkThread implements Runnable {
 
             e.printStackTrace();
         }
-
     }
 
     public void sendMessage(String message) {
