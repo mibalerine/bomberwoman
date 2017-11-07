@@ -53,7 +53,6 @@ public class NetworkThread implements Runnable {
         if(!clientSocket.isClosed()) {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
-
             return;
         }
 
@@ -74,7 +73,7 @@ public class NetworkThread implements Runnable {
                     continue;
                 }
 
-                //TODO: stuff
+                System.out.println(line);
             }
             catch(IOException e) {
 
