@@ -15,12 +15,13 @@
 - Destroyable;
 - Bomb;
 - Player;
+- Events(miro)
 
 # Doing
+- Client (miro)
 - LogicThread (milena);
 - NetworkThread (brehm);
 - ServerThread (francisco) (needs to change the PrintWriter, don't instantiate a new one every broadcast);
-- Events(miro)
 
 # Done
 - RenderThread (miro);
