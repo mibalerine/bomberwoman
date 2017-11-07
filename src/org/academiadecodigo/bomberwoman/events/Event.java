@@ -7,6 +7,9 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
  */
 public abstract class Event {
 
+    public static final String SEPARATOR = "<&>";
+    public static final String EVENT_IDENTIFIER = "ev";
+
     private GameObject gameObject;
 
     private EventType eventType;
@@ -15,6 +18,33 @@ public abstract class Event {
 
         this.gameObject = gameObject;
         this.eventType = eventType;
+    }
+
+    public static boolean isEvent(String string) {
+
+        //VALID: ev<&>0<&>0<&>x<&>y
+        //event, eventType.ordinal(), triggerID(?), posX, posY
+
+        String[] stringComponents = string.split(SEPARATOR);
+        if(stringComponents.length < 3) {
+
+            return false;
+        }
+
+        if(!stringComponents[0].equals(EVENT_IDENTIFIER)) {
+
+            return false;
+        }
+
+        try {
+
+            EventType e = EventType.values()[Integer.parseInt(stringComponents[1])];
+            return true;
+        }
+        catch(NumberFormatException | ArrayIndexOutOfBoundsException e) {
+
+            return false;
+        }
     }
 
     public GameObject getTrigger() {

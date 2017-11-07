@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.events.Event;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -109,7 +110,12 @@ public class ServerThread implements Runnable {
 
                     String line = in.readLine();
                     if(line != null) {
-                        broadcast(line);
+
+                        //TODO do not broadcast, send the message to server
+                        //TODO if the msg is an event, execute it
+                        //TODO if the msg is not in the proper format, discard it
+                        //broadcast(line);
+                        System.out.println(Event.isEvent(line));
                     }
                 }
                 catch(IOException e) {
