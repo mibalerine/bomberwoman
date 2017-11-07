@@ -1,8 +1,11 @@
 package org.academiadecodigo.bomberwoman;
 
+import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
 import org.academiadecodigo.bomberwoman.threads.LogicThread;
+import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.MenuScreen;
@@ -24,6 +27,7 @@ public class Game {
 
     private LogicThread logicThread;
     private RenderThread renderThread;
+    private NetworkThread networkThread;
 
     void start() {
 
@@ -32,10 +36,12 @@ public class Game {
         int timeToDraw = 100;
         Utils.rawMode();
 
-        renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw);
-        executorService.submit(renderThread);
+        //TODO WHILE CREATING, REMOVE THIS
+        networkThread = new NetworkThread(gameObjects, "192.168.0.25");
+        executorService.submit(networkThread);
 
-        //executorService.submit(new NetworkThread(gameObjects));
+        //renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw);
+        //executorService.submit(renderThread);
         executorService.submit(new InputThread(this));
 
         logicThread = new LogicThread();
@@ -61,6 +67,7 @@ public class Game {
             case RIGHT:
             case LEFT:
             case PLACE_BOMB:
+                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, 10, 10).toString());
                 logicThread.keyPressed(key);
                 break;
         }

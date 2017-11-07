@@ -33,7 +33,7 @@ public class ServerThread implements Runnable {
 
     private ExecutorService threadPool;
 
-    private Map<Integer, GameObject> gameObjectMap = new Hashtable<>();
+    private final Map<Integer, GameObject> gameObjectMap = new Hashtable<>();
 
     private int id;
 
@@ -153,8 +153,10 @@ public class ServerThread implements Runnable {
                 int x = Integer.parseInt(eventInfo[3]);
                 int y = Integer.parseInt(eventInfo[4]);
 
-                GameObjectType goType = GameObjectType.values()[objectTypeNum];
-                gameObjectMap.put(id++, GameObjectFactory.byType(goType, x, y));
+                synchronized (gameObjectMap) {
+                    GameObjectType goType = GameObjectType.values()[objectTypeNum];
+                    gameObjectMap.put(id++, GameObjectFactory.byType(goType, x, y));
+                }
                 break;
         }
 
