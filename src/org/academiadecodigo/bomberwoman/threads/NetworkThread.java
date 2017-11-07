@@ -50,7 +50,7 @@ public class NetworkThread implements Runnable {
 
     public void sendMessage(String message) {
 
-        if(!clientSocket.isClosed()) {
+        if(!clientSocket.isClosed() || clientWriter == null) {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
             return;
@@ -62,7 +62,7 @@ public class NetworkThread implements Runnable {
 
     private void start() {
 
-        while(!clientSocket.isClosed()) {
+        while(!clientSocket.isClosed() || clientReader != null) {
 
             try {
 
