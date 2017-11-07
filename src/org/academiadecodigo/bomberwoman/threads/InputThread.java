@@ -27,8 +27,9 @@ public class InputThread implements Runnable {
 
                 int keyInt = reader.read();
                 game.keyPressed(Keys.getKeyByInt(keyInt));
-
+                //System.out.println("KEY PRESSED : " + keyInt);
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
         }

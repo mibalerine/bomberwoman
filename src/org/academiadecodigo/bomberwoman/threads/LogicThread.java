@@ -29,8 +29,7 @@ public class LogicThread implements Runnable {
             case PLACE_BOMB:
                 new ObjectSpawnEvent(GameObjectType.PLAYER, 10, 10);
                 break;
-                //TODO SEND THIS TO SERVER SIDE
-            case QUIT_GAME:
+            case ENTER:
                 break;
         }
     }

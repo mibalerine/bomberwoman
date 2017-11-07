@@ -7,7 +7,8 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
  */
 public class Screen {
 
-    private ScreenFrame screenFrame;
+    protected ScreenFrame screenFrame;
+    boolean splash;
 
     public Screen(int width, int height) {
 
@@ -26,6 +27,26 @@ public class Screen {
 
     public void putObjectInScreen(GameObject gameObject) {
 
-        screenFrame.putStringAt(gameObject.getDrawChar(), gameObject.getX(), gameObject.getY());
+        putStringAt(gameObject.getDrawChar(), gameObject.getX(), gameObject.getY());
+    }
+
+    public void putStringAt(String s, int x, int y) {
+
+        screenFrame.putStringAt(s, x, y);
+    }
+
+    public int getWidth() {
+
+        return screenFrame.width();
+    }
+
+    public int getHeight() {
+
+        return screenFrame.height();
+    }
+
+    public boolean isSplash() {
+
+        return splash;
     }
 }

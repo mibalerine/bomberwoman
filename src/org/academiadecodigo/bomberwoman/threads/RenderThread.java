@@ -1,10 +1,9 @@
 package org.academiadecodigo.bomberwoman.threads;
 
-import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.threads.input.Keys;
+import org.academiadecodigo.bomberwoman.threads.render.MenuScreen;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
-
-import java.util.List;
-import java.util.Vector;
 
 /**
  * Created by codecadet on 06/11/17.
@@ -37,6 +36,21 @@ public class RenderThread implements Runnable {
             lastCheck = System.currentTimeMillis();
 
             screen.draw();
+        }
+    }
+
+    public void setScreen(Screen screen) {
+
+        this.screen = screen;
+        Game.WIDTH = screen.getWidth();
+        Game.HEIGHT = screen.getHeight();
+    }
+
+    public void enterPressed(Keys enterKey) {
+
+        if(screen.isSplash()) {
+
+            setScreen(new MenuScreen("/menu/MainMenu.txt", false));
         }
     }
 }

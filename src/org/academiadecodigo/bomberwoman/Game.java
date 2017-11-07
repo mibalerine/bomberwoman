@@ -3,9 +3,9 @@ package org.academiadecodigo.bomberwoman;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
 import org.academiadecodigo.bomberwoman.threads.LogicThread;
-import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
+import org.academiadecodigo.bomberwoman.threads.render.MenuScreen;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
@@ -23,6 +23,7 @@ public class Game {
     private final Vector<GameObject> gameObjects = new Vector<>();
 
     private LogicThread logicThread;
+    private RenderThread renderThread;
 
     void start() {
 
@@ -30,17 +31,43 @@ public class Game {
 
         int timeToDraw = 100;
         Utils.rawMode();
-        WIDTH = 50;
-        HEIGHT = 10;
-        executorService.submit(new RenderThread(WIDTH, HEIGHT, timeToDraw));
-        executorService.submit(new NetworkThread(gameObjects));
+
+        executorService.submit(renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw));
+        //executorService.submit(new NetworkThread(gameObjects));
         executorService.submit(new InputThread(this));
         executorService.submit(logicThread = new LogicThread());
+
+        renderThread.setScreen(new MenuScreen("/menu/Splash.txt", true));
     }
 
     public void keyPressed(Keys key) {
 
+        switch(key) {
+
+            case QUIT_GAME:
+                quit();
+                break;
+            case ENTER:
+                renderThread.enterPressed(key);
+                break;
+            case UP:
+                break;
+            case DOWN:
+                break;
+            case RIGHT:
+            case LEFT:
+            case PLACE_BOMB:
+                logicThread.keyPressed(key);
+                break;
+        }
         //TODO MAYBE handle the keys here?
-        logicThread.keyPressed(key);
+
+    }
+
+    private void quit() {
+
+        Utils.bufferedMode();
+        Utils.clearScreen();
+        System.exit(0);
     }
 }

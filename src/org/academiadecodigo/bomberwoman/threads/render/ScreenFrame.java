@@ -1,6 +1,5 @@
 package org.academiadecodigo.bomberwoman.threads.render;
 
-
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
@@ -100,7 +99,7 @@ class ScreenFrame {
         return y == 0 || y == height() - 1;
     }
 
-    private int width() {
+    int width() {
 
         if(cells == null) {
 
@@ -109,12 +108,17 @@ class ScreenFrame {
         return cells.length;
     }
 
-    private int height() {
+    int height() {
 
         if(cells == null) {
 
             return 0;
         }
         return cells[0].length;
+    }
+
+    public void setCells(String[][] cells) {
+
+        System.arraycopy(cells, 0, this.cells, 0, this.cells.length);
     }
 }

@@ -13,9 +13,10 @@ public class Constants {
     public static String HORIZONTAL_CHAR = "▓";
 
     public static String BAR_LIMIT_CHAR = "▓";
+
+    public static String OBJECT_CONTROL_MENU = ">";
     public static String OBJECT_BOMB = "δ";
     public static String OBJECT_FLAME = "Θ";
-    public static int CMD_QUIT = 3;
 
     public static int PORT = 8080;
 
