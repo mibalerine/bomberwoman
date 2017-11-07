@@ -3,6 +3,10 @@ package org.academiadecodigo.bomberwoman.threads;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
+import org.academiadecodigo.bomberwoman.events.EventType;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,6 +14,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +33,10 @@ public class ServerThread implements Runnable {
 
     private ExecutorService threadPool;
 
+    private Map<Integer, GameObject> gameObjectMap = new Hashtable<>();
+
+    private int id;
+
     public ServerThread(int numberOfPlayers) {
 
         this.numberOfPlayers = numberOfPlayers;
@@ -39,8 +50,7 @@ public class ServerThread implements Runnable {
         try {
 
             serverSocket = new ServerSocket(Constants.PORT);
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
 
             e.printStackTrace();
         }
@@ -53,14 +63,14 @@ public class ServerThread implements Runnable {
 
         int numberOfConnections = 0;
 
-        while(numberOfConnections < numberOfPlayers) {
+        while (numberOfConnections < numberOfPlayers) {
 
             try {
 
                 clientConnections[numberOfConnections] = serverSocket.accept();
+                System.out.println("Client connected");
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections]));
-            }
-            catch(IOException e) {
+            } catch (IOException e) {
 
             }
 
@@ -75,7 +85,7 @@ public class ServerThread implements Runnable {
 
     private void broadcast(String message) {
 
-        for(Socket s : clientConnections) {
+        for (Socket s : clientConnections) {
 
             try {
 
@@ -83,8 +93,7 @@ public class ServerThread implements Runnable {
 
                 out.write(message);
                 out.flush();
-            }
-            catch(IOException e) {
+            } catch (IOException e) {
 
                 e.printStackTrace();
             }
@@ -103,27 +112,51 @@ public class ServerThread implements Runnable {
         @Override
         public void run() {
 
-            while(!clientConnection.isClosed()) {
+            while (!clientConnection.isClosed()) {
 
                 try {
 
                     BufferedReader in = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
 
                     String line = in.readLine();
-                    if(line != null) {
+                    if (line != null) {
 
-                        //TODO do not broadcast, send the message to server
-                        //TODO if the msg is an event, execute it
-                        //TODO if the msg is not in the proper format, discard it
-                        //broadcast(line);
-                        System.out.println(Event.isEvent(line));
+                        if (!Event.isEvent(line)) {
+
+                            continue;
+                        }
+
+                        handleEvent(line.split(Event.SEPARATOR));
                     }
-                }
-                catch(IOException e) {
+                } catch (IOException e) {
 
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+
+    public void handleEvent(String[] eventInfo) {
+        int eventId = Integer.parseInt(eventInfo[1]);
+
+        EventType eType = EventType.values()[eventId];
+
+        switch (eType) {
+
+            case OBJECT_SPAWN:
+                int objectTypeNum = Integer.parseInt(eventInfo[2]);
+
+                if (!Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
+                    return;
+                }
+                int x = Integer.parseInt(eventInfo[3]);
+                int y = Integer.parseInt(eventInfo[4]);
+
+                GameObjectType goType = GameObjectType.values()[objectTypeNum];
+                gameObjectMap.put(id++, GameObjectFactory.byType(goType, x, y));
+                break;
+        }
+
     }
 }
