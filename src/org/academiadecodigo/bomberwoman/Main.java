@@ -1,5 +1,7 @@
 package org.academiadecodigo.bomberwoman;
 
+import org.academiadecodigo.bomberwoman.threads.ServerThread;
+
 import java.util.ResourceBundle;
 
 /**
@@ -9,8 +11,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Game game = new Game();
-        game.start();
-        //new Thread(new ServerThread(1)).start();
+        //Game game = new Game();
+        //game.start();
+        new Thread(new ServerThread(1)).start();
     }
 }

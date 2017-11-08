@@ -73,7 +73,6 @@ public class NetworkThread implements Runnable {
                     continue;
                 }
 
-                System.out.println(line);
             }
             catch(IOException e) {
 
@@ -81,4 +80,6 @@ public class NetworkThread implements Runnable {
             }
         }
     }
+
+    private void handleEvent()
 }
