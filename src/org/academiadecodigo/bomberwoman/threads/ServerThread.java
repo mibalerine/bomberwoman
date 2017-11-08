@@ -34,15 +34,17 @@ public class ServerThread implements Runnable {
 
     private ExecutorService threadPool;
 
-    private final Map<Integer, GameObject> gameObjectMap = new Hashtable<>();
+    private Map<Integer, GameObject> gameObjectMap;
 
-    private int id;
+    private Integer id;
 
     public ServerThread(int numberOfPlayers) {
 
         this.numberOfPlayers = numberOfPlayers;
         clientConnections = new Socket[numberOfPlayers];
         threadPool = Executors.newFixedThreadPool(numberOfPlayers);
+        gameObjectMap = new Hashtable<>();
+        id = 0;
     }
 
     @Override
@@ -86,7 +88,7 @@ public class ServerThread implements Runnable {
 
     private void broadcast(String message) {
 
-        System.out.println("Message: " + message);
+        System.out.println("Broadcast: " + message);
         for (Socket s : clientConnections) {
 
             try {
@@ -152,11 +154,16 @@ public class ServerThread implements Runnable {
                     return;
                 }
 
-                int objectTypeNum = Integer.parseInt(eventInfo[1]);
-                int x = Integer.parseInt(eventInfo[3]);
-                int y = Integer.parseInt(eventInfo[4]);
+                if (!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
+                    System.out.println("not a game object!");
+                    return;
+                }
 
-                synchronized (gameObjectMap) {
+                int objectTypeNum = Integer.parseInt(eventInfo[2]);
+                int x = Integer.parseInt(eventInfo[4]);
+                int y = Integer.parseInt(eventInfo[5]);
+
+                synchronized (id) {
                     GameObjectType goType = GameObjectType.values()[objectTypeNum];
                     gameObjectMap.put(id, GameObjectFactory.byType(goType, x, y));
                     broadcast((new ObjectSpawnEvent(goType, id, x, y)).toString());

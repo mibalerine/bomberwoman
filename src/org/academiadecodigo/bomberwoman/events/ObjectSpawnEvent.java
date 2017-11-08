@@ -23,11 +23,12 @@ public class ObjectSpawnEvent extends Event {
         this.x = x;
         this.y = y;
         this.id = id;
+        this.type = gameObjectType;
     }
 
     @Override
     public String toString() {
 
-        return super.toString() + Event.SEPARATOR + id + Event.SEPARATOR + x + Event.SEPARATOR + y;
+        return super.toString() + Event.SEPARATOR + type.ordinal() + Event.SEPARATOR + id + Event.SEPARATOR + x + Event.SEPARATOR + y;
     }
 }
