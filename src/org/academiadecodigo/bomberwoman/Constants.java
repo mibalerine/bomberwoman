@@ -8,6 +8,7 @@ public class Constants {
     public static final String LEVEL_SEPARATOR = "~";
     public static final String BRICK_CHAR = "#";
     public static final String PLAYER_CHAR = "x";
+    public static final String WALL_CHAR = "▓";
 
     public static String VERTICAL_CHAR = "▓";
     public static String CORNER_CHAR = "▓";
