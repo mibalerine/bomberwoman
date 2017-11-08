@@ -2,13 +2,18 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
+import org.academiadecodigo.bomberwoman.events.Event;
+import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -16,7 +21,7 @@ import java.util.Vector;
  */
 public class NetworkThread implements Runnable {
 
-    private final Vector<GameObject> gameObjects;
+    private final Map<Integer, GameObject> gameObjects;
 
     private Socket clientSocket;
 
@@ -26,7 +31,7 @@ public class NetworkThread implements Runnable {
 
     private String ipAddress;
 
-    public NetworkThread(Vector<GameObject> gameObjects, String ipAddress) {
+    public NetworkThread(Map<Integer, GameObject> gameObjects, String ipAddress) {
 
         this.gameObjects = gameObjects;
         this.ipAddress = ipAddress;
@@ -47,8 +52,7 @@ public class NetworkThread implements Runnable {
             clientSocket = new Socket(idAddress, Constants.PORT);
             clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             clientWriter = new PrintWriter(clientSocket.getOutputStream());
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
 
             e.printStackTrace();
         }
@@ -56,7 +60,7 @@ public class NetworkThread implements Runnable {
 
     public void sendMessage(String message) {
 
-        if(clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
+        if (clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
             return;
@@ -68,19 +72,20 @@ public class NetworkThread implements Runnable {
 
     private void start() {
 
-        while(!clientSocket.isClosed() && clientReader != null) {
+        while (!clientSocket.isClosed() && clientReader != null) {
 
             try {
 
                 String line = clientReader.readLine();
 
-                if(line == null) {
+                if (line == null) {
 
                     continue;
                 }
 
-            }
-            catch(IOException e) {
+                handleEvent(line);
+
+            } catch (IOException e) {
 
                 Utils.bufferedMode();
                 System.out.println("I'm out bitch");
@@ -88,5 +93,44 @@ public class NetworkThread implements Runnable {
         }
     }
 
-    private void handleEvent()
+    private void handleEvent(String eventPacket) {
+
+        if (!Event.isEvent(eventPacket)) {
+
+            System.out.println("Invalid event");
+            return;
+        }
+
+        String[] eventInfo = eventPacket.split(Event.SEPARATOR);
+
+        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
+            System.out.println("not a number!");
+            return;
+        }
+
+        EventType eType = EventType.values()[Integer.parseInt(eventInfo[1])];
+
+        switch (eType) {
+
+            case OBJECT_SPAWN:
+                GameObjectType goType = GameObjectType.values()[Integer.parseInt(eventInfo[2])];
+                int id = Integer.parseInt(eventInfo[3]);
+                int x = Integer.parseInt(eventInfo[4]);
+                int y = Integer.parseInt(eventInfo[5]);
+                spawnObject(goType, id, x, y);
+                break;
+        }
+
+    }
+
+    private void spawnObject(GameObjectType goType, int id, int x, int y) {
+
+        GameObject gameObject = GameObjectFactory.byType(goType, x, y);
+
+        synchronized (gameObjects) {
+
+            gameObjects.put(id, gameObject);
+        }
+
+    }
 }

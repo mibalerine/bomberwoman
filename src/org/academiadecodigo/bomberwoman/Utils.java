@@ -50,12 +50,7 @@ public class Utils {
     }
 
     public static boolean isNumber(String text) {
-        try {
-            Integer.parseInt(text);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
+        return text.matches("-?\\d+(\\.\\d+)?");
     }
 
     public static void quitGame() {

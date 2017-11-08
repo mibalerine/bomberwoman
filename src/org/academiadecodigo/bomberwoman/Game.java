@@ -10,6 +10,8 @@ import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,11 +25,16 @@ public class Game {
 
     public static int HEIGHT = 40;
 
-    private final Vector<GameObject> gameObjects = new Vector<>();
+    private final Map<Integer, GameObject> gameObjects;
 
     private LogicThread logicThread;
     private RenderThread renderThread;
     private NetworkThread networkThread;
+
+    public Game() {
+
+        gameObjects = new HashMap<>();
+    }
 
     void start() {
 
