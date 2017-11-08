@@ -5,6 +5,8 @@ import org.academiadecodigo.bomberwoman.levels.Level;
 import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
+import java.util.Map;
+
 /**
  * Created by miro on 06/11/2017.
  */
@@ -14,16 +16,19 @@ public class Screen {
 
     private ScreenFrame screenFrame;
 
+    private Map<Integer,GameObject> gameObjectMap;
+
     public void init(int width, int height) {
 
         screenFrame = new ScreenFrame(width, height);
+
     }
 
     public void update() {
 
         screenFrame.update();
 
-        for(GameObject letter : iFile.getLetters()) {
+        for(GameObject letter : iFile.getLetters().values()) {
 
             putObjectInScreen(letter);
         }
@@ -61,14 +66,15 @@ public class Screen {
         return iFile.getLevelFileLocator().isSplash();
     }
 
-    public void changeFrame(LevelFileLocator level) {
+    public void changeFrame(LevelFileLocator level, Map<Integer, GameObject> gameObjectMap) {
 
         if(level == null) {
 
             level = LevelFileLocator.SPLASH;
         }
 
-        iFile = new Level(level);
+        this.gameObjectMap = gameObjectMap;
+        iFile = new Level(level, gameObjectMap);
         init(iFile.getWidth(), iFile.getHeight());
     }
 
@@ -82,7 +88,7 @@ public class Screen {
                 iFile.moveSelectionBy(2);
                 break;
             case ENTER:
-                changeFrame(chooseMenu(isSplash() ? 0 : choice()));
+                changeFrame(chooseMenu(isSplash() ? 0 : choice()), gameObjectMap);
                 break;
         }
     }

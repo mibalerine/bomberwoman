@@ -44,7 +44,7 @@ public class ServerThread implements Runnable {
         clientConnections = new Socket[numberOfPlayers];
         threadPool = Executors.newFixedThreadPool(numberOfPlayers);
         gameObjectMap = new Hashtable<>();
-        id = 0;
+        id = 4000;
     }
 
     @Override

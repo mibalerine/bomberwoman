@@ -9,6 +9,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by miro on 07/11/2017.
@@ -21,16 +22,17 @@ public class Level {
 
     private int height;
 
-    private List<GameObject> letters = Collections.synchronizedList(new ArrayList<>());
+    private final Map<Integer, GameObject> letters;
 
     private MenuSelect menuSelect;
 
     private LevelFileLocator levelFileLocator;
 
-    public Level(LevelFileLocator levelFileLocator) {
+    public Level(LevelFileLocator levelFileLocator, Map<Integer, GameObject> letters) {
 
         this.levelFileLocator = levelFileLocator;
         this.path = this.levelFileLocator.getFilePath();
+        this.letters = letters;
 
         try {
 
@@ -43,6 +45,10 @@ public class Level {
     }
 
     private void init() throws FileNotFoundException {
+
+        synchronized (letters) {
+            letters.clear();
+        }
 
         InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(path));
 
@@ -73,6 +79,8 @@ public class Level {
 
     private void populateCells(List<String> lineList) {
 
+        int id = 0;
+
         String[][] cells = new String[width][height];
         int lineIndex = 0;
         for(String line : lineList) {
@@ -97,11 +105,11 @@ public class Level {
                 if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
                     menuSelect = new MenuSelect(x, y);
-                    letters.add(menuSelect);
+                    letters.put(id++, menuSelect);
                 }
                 else {
 
-                    letters.add(new GameObject(cells[x][y], x, y));
+                    letters.put(id++, new GameObject(cells[x][y], x, y));
                 }
             }
         }
@@ -127,7 +135,7 @@ public class Level {
         return height;
     }
 
-    public List<GameObject> getLetters() {
+    public Map<Integer, GameObject> getLetters() {
 
         return letters;
     }

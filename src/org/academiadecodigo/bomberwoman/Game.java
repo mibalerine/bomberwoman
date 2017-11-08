@@ -43,11 +43,10 @@ public class Game {
         int timeToDraw = 80;
         Utils.rawMode();
 
-        //TODO WHILE CREATING, REMOVE THIS
-        //networkThread = new NetworkThread(gameObjects, "192.168.0.25");
-        //executorService.submit(networkThread);
+        networkThread = new NetworkThread(gameObjects, "192.168.0.18");
+        executorService.submit(networkThread);
 
-        renderThread = new RenderThread(LevelFileLocator.SPLASH, timeToDraw);
+        renderThread = new RenderThread(LevelFileLocator.SPLASH, timeToDraw, gameObjects);
         executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
