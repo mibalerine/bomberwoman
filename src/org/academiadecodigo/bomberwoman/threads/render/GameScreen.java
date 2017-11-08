@@ -15,6 +15,6 @@ public class GameScreen extends Screen {
 
     public GameScreen(int width, int height) {
 
-        super(width, height);
+        //TODO fix this
     }
 }

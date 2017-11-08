@@ -1,16 +1,20 @@
 package org.academiadecodigo.bomberwoman.threads.render;
 
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.levels.Level;
+import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
+import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 /**
  * Created by miro on 06/11/2017.
  */
 public class Screen {
 
-    protected ScreenFrame screenFrame;
-    boolean splash;
+    private Level iFile;
 
-    public Screen(int width, int height) {
+    private ScreenFrame screenFrame;
+
+    public void init(int width, int height) {
 
         screenFrame = new ScreenFrame(width, height);
     }
@@ -18,6 +22,13 @@ public class Screen {
     public void update() {
 
         screenFrame.update();
+
+        for(GameObject letter : iFile.getLetters()) {
+
+            putObjectInScreen(letter);
+        }
+
+        iFile.update();
     }
 
     public void draw() {
@@ -25,17 +36,17 @@ public class Screen {
         System.out.println("\r" + screenFrame.getContent());
     }
 
-    public void putObjectInScreen(GameObject gameObject) {
+    void putObjectInScreen(GameObject gameObject) {
 
         putStringAt(gameObject.getDrawChar(), gameObject.getX(), gameObject.getY());
     }
 
-    public void putStringAt(String s, int x, int y) {
+    private void putStringAt(String s, int x, int y) {
 
         screenFrame.putStringAt(s, x, y);
     }
 
-    public int getWidth() {
+    /*public int getWidth() {
 
         return screenFrame.width();
     }
@@ -44,9 +55,55 @@ public class Screen {
 
         return screenFrame.height();
     }
+    */
+    private boolean isSplash() {
 
-    public boolean isSplash() {
+        return iFile.getLevelFileLocator().isSplash();
+    }
 
-        return splash;
+    public void changeFrame(LevelFileLocator level) {
+
+        if(level == null) {
+
+            level = LevelFileLocator.SPLASH;
+        }
+
+        iFile = new Level(level);
+        init(iFile.getWidth(), iFile.getHeight());
+    }
+
+    public void keyPressed(Keys key) {
+
+        switch(key) {
+            case UP:
+                iFile.moveSelectionBy(-2);
+                break;
+            case DOWN:
+                iFile.moveSelectionBy(2);
+                break;
+            case ENTER:
+                changeFrame(chooseMenu(isSplash() ? 0 : choice()));
+                break;
+        }
+    }
+
+    private int choice() {
+
+        return iFile.choice();
+    }
+
+    public LevelFileLocator previousMenu() {
+
+        return chooseMenu(2);
+    }
+
+    public LevelFileLocator currentMenu() {
+
+        return iFile.getLevelFileLocator();
+    }
+
+    public LevelFileLocator chooseMenu(int choice) {
+
+        return currentMenu().selectLevelOfChoice(choice);
     }
 }

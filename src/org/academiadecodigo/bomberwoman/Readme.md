@@ -13,6 +13,7 @@
 - Bomb;
 - Player;
 - Events(miro)
+- Level.java, line:52, make the IP auto-appear
 
 # Doing
 - Screen (miro);

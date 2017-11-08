@@ -20,6 +20,10 @@ public class GameObject{
         setPosition(x, y);
     }
 
+    public static boolean isGameObject(int id) {
+        return id >= 0 && id < GameObjectType.values().length;
+    }
+
     public int getX() {
 
         return position.getX();
