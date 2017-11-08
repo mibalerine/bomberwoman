@@ -1,8 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
-import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
-import org.academiadecodigo.bomberwoman.threads.render.MenuScreen;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
 /**
@@ -14,9 +13,10 @@ public class RenderThread implements Runnable {
 
     private Screen screen;
 
-    public RenderThread(int width, int height, int timeToDraw) {
+    public RenderThread(LevelFileLocator startingLevel, int timeToDraw) {
 
-        this.screen = new Screen(width, height);
+        this.screen = new Screen();
+        screen.changeFrame(startingLevel);
         this.timeToDraw = timeToDraw;
     }
 
@@ -39,37 +39,8 @@ public class RenderThread implements Runnable {
         }
     }
 
-    public void setScreen(Screen screen) {
+    public void keyPressed(Keys key) {
 
-        this.screen = screen;
-        Game.WIDTH = screen.getWidth();
-        Game.HEIGHT = screen.getHeight();
-    }
-
-    public void enterPressed(Keys key) {
-
-        if(screen.isSplash()) {
-
-            MenuScreen mainMenuScreen = new MenuScreen("/menu/MenuMain.txt", false);
-            setScreen(mainMenuScreen);
-            return;
-        }
-
-        if(!(screen instanceof MenuScreen)) {
-
-            return;
-        }
-
-        ((MenuScreen) screen).keyPressed(key);
-    }
-
-    public void directionKeyPressed(Keys key) {
-
-        if(!(screen instanceof MenuScreen)) {
-
-            return;
-        }
-
-        ((MenuScreen) screen).keyPressed(key);
+        screen.keyPressed(key);
     }
 }

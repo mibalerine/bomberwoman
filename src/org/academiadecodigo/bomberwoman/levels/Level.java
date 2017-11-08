@@ -1,30 +1,37 @@
 package org.academiadecodigo.bomberwoman.levels;
 
 import org.academiadecodigo.bomberwoman.Constants;
-import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
+import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
  * Created by miro on 07/11/2017.
  */
-public class LevelLoader {
+public class Level {
 
     String path;
+
     private int width;
+
     private int height;
+
     private List<GameObject> letters = Collections.synchronizedList(new ArrayList<>());
+
     private MenuSelect menuSelect;
 
-    public LevelLoader(String path) {
+    private LevelFileLocator levelFileLocator;
 
-        this.path = path;
+    public Level(LevelFileLocator levelFileLocator) {
+
+        this.levelFileLocator = levelFileLocator;
+        this.path = this.levelFileLocator.getFilePath();
+
         try {
 
             init();
@@ -87,8 +94,6 @@ public class LevelLoader {
                     continue;
                 }
 
-
-
                 if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
                     menuSelect = new MenuSelect(x, y);
@@ -100,6 +105,16 @@ public class LevelLoader {
                 }
             }
         }
+    }
+
+    public void update() {
+
+        menuSelect.update();
+    }
+
+    public int choice() {
+
+        return menuSelect.choice();
     }
 
     public int getWidth() {
@@ -117,8 +132,23 @@ public class LevelLoader {
         return letters;
     }
 
-    public MenuSelect getMenuSelect() {
+    public LevelFileLocator getLevelFileLocator() {
 
-        return menuSelect;
+        return levelFileLocator;
+    }
+
+    public void moveSelectionBy(int y) {
+
+        if(menuSelect.getY() + y < menuSelect.getOriginalY()) {
+
+            y = 4;
+        }
+
+        if(menuSelect.getY() + y > menuSelect.getOriginalY() + 4) {
+
+            y = -4;
+        }
+
+        menuSelect.translate(0, y);
     }
 }

@@ -3,12 +3,12 @@ package org.academiadecodigo.bomberwoman;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
 import org.academiadecodigo.bomberwoman.threads.LogicThread;
 import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
-import org.academiadecodigo.bomberwoman.threads.render.MenuScreen;
 
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
@@ -33,22 +33,20 @@ public class Game {
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        int timeToDraw = 100;
+        int timeToDraw = 80;
         Utils.rawMode();
 
         //TODO WHILE CREATING, REMOVE THIS
         //networkThread = new NetworkThread(gameObjects, "192.168.0.25");
         //executorService.submit(networkThread);
 
-        renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw);
+        renderThread = new RenderThread(LevelFileLocator.SPLASH, timeToDraw);
         executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
 
         logicThread = new LogicThread();
         executorService.submit(logicThread);
-
-        renderThread.setScreen(new MenuScreen("/menu/Splash.txt", true));
     }
 
     public void keyPressed(Keys key) {
@@ -56,28 +54,21 @@ public class Game {
         switch(key) {
 
             case QUIT_GAME:
-                quit();
+                Utils.quitGame();
                 break;
             case ENTER:
-                renderThread.enterPressed(key);
-                break;
-            case UP:
-                renderThread.directionKeyPressed(key);
+                renderThread.keyPressed(key);
                 break;
             case DOWN:
-                renderThread.directionKeyPressed(key);
+                renderThread.keyPressed(key);
                 break;
-            case RIGHT:
-            case LEFT:
+            case UP:
+                renderThread.keyPressed(key);
+                break;
             case PLACE_BOMB:
                 networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, 10, 10).toString());
                 logicThread.keyPressed(key);
                 break;
         }
-    }
-
-    private void quit() {
-
-        Utils.quitGame();
     }
 }
