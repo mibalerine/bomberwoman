@@ -12,6 +12,8 @@ public class MenuScreen extends Screen {
 
     private LevelLoader iFile;
 
+    private int originalY = 0;
+
     private MenuSelect menuSelect;
 
     public MenuScreen(String path, boolean splash) {
@@ -28,6 +30,8 @@ public class MenuScreen extends Screen {
         this.iFile = iFile;
 
         menuSelect = iFile.getMenuSelect();
+
+        originalY = menuSelect.getY();
     }
 
     @Override
@@ -43,6 +47,37 @@ public class MenuScreen extends Screen {
 
     public void keyPressed(Keys key) {
 
+        if(menuSelect == null) {
 
+            return;
+        }
+
+        if(key == Keys.UP) {
+
+            menuSelect.translate(0, -2);
+        }
+        else if(key == Keys.DOWN) {
+
+            menuSelect.translate(0, 2);
+        }
+        else if(key == Keys.ENTER) {
+
+        }
+
+        keepSelectionInBounds();
+    }
+
+    private void keepSelectionInBounds() {
+
+        //TODO UGH..THIS IS HARDCODED
+        if(menuSelect.getY() < originalY) {
+
+            menuSelect.setPosition(menuSelect.getX(), originalY + 4);
+        }
+
+        if(menuSelect.getY() > originalY + 4) {
+
+            menuSelect.setPosition(menuSelect.getX(), originalY);
+        }
     }
 }

@@ -26,17 +26,17 @@ public class InputThread implements Runnable {
     public void run() {
 
         while (true) {
+
             try {
 
                 int keyInt = reader.read();
 
                 game.keyPressed(Keys.getKeyByInt(keyInt));
 
-                System.out.println(keyInt);
                 //System.out.println("KEY PRESSED : " + keyInt);
             } catch (IOException e) {
 
-                Utils.bufferedMode();
+                Utils.quitGame();
                 e.printStackTrace();
             }
         }

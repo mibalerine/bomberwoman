@@ -57,4 +57,11 @@ public class Utils {
             return false;
         }
     }
+
+    public static void quitGame() {
+
+        bufferedMode();
+        clearScreen();
+        System.exit(0);
+    }
 }

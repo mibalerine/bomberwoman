@@ -1,11 +1,13 @@
 package org.academiadecodigo.bomberwoman.levels;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -48,7 +50,7 @@ public class LevelLoader {
                 lines.add(line);
                 if(width == 0) {
 
-                    String[] chars = line.split(",");
+                    String[] chars = line.split(Constants.LEVEL_SEPARATOR);
                     width = chars.length;
                 }
             }
@@ -68,7 +70,7 @@ public class LevelLoader {
         int lineIndex = 0;
         for(String line : lineList) {
 
-            String[] chars = line.split(",");
+            String[] chars = line.split(Constants.LEVEL_SEPARATOR);
             for(int i = 0; i < chars.length; i++) {
 
                 cells[i][lineIndex] = chars[i] == null ? " " : chars[i];
@@ -80,10 +82,12 @@ public class LevelLoader {
 
             for(int x = 0; x < cells.length; x++) {
 
-                if(cells[x][y].equals(" ")) {
+                if(cells[x][y] == null || cells[x][y].equals(" ")) {
 
                     continue;
                 }
+
+
 
                 if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 

@@ -21,7 +21,7 @@ public class Game {
 
     public static int WIDTH = 120;
 
-    public static int HEIGHT = 30;
+    public static int HEIGHT = 40;
 
     private final Vector<GameObject> gameObjects = new Vector<>();
 
@@ -37,17 +37,18 @@ public class Game {
         Utils.rawMode();
 
         //TODO WHILE CREATING, REMOVE THIS
-        networkThread = new NetworkThread(gameObjects, "192.168.0.25");
-        executorService.submit(networkThread);
+        //networkThread = new NetworkThread(gameObjects, "192.168.0.25");
+        //executorService.submit(networkThread);
 
-        //renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw);
-        //executorService.submit(renderThread);
+        renderThread = new RenderThread(WIDTH, HEIGHT, timeToDraw);
+        executorService.submit(renderThread);
+
         executorService.submit(new InputThread(this));
 
         logicThread = new LogicThread();
         executorService.submit(logicThread);
 
-        //renderThread.setScreen(new MenuScreen("/menu/Splash.txt", true));
+        renderThread.setScreen(new MenuScreen("/menu/Splash.txt", true));
     }
 
     public void keyPressed(Keys key) {
@@ -58,11 +59,13 @@ public class Game {
                 quit();
                 break;
             case ENTER:
-                renderThread.enterPressed();
+                renderThread.enterPressed(key);
                 break;
             case UP:
+                renderThread.directionKeyPressed(key);
                 break;
             case DOWN:
+                renderThread.directionKeyPressed(key);
                 break;
             case RIGHT:
             case LEFT:
@@ -75,8 +78,6 @@ public class Game {
 
     private void quit() {
 
-        Utils.bufferedMode();
-        Utils.clearScreen();
-        System.exit(0);
+        Utils.quitGame();
     }
 }
