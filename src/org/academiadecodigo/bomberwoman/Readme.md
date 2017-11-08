@@ -9,15 +9,13 @@
 
 
 # Todo
-- Screen;
 - Menus;
-- Movable;
-- Destroyable;
 - Bomb;
 - Player;
 - Events(miro)
 
 # Doing
+- Screen (miro);
 - Client (miro)
 - LogicThread (milena);
 - NetworkThread (brehm);
@@ -28,3 +26,5 @@
 - GameObject;
 - InputThread (milena);
 - Position (translate, setPosition);
+- Movable;
+- Destroyable;

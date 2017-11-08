@@ -1,13 +1,14 @@
 package org.academiadecodigo.bomberwoman.events;
 
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 
 /**
  * Created by miro on 06/11/2017.
  */
 public abstract class Event {
 
-    public static final String SEPARATOR = "<&>";
+    public static final String SEPARATOR = " ";
     public static final String EVENT_IDENTIFIER = "ev";
 
     private GameObject gameObject;
@@ -45,6 +46,12 @@ public abstract class Event {
 
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+
+        return "ev" + Event.SEPARATOR + eventType.ordinal();
     }
 
     public GameObject getTrigger() {

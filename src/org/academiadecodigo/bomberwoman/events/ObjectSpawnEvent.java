@@ -8,8 +8,26 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
  */
 public class ObjectSpawnEvent extends Event {
 
-    public ObjectSpawnEvent(GameObjectType gameObjectType, int x, int y) {
+    private int x;
+    private int y;
+    private int id;
+    private GameObjectType type;
 
+    public ObjectSpawnEvent(GameObjectType gameObjectType, int x, int y) {
+        this(gameObjectType, -1, x, y);
+    }
+
+    public ObjectSpawnEvent(GameObjectType gameObjectType, int id, int x, int y) {
         super(GameObjectFactory.byType(gameObjectType, x, y), EventType.OBJECT_SPAWN);
+
+        this.x = x;
+        this.y = y;
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+
+        return super.toString() + Event.SEPARATOR + id + Event.SEPARATOR + x + Event.SEPARATOR + y;
     }
 }

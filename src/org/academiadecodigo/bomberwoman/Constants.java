@@ -5,6 +5,7 @@ package org.academiadecodigo.bomberwoman;
  */
 public class Constants {
 
+    public static final String LEVEL_SEPARATOR = "~";
     public static final String BRICK_CHAR = "#";
     public static final String PLAYER_CHAR = "x";
 

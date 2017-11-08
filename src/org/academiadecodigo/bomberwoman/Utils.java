@@ -48,4 +48,20 @@ public class Utils {
             e.printStackTrace();
         }
     }
+
+    public static boolean isNumber(String text) {
+        try {
+            Integer.parseInt(text);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    public static void quitGame() {
+
+        bufferedMode();
+        clearScreen();
+        System.exit(0);
+    }
 }
