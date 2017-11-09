@@ -40,7 +40,7 @@ public class Game {
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        int timeToDraw = 80;
+        int timeToDraw = 100;
         Utils.rawMode();
 
         networkThread = new NetworkThread(gameObjects, "192.168.0.18");
