@@ -7,10 +7,11 @@ import org.academiadecodigo.bomberwoman.Utils;
  */
 public enum LevelFileLocator {
 
-    SPLASH("Splash", 1, 1, 1),
-    MENU_MAIN("MenuMain", -5, 2, -100),
-    MENU_MP_MAIN("MenuMPMain", 3, -5, 1),
-    MENU_MP_HOST("MenuMPHost", -5, -5, 2);
+    SPLASH("/menu/Splash", 1, 1, 1),
+    MENU_MAIN("/menu/MenuMain", -5, 2, -100),
+    MENU_MP_MAIN("/menu/MenuMPMain", 3, -5, 1),
+    MENU_MP_HOST("/menu/MenuMPHost", -5, -5, 2),
+    LEVEL_1("/levels/level1", -5, -5, -5);
 
     private static final int QUIT_GAME = -100;
 
@@ -18,7 +19,7 @@ public enum LevelFileLocator {
 
     LevelFileLocator(String fileName, int... choices) {
 
-        this.filePath = "/menu/" + fileName + ".txt";
+        this.filePath = fileName + ".txt";
 
         this.choices = choices;
     }

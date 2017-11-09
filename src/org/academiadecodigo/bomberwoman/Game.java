@@ -11,6 +11,7 @@ import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
