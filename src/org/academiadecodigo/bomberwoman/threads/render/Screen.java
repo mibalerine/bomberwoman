@@ -3,6 +3,7 @@ package org.academiadecodigo.bomberwoman.threads.render;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.levels.Level;
 import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
+import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.Map;
@@ -12,16 +13,22 @@ import java.util.Map;
  */
 public class Screen {
 
+    private final RenderThread renderThread;
+
     private Level iFile;
 
     private ScreenFrame screenFrame;
 
     private Map<Integer,GameObject> gameObjectMap;
 
+    public Screen(RenderThread renderThread) {
+
+        this.renderThread = renderThread;
+    }
+
     public void init(int width, int height) {
 
         screenFrame = new ScreenFrame(width, height);
-
     }
 
     public void update() {
@@ -66,6 +73,8 @@ public class Screen {
         this.gameObjectMap = gameObjectMap;
         iFile = new Level(level, gameObjectMap);
         init(iFile.getWidth(), iFile.getHeight());
+        update();
+        renderThread.refresh();
     }
 
     public void keyPressed(Keys key) {
@@ -80,20 +89,17 @@ public class Screen {
             case ENTER:
                 changeFrame(chooseMenu(isSplash() ? 0 : choice()), gameObjectMap);
                 break;
-            case BACKSPACE:
+            case TAB:
                 changeFrame(chooseMenu(2), gameObjectMap);
                 break;
         }
+
+        renderThread.refresh();
     }
 
     private int choice() {
 
         return iFile.choice();
-    }
-
-    public LevelFileLocator previousMenu() {
-
-        return chooseMenu(2);
     }
 
     public LevelFileLocator currentMenu() {

@@ -6,44 +6,63 @@ import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by codecadet on 06/11/17.
  */
 public class RenderThread implements Runnable {
 
-    private final int timeToDraw;
+    private Timer timer = new Timer();
 
     private Screen screen;
 
-    public RenderThread(LevelFileLocator startingLevel, int timeToDraw, Map<Integer, GameObject> gameObjectMap) {
+    private boolean dirty = true;
 
-        this.screen = new Screen();
-        screen.changeFrame(startingLevel, gameObjectMap);
-        this.timeToDraw = timeToDraw;
+    private int timeToUpdate;
+
+    public RenderThread(LevelFileLocator startingLevel, int timeToUpdate, Map<Integer, GameObject> gameObjectMap) {
+
+        this.screen = new Screen(this);
+
+        changeScreen(startingLevel, gameObjectMap);
+
+        this.timeToUpdate = timeToUpdate;
     }
 
     @Override
     public void run() {
 
-        long lastCheck = System.currentTimeMillis();
-        while(true) {
+        timer.schedule(new TimerTask() {
 
-            if(System.currentTimeMillis() - lastCheck < timeToDraw) {
+            @Override
+            public void run() {
 
-                continue;
+                screen.update();
+
+                if(dirty) {
+
+                    dirty = false;
+                    screen.draw();
+                }
             }
-
-            screen.update();
-
-            lastCheck = System.currentTimeMillis();
-
-            screen.draw();
-        }
+        }, 0, timeToUpdate);
     }
 
     public void keyPressed(Keys key) {
 
         screen.keyPressed(key);
+    }
+
+    public void refresh() {
+
+        dirty = true;
+        screen.update();
+    }
+
+    public void changeScreen(LevelFileLocator level, Map<Integer, GameObject> gameObjectMap) {
+
+        screen.changeFrame(level, gameObjectMap);
     }
 }

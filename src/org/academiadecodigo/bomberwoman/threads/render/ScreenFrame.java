@@ -27,18 +27,18 @@ class ScreenFrame {
             for(int y = 0; y < height(); y++) {
 
                 String cell = " ";
-                if(isCorner(x, y)) {
+                if(isCorner(x, y) || isSide(x) || isVert(y)) {
 
                     cell = Constants.CORNER_CHAR;
                 }
-                else if(isSide(x)) {
+                /*else if(isSide(y)) {
 
                     cell = Constants.VERTICAL_CHAR;
                 }
                 else if(isVert(y)) {
 
                     cell = Constants.HORIZONTAL_CHAR;
-                }
+                }*/
 
                 cells[x][y] = cell;
             }

@@ -35,7 +35,7 @@
                                                           _____                                                        
 
                                              + Please input the port number+
-                                    +Press [ENTER] to host game and [BACKSPACE] to cancel+
+                                    +Press [ENTER] to host game and [TAB] to go back+
                                
                                
 ~                                                                                                                     ~
