@@ -119,6 +119,9 @@ public class NetworkThread implements Runnable {
                 int y = Integer.parseInt(eventInfo[5]);
                 spawnObject(goType, id, x, y);
                 break;
+
+            case OBJECT_MOVE:
+                break;
         }
 
     }
@@ -130,6 +133,7 @@ public class NetworkThread implements Runnable {
         synchronized (gameObjects) {
 
             gameObjects.put(id, gameObject);
+
         }
 
     }

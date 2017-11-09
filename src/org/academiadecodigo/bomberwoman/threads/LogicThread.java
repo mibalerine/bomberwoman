@@ -3,7 +3,7 @@ package org.academiadecodigo.bomberwoman.threads;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
-import org.academiadecodigo.bomberwoman.events.PlayerMoveEvent;
+import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.Player;
@@ -61,7 +61,7 @@ public class LogicThread implements Runnable {
             return;
         }
 
-        networkThread.sendMessage((new PlayerMoveEvent(player, Direction.UP)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.UP)).toString());
     }
 
     private void moveDown() {
@@ -69,7 +69,7 @@ public class LogicThread implements Runnable {
             return;
         }
 
-        networkThread.sendMessage((new PlayerMoveEvent(player, Direction.DOWN)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.DOWN)).toString());
     }
 
     private void moveRight() {
@@ -77,7 +77,7 @@ public class LogicThread implements Runnable {
             return;
         }
 
-        networkThread.sendMessage((new PlayerMoveEvent(player, Direction.RIGHT)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.RIGHT)).toString());
     }
 
     private void moveLeft() {
@@ -85,7 +85,7 @@ public class LogicThread implements Runnable {
             return;
         }
 
-        networkThread.sendMessage((new PlayerMoveEvent(player, Direction.LEFT)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.LEFT)).toString());
     }
 
     private boolean checkMove(Direction direction) {
