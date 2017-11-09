@@ -34,7 +34,7 @@
 
                                                        [JOIN GAME]
 
-                                                         [QUIT]
+                                                         [BACK]
 
 
 

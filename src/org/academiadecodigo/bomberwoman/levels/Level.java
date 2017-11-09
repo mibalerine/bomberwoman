@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman.levels;
 
+import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
@@ -143,12 +144,10 @@ public class Level {
 
                 for(char c : chars) {
 
-
                     letters.put(id, new GameObject(id, c + "", x++, y));
                     id++;
                 }
-
-                letters.put(id, new GameObject(id,".", x++, y));
+                letters.put(id, new GameObject(id, ".", x++, y));
                 id++;
             }
             letters.remove(id - 1);
