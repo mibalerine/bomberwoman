@@ -25,12 +25,17 @@ public class UserInputObject extends GameObject {
     @Override
     public void translate(int x, int y) {
 
-        if(translations + x < 0 || translations + x > maxTranslation) {
+        if(translations + x < 0 || translations + x > maxTranslation + 1) {
 
             x = 0;
         }
 
         translations += x;
         super.translate(x, y);
+    }
+
+    public int getMaxTranslation() {
+
+        return maxTranslation;
     }
 }

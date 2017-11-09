@@ -12,6 +12,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 /**
  * Created by miro on 07/11/2017.
@@ -35,6 +36,8 @@ public class Level {
     private UserInputObject userInputObject;
 
     private ScreenHolder screenHolder;
+
+    private Stack<GameObject> inputNumbers = new Stack<>();
 
     public Level(ScreenHolder screenHolder, Map<Integer, GameObject> letters) {
 
@@ -235,20 +238,32 @@ public class Level {
 
         synchronized(letters) {
 
-            for(GameObject gameObject : letters.values()) {
+            if(userInputObject == null || inputNumbers.isEmpty()) {
 
-                if(gameObject.getX() == userInputObject.getX() && gameObject.getY() + 1 == userInputObject.getY()) {
-
-                    gameObject.kill();
-                }
+                return;
             }
+
+            GameObject gameObject = inputNumbers.pop();
+
+            if(gameObject != null) {
+
+                letters.remove(gameObject.getId());
+            }
+
             userInputObject.translate(-1, 0);
         }
     }
 
     public void inputNumber(int num) {
 
-        letters.put(id++, new GameObject(id, num + "", userInputObject.getX(), userInputObject.getY() - 1));
+        if(userInputObject == null || userInputObject.getMaxTranslation() + 1 <= inputNumbers.size()) {
+
+            return;
+        }
+
+        GameObject gameObject = new GameObject(id, num + "", userInputObject.getX(), userInputObject.getY() - 1);
+        letters.put(id++, gameObject);
+        inputNumbers.add(gameObject);
         userInputObject.translate(1, 0);
     }
 }
