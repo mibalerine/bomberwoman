@@ -94,17 +94,12 @@ public class NetworkThread implements Runnable {
 
     private void handleEvent(String eventPacket) {
 
-        System.out.println(1);
         if (!Event.isEvent(eventPacket)) {
-
             System.out.println("Invalid event");
             return;
         }
 
         String[] eventInfo = eventPacket.split(Event.SEPARATOR);
-
-        System.out.println(2);
-
 
         EventType eType = EventType.values()[Integer.parseInt(eventInfo[1])];
 
@@ -115,8 +110,11 @@ public class NetworkThread implements Runnable {
                 break;
 
             case OBJECT_MOVE:
-                System.out.println(3);
                 ClientEventHandler.handleObjectMoveEvent(eventInfo, game);
+                break;
+
+            case OBJECT_DESTROY:
+                ClientEventHandler.handleObjectDestroyEvent(eventInfo, game);
                 break;
         }
 

@@ -30,7 +30,6 @@ public class ClientEventHandler {
         synchronized (gameObjectMap) {
 
             gameObjectMap.put(id, gameObject);
-            System.out.println(gameObject);
         }
 
     }
@@ -38,13 +37,23 @@ public class ClientEventHandler {
     public static void handleObjectMoveEvent(String[] eventInfo, Game game) {
 
         Map<Integer, GameObject> gameObjectMap = game.getGameObjects();
-        System.out.println("ca fora");
 
         synchronized (gameObjectMap) {
 
             GameObject obj = gameObjectMap.get(Integer.parseInt(eventInfo[2]));
-            System.out.println(gameObjectMap);
             obj.setPosition(Integer.parseInt(eventInfo[3]), Integer.parseInt(eventInfo[4]));
+        }
+
+        game.refreshRenderThread();
+    }
+
+    public static void handleObjectDestroyEvent(String[] eventInfo, Game game) {
+
+        Map<Integer, GameObject> gameObjectMap = game.getGameObjects();
+
+        synchronized (gameObjectMap) {
+
+            System.out.println(gameObjectMap.remove(Integer.parseInt(eventInfo[2])));
         }
 
         game.refreshRenderThread();
