@@ -3,11 +3,9 @@ package org.academiadecodigo.bomberwoman.levels;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
-import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -16,13 +14,13 @@ import java.util.Map;
  */
 public class Level {
 
+    private final Map<Integer, GameObject> letters;
+
     String path;
 
     private int width;
 
     private int height;
-
-    private final Map<Integer, GameObject> letters;
 
     private MenuSelect menuSelect;
 
@@ -46,7 +44,7 @@ public class Level {
 
     private void init() throws FileNotFoundException {
 
-        synchronized (letters) {
+        synchronized(letters) {
             letters.clear();
         }
 
@@ -117,6 +115,11 @@ public class Level {
 
     public void update() {
 
+        if(menuSelect == null) {
+
+            return;
+        }
+
         menuSelect.update();
     }
 
@@ -147,6 +150,12 @@ public class Level {
 
     public void moveSelectionBy(int y) {
 
+        if(menuSelect == null) {
+
+            return;
+        }
+
+        System.out.println("MOVE BY " + y);
         if(menuSelect.getY() + y < menuSelect.getOriginalY()) {
 
             y = 4;

@@ -12,7 +12,8 @@ public enum Keys {
     LEFT(68),
     PLACE_BOMB(32),
     QUIT_GAME(3),
-    ENTER(13);
+    ENTER(13),
+    BACKSPACE(127);
 
     private int num;
 

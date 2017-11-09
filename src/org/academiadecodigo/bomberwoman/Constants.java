@@ -5,6 +5,9 @@ package org.academiadecodigo.bomberwoman;
  */
 public class Constants {
 
+    public static final int QUIT_GAME = -100;
+    public static final int NO_LEVEL_CREATED = -1;
+
     public static final String LEVEL_SEPARATOR = "~";
     public static final String BRICK_CHAR = "#";
     public static final String PLAYER_CHAR = "x";
