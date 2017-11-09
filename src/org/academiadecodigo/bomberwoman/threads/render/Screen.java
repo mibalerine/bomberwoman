@@ -43,7 +43,7 @@ public class Screen {
 
     void putObjectInScreen(GameObject gameObject) {
 
-        putStringAt(gameObject.getDrawChar(), gameObject.getX(), gameObject.getY());
+        putStringAt(gameObject.getDrawInfo(), gameObject.getX(), gameObject.getY());
     }
 
     private void putStringAt(String s, int x, int y) {
@@ -51,16 +51,6 @@ public class Screen {
         screenFrame.putStringAt(s, x, y);
     }
 
-    /*public int getWidth() {
-
-        return screenFrame.width();
-    }
-
-    public int getHeight() {
-
-        return screenFrame.height();
-    }
-    */
     private boolean isSplash() {
 
         return iFile.getLevelFileLocator().isSplash();

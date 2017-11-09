@@ -23,15 +23,4 @@ public class Constants {
     public static String OBJECT_FLAME = "Θ";
 
     public static int PORT = 8080;
-
-    static void setCharMode(boolean charMode) {
-
-        if(charMode) {
-
-            VERTICAL_CHAR = "|";
-            CORNER_CHAR = "+";
-            HORIZONTAL_CHAR = "-";
-            BAR_LIMIT_CHAR = "#";
-        }
-    }
 }

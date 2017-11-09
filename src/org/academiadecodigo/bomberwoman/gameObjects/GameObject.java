@@ -1,13 +1,17 @@
 package org.academiadecodigo.bomberwoman.gameObjects;
 
+import org.academiadecodigo.bomberwoman.ConsoleColors;
+
 /**
  * Created by codecadet on 06/11/17.
  */
-public class GameObject{
+public class GameObject {
 
     private Position position = new Position();
 
     private String representation;
+
+    private String color;
 
     public GameObject(String representation) {
 
@@ -16,11 +20,18 @@ public class GameObject{
 
     public GameObject(String representation, int x, int y) {
 
+        this(representation, x, y, null);
+    }
+
+    public GameObject(String representation, int x, int y, String color) {
+
         this.representation = representation;
         setPosition(x, y);
+        this.color = color;
     }
 
     public static boolean isGameObject(int id) {
+
         return id >= 0 && id < GameObjectType.values().length;
     }
 
@@ -44,8 +55,13 @@ public class GameObject{
         position.translate(x, y);
     }
 
-    public String getDrawChar() {
+    public String getDrawInfo() {
 
-        return representation;
+        if(color == null) {
+
+            return representation;
+        }
+
+        return color + representation + ConsoleColors.RESET;
     }
 }
