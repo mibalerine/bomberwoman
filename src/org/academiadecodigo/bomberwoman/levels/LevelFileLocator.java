@@ -9,11 +9,13 @@ import static org.academiadecodigo.bomberwoman.Constants.*;
  */
 public enum LevelFileLocator {
 
-    SPLASH("Splash", 1, 1, 1),
-    MENU_MAIN("MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
-    MENU_MP_MAIN("MenuMPMain", 3, NO_LEVEL_CREATED, MENU_MAIN.ordinal()),
-    MENU_MP_HOST("MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
-    MENU_MP_JOIN("MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal());
+    SPLASH("/menu/Splash", 1, 1, 1),
+    MENU_MAIN("/menu/MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
+    MENU_MP_MAIN("/menu/MenuMPMain", 3, NO_LEVEL_CREATED, MENU_MAIN.ordinal()),
+    MENU_MP_HOST("/menu/MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
+    MENU_MP_JOIN("/menu/MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
+    LEVEL_1("/levels/level1", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED);
+
 
 
     private String filePath;
