@@ -8,7 +8,7 @@ import org.academiadecodigo.bomberwoman.Constants;
 public class Brick extends GameObject implements Destroyable {
 
     public Brick(int id, int x, int y) {
-        super(id, Constants.BRICK_CHAR, x, y);
+        super(id, GameObjectType.BRICK.getDrawChar(), x, y);
     }
 
     @Override

@@ -8,7 +8,8 @@ import org.academiadecodigo.bomberwoman.Constants;
 public enum  GameObjectType {
 
     PLAYER(Constants.PLAYER_CHAR),
-    BRICK(Constants.BRICK_CHAR);
+    BRICK(Constants.BRICK_CHAR),
+    WALL(Constants.WALL_CHAR);
 
     private String drawChar;
     GameObjectType(String drawChar) {

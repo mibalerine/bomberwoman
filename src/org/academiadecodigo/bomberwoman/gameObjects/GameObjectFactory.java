@@ -15,6 +15,9 @@ public class GameObjectFactory {
             case BRICK:
                 return new Brick(id, x, y);
 
+            case WALL:
+                return new Wall(id, x, y);
+
             default:
                 return null;
         }

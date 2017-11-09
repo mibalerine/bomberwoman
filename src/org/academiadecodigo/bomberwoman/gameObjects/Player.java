@@ -7,6 +7,6 @@ import org.academiadecodigo.bomberwoman.Constants;
  */
 public class Player extends GameObject{
     public Player(int id, int x, int y) {
-        super(id, Constants.PLAYER_CHAR, x, y);
+        super(id, GameObjectType.PLAYER.getDrawChar(), x, y);
     }
 }
