@@ -13,10 +13,29 @@ public class ObjectSpawnEvent extends Event {
     private int id;
     private GameObjectType type;
 
+    /**
+     *
+     * @param gameObjectType
+     * @param x
+     * @param y
+     *
+     * Client Side Event
+     *
+     */
     public ObjectSpawnEvent(GameObjectType gameObjectType, int x, int y) {
         this(gameObjectType, -1, x, y);
     }
 
+
+    /**
+     *
+     * @param gameObjectType
+     * @param id
+     * @param x
+     * @param y
+     *
+     * Server Side Event
+     */
     public ObjectSpawnEvent(GameObjectType gameObjectType, int id, int x, int y) {
         super(EventType.OBJECT_SPAWN);
 
