@@ -19,7 +19,7 @@ public class Screen {
 
     private ScreenFrame screenFrame;
 
-    private Map<Integer,GameObject> gameObjectMap;
+    private Map<Integer, GameObject> gameObjectMap;
 
     public Screen(RenderThread renderThread) {
 
@@ -110,5 +110,10 @@ public class Screen {
     public LevelFileLocator chooseMenu(int choice) {
 
         return currentMenu().selectLevelOfChoice(choice);
+    }
+
+    public boolean isMenu() {
+
+        return iFile.getLevelFileLocator().getFilePath().contains("Menu");
     }
 }

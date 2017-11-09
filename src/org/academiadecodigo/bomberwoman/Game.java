@@ -26,7 +26,9 @@ public class Game {
     private final Map<Integer, GameObject> gameObjects;
 
     private LogicThread logicThread;
+
     private RenderThread renderThread;
+
     private NetworkThread networkThread;
 
     public Game() {
@@ -63,12 +65,22 @@ public class Game {
                 renderThread.keyPressed(key);
                 break;
             case DOWN:
-                renderThread.keyPressed(key);
-                //logicThread.keyPressed(key);
+                if(renderThread.isDrawingMenu()) {
+
+                    renderThread.keyPressed(key);
+                    return;
+                }
+
+                logicThread.keyPressed(key);
                 break;
             case UP:
-                renderThread.keyPressed(key);
-                //logicThread.keyPressed(key);
+                if(renderThread.isDrawingMenu()) {
+
+                    renderThread.keyPressed(key);
+                    return;
+                }
+
+                logicThread.keyPressed(key);
                 break;
             case TAB:
                 renderThread.keyPressed(key);
