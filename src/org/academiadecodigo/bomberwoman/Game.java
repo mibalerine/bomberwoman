@@ -42,8 +42,8 @@ public class Game {
         int timeToDraw = 100;
         Utils.rawMode();
 
-        networkThread = new NetworkThread(gameObjects, "192.168.0.18");
-        executorService.submit(networkThread);
+        //networkThread = new NetworkThread(gameObjects, "192.168.0.18");
+        //executorService.submit(networkThread);
 
         renderThread = new RenderThread(LevelFileLocator.SPLASH, timeToDraw, gameObjects);
         executorService.submit(renderThread);
