@@ -7,7 +7,7 @@ import static org.academiadecodigo.bomberwoman.Constants.*;
 /**
  * Created by miro on 08/11/2017.
  */
-public enum LevelFileLocator {
+public enum ScreenHolder {
 
     SPLASH("Splash", 1, 1, 1),
     MENU_MAIN("MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
@@ -18,7 +18,7 @@ public enum LevelFileLocator {
 
     private String filePath;
 
-    LevelFileLocator(String fileName, int... choices) {
+    ScreenHolder(String fileName, int... choices) {
 
         this.filePath = "/menu/" + fileName + ".txt";
 
@@ -32,12 +32,7 @@ public enum LevelFileLocator {
         return filePath;
     }
 
-    public boolean isSplash() {
-
-        return this.equals(SPLASH);
-    }
-
-    public LevelFileLocator selectLevelOfChoice(int choice) {
+    public ScreenHolder selectLevelOfChoice(int choice) {
 
         try {
 
@@ -51,7 +46,17 @@ public enum LevelFileLocator {
         }
         catch(ArrayIndexOutOfBoundsException e) {
 
-            return null;
+            return SPLASH;
         }
+    }
+
+    public boolean isMenu() {
+
+        return this.equals(SPLASH) || this.filePath.contains("Menu");
+    }
+
+    public boolean canHandleNumberInput() {
+
+        return this == MENU_MP_HOST || this == MENU_MP_JOIN;
     }
 }

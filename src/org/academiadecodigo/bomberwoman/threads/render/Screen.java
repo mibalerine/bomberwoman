@@ -2,7 +2,7 @@ package org.academiadecodigo.bomberwoman.threads.render;
 
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.levels.Level;
-import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
+import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
@@ -15,7 +15,7 @@ public class Screen {
 
     private final RenderThread renderThread;
 
-    private Level iFile;
+    private Level level;
 
     private ScreenFrame screenFrame;
 
@@ -35,12 +35,12 @@ public class Screen {
 
         screenFrame.update();
 
-        for(GameObject letter : iFile.getLetters().values()) {
+        for(GameObject letter : level.getLetters().values()) {
 
             putObjectInScreen(letter);
         }
 
-        iFile.update();
+        level.update();
     }
 
     public void draw() {
@@ -58,62 +58,66 @@ public class Screen {
         screenFrame.putStringAt(s, x, y);
     }
 
-    private boolean isSplash() {
+    public boolean isMenu() {
 
-        return iFile.getLevelFileLocator().isSplash();
+        return level.getScreenHolder().isMenu();
     }
 
-    public void changeFrame(LevelFileLocator level, Map<Integer, GameObject> gameObjectMap) {
+    public void changeFrame(ScreenHolder level, Map<Integer, GameObject> gameObjectMap) {
 
         if(level == null) {
 
-            level = LevelFileLocator.SPLASH;
+            level = ScreenHolder.SPLASH;
         }
 
         this.gameObjectMap = gameObjectMap;
-        iFile = new Level(level, gameObjectMap);
-        init(iFile.getWidth(), iFile.getHeight());
+        this.level = new Level(level, gameObjectMap);
+        init(this.level.getWidth(), this.level.getHeight());
         update();
         renderThread.refresh();
     }
 
     public void keyPressed(Keys key) {
 
-        switch(key) {
-            case UP:
-                iFile.moveSelectionBy(-2);
-                break;
-            case DOWN:
-                iFile.moveSelectionBy(2);
-                break;
-            case ENTER:
-                changeFrame(chooseMenu(isSplash() ? 0 : choice()), gameObjectMap);
-                break;
-            case TAB:
-                changeFrame(chooseMenu(2), gameObjectMap);
-                break;
+        if(Keys.isNumber(key) || key == Keys.BACKSPACE) {
+
+            if(!level.getScreenHolder().canHandleNumberInput()) {
+
+                return;
+            }
+
+            if(key == Keys.BACKSPACE) {
+
+                level.erase();
+            }
+            else {
+
+                level.inputNumber(Integer.parseInt(key.toString().replaceAll("NUM_", "")));
+            }
+        }
+        else {
+
+            switch(key) {
+                case UP:
+                    level.moveSelectionBy(-2);
+                    break;
+                case DOWN:
+                    level.moveSelectionBy(2);
+                    break;
+                case ENTER:
+                    changeFrame(chooseMenu(level.choice()), gameObjectMap);
+                    break;
+                case TAB:
+                    changeFrame(chooseMenu(2), gameObjectMap);
+                    break;
+            }
         }
 
         renderThread.refresh();
     }
 
-    private int choice() {
+    private ScreenHolder chooseMenu(int choice) {
 
-        return iFile.choice();
-    }
-
-    public LevelFileLocator currentMenu() {
-
-        return iFile.getLevelFileLocator();
-    }
-
-    public LevelFileLocator chooseMenu(int choice) {
-
-        return currentMenu().selectLevelOfChoice(choice);
-    }
-
-    public boolean isMenu() {
-
-        return iFile.getLevelFileLocator().getFilePath().contains("Menu");
+        return level.getScreenHolder().selectLevelOfChoice(choice);
     }
 }

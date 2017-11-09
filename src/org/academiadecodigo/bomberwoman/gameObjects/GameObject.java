@@ -72,4 +72,15 @@ public class GameObject {
 
         return color + representation + ConsoleColors.RESET;
     }
+
+    public void kill() {
+
+        representation = "";
+        color = null;
+    }
+
+    public boolean isDead() {
+
+        return representation.equals("");
+    }
 }

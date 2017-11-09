@@ -1,10 +1,10 @@
 package org.academiadecodigo.bomberwoman.levels;
 
-import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
+import org.academiadecodigo.bomberwoman.gameObjects.UserInputObject;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -32,12 +32,14 @@ public class Level {
 
     private MenuSelect menuSelect;
 
-    private LevelFileLocator levelFileLocator;
+    private UserInputObject userInputObject;
 
-    public Level(LevelFileLocator levelFileLocator, Map<Integer, GameObject> letters) {
+    private ScreenHolder screenHolder;
 
-        this.levelFileLocator = levelFileLocator;
-        this.path = this.levelFileLocator.getFilePath();
+    public Level(ScreenHolder screenHolder, Map<Integer, GameObject> letters) {
+
+        this.screenHolder = screenHolder;
+        this.path = this.screenHolder.getFilePath();
         this.letters = letters;
 
         try {
@@ -53,6 +55,7 @@ public class Level {
     private void init() throws FileNotFoundException {
 
         synchronized(letters) {
+
             letters.clear();
         }
 
@@ -99,34 +102,42 @@ public class Level {
             lineIndex++;
         }
 
-        for(int y = 0; y < cells[0].length; y++) {
+        synchronized(letters) {
 
-            for(int x = 0; x < cells.length; x++) {
+            for(int y = 0; y < cells[0].length; y++) {
 
-                if(cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
+                for(int x = 0; x < cells.length; x++) {
 
-                    continue;
-                }
+                    if(cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
 
-                if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
+                        continue;
+                    }
 
-                    menuSelect = new MenuSelect(x, y);
-                    letters.put(id++, menuSelect);
-                }
-                else {
+                    if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
-                    letters.put(id, new GameObject(id, cells[x][y], x, y));
-                    id++;
+                        menuSelect = new MenuSelect(id, x, y);
+                        letters.put(id++, menuSelect);
+                    }
+                    else if(cells[x][y].equals(Constants.OBJECT_INPUT_TEXT)) {
+
+                        userInputObject = new UserInputObject(id, x, y, 4);
+                        letters.put(id++, userInputObject);
+                    }
+                    else {
+
+                        letters.put(id, new GameObject(id, cells[x][y], x, y));
+                        id++;
+                    }
                 }
             }
-        }
 
-        if(levelFileLocator == LevelFileLocator.MENU_MP_HOST) {
+            if(screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-            if(!setupIP) {
+                if(!setupIP) {
 
-                setupIP = true;
-                replaceIP();
+                    setupIP = true;
+                    replaceIP();
+                }
             }
         }
     }
@@ -172,6 +183,11 @@ public class Level {
 
     public int choice() {
 
+        if(menuSelect == null) {
+
+            return 2;
+        }
+
         return menuSelect.choice();
     }
 
@@ -190,9 +206,9 @@ public class Level {
         return letters;
     }
 
-    public LevelFileLocator getLevelFileLocator() {
+    public ScreenHolder getScreenHolder() {
 
-        return levelFileLocator;
+        return screenHolder;
     }
 
     public void moveSelectionBy(int y) {
@@ -213,5 +229,26 @@ public class Level {
         }
 
         menuSelect.translate(0, y);
+    }
+
+    public void erase() {
+
+        synchronized(letters) {
+
+            for(GameObject gameObject : letters.values()) {
+
+                if(gameObject.getX() == userInputObject.getX() && gameObject.getY() + 1 == userInputObject.getY()) {
+
+                    gameObject.kill();
+                }
+            }
+            userInputObject.translate(-1, 0);
+        }
+    }
+
+    public void inputNumber(int num) {
+
+        letters.put(id++, new GameObject(id, num + "", userInputObject.getX(), userInputObject.getY() - 1));
+        userInputObject.translate(1, 0);
     }
 }

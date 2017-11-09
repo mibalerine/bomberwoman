@@ -1,7 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
+import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
@@ -18,11 +18,11 @@ public class RenderThread implements Runnable {
 
     private Screen screen;
 
-    private boolean dirty = true;
+    private volatile boolean dirty = true;
 
     private int timeToUpdate;
 
-    public RenderThread(LevelFileLocator startingLevel, int timeToUpdate, Map<Integer, GameObject> gameObjectMap) {
+    public RenderThread(ScreenHolder startingLevel, int timeToUpdate, Map<Integer, GameObject> gameObjectMap) {
 
         this.screen = new Screen(this);
 
@@ -57,11 +57,11 @@ public class RenderThread implements Runnable {
 
     public void refresh() {
 
-        dirty = true;
         screen.update();
+        dirty = true;
     }
 
-    public void changeScreen(LevelFileLocator level, Map<Integer, GameObject> gameObjectMap) {
+    public void changeScreen(ScreenHolder level, Map<Integer, GameObject> gameObjectMap) {
 
         screen.changeFrame(level, gameObjectMap);
     }

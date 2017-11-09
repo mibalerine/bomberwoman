@@ -9,9 +9,9 @@ public class MenuSelect extends GameObject {
 
     private int originalY;
 
-    public MenuSelect(int x, int y) {
+    public MenuSelect(int id, int x, int y) {
 
-        super(-1, Constants.OBJECT_CONTROL_MENU, x, y);
+        super(id, Constants.OBJECT_CONTROL_MENU, x, y);
 
         originalY = y;
     }

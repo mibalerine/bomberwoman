@@ -31,11 +31,11 @@
                                                       >
 
 
-                                                          PORT                                                         
-                                                          _____                                                        
+
+                                                     PORT: _____
+                                                           ^
 
                                              + Please input the port number+
                                     +Press [ENTER] to host game and [TAB] to go back+
-                               
-                               
+
 ~                                                                                                                     ~

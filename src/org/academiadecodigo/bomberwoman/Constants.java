@@ -19,6 +19,7 @@ public class Constants {
     public static String BAR_LIMIT_CHAR = "▓";
 
     public static String OBJECT_CONTROL_MENU = ">";
+    public static String OBJECT_INPUT_TEXT = "^";
     public static String OBJECT_BOMB = "δ";
     public static String OBJECT_FLAME = "Θ";
 
