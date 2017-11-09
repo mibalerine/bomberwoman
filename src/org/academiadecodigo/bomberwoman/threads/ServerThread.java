@@ -60,6 +60,9 @@ public class ServerThread implements Runnable {
         }
 
         waitClientConnections();
+
+        createGameObjects();
+
         startGame();
     }
 
@@ -168,5 +171,10 @@ public class ServerThread implements Runnable {
                 break;
         }
 
+    }
+
+    private void createGameObjects() {
+
+        getFileLines()
     }
 }
