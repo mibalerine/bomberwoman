@@ -30,7 +30,7 @@ public class ClientEventHandler {
         synchronized (gameObjectMap) {
 
             gameObjectMap.put(id, gameObject);
-
+            System.out.println(gameObject);
         }
 
     }

@@ -42,7 +42,7 @@ public class Game {
 
         Utils.rawMode();
 
-        networkThread = new NetworkThread(gameObjects, "localhost", this);
+        networkThread = new NetworkThread("localhost", this);
         executorService.submit(networkThread);
 
         renderThread = new RenderThread(LevelFileLocator.SPLASH, 50, gameObjects);
