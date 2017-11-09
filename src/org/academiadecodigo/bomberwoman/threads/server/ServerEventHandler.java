@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman.threads.server;
 
+import jdk.nashorn.internal.runtime.ECMAException;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
@@ -53,6 +54,11 @@ public abstract class ServerEventHandler {
 
 
         GameObject gameObject = serverThread.getGameObjectMap().get(id);
+
+        if(gameObject == null) {
+            return;
+        }
+
         gameObject.setPosition(x, y);
         serverThread.broadcast(new ObjectMoveEvent(gameObject, Direction.STAY).toString());
 

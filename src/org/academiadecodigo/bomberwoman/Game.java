@@ -81,4 +81,8 @@ public class Game {
                 break;
         }
     }
+
+    public void refreshRenderThread() {
+        //renderThread.refresh();
+    }
 }
