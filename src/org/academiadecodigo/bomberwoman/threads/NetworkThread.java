@@ -6,8 +6,7 @@ import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.threads.network.ClientEventHandler;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,14 +14,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Map;
-import java.util.Vector;
 
 /**
  * Created by codecadet on 06/11/17.
  */
 public class NetworkThread implements Runnable {
-
-    private final Map<Integer, GameObject> gameObjects;
 
     private Socket clientSocket;
 
@@ -32,12 +28,11 @@ public class NetworkThread implements Runnable {
 
     private String ipAddress;
 
-    private Game game
+    private Game game;
 
-    public NetworkThread(Map<Integer, GameObject> gameObjects, String ipAddress, Game game) {
+    public NetworkThread(String ipAddress, Game game) {
 
         this.game = game;
-        this.gameObjects = gameObjects;
         this.ipAddress = ipAddress;
     }
 
@@ -117,12 +112,7 @@ public class NetworkThread implements Runnable {
         switch (eType) {
 
             case OBJECT_SPAWN:
-                GameObjectType goType = GameObjectType.values()[Integer.parseInt(eventInfo[2])];
-                int id = Integer.parseInt(eventInfo[3]);
-                int x = Integer.parseInt(eventInfo[4]);
-                int y = Integer.parseInt(eventInfo[5]);
-                spawnObject(goType, id, x, y);
-                game.refreshRenderThread();
+                ClientEventHandler.handleObjectSpawnEvent(eventInfo, game);
                 break;
 
             case OBJECT_MOVE:
@@ -131,15 +121,7 @@ public class NetworkThread implements Runnable {
 
     }
 
-    private void spawnObject(GameObjectType goType, int id, int x, int y) {
 
-        GameObject gameObject = GameObjectFactory.byType(id, goType, x, y);
 
-        synchronized (gameObjects) {
 
-            gameObjects.put(id, gameObject);
-
-        }
-
-    }
 }

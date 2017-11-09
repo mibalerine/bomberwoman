@@ -42,8 +42,8 @@ public class Game {
 
         Utils.rawMode();
 
-        //networkThread = new NetworkThread(gameObjects, "localhost");
-        //executorService.submit(networkThread);
+        networkThread = new NetworkThread(gameObjects, "localhost", this);
+        executorService.submit(networkThread);
 
         renderThread = new RenderThread(LevelFileLocator.SPLASH, 50, gameObjects);
         executorService.submit(renderThread);
@@ -93,5 +93,9 @@ public class Game {
 
     public void refreshRenderThread() {
         renderThread.refresh();
+    }
+
+    public Map<Integer, GameObject> getGameObjects() {
+        return gameObjects;
     }
 }
