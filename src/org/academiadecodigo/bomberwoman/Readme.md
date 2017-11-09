@@ -13,7 +13,6 @@
 - Bomb;
 - Player;
 - Events(miro)
-- Level.java, line:52, make the IP auto-appear
 
 # Doing
 - Screen (miro);
@@ -23,6 +22,7 @@
 - ServerThread (francisco) (needs to change the PrintWriter, don't instantiate a new one every broadcast);
 
 # Done
+- Level.java, line:52, make the IP auto-appear
 - RenderThread (miro);
 - GameObject;
 - InputThread (milena);
