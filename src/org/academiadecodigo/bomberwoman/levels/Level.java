@@ -4,6 +4,7 @@ import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
 
 import java.io.*;
@@ -115,7 +116,7 @@ public class Level {
                 }
                 else {
 
-                    letters.put(id, new GameObject(id, cells[x][y], x, y));
+                    letters.put(id, GameObjectFactory.byString(cells[x][y], id, x, y));
                     id++;
                 }
             }
