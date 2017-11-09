@@ -6,5 +6,6 @@ package org.academiadecodigo.bomberwoman.events;
 public enum EventType {
 
     OBJECT_SPAWN,
-    PLAYER_MOVE
+    OBJECT_MOVE,
+    OBJECT_DESTROY
 }

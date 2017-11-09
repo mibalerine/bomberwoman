@@ -27,7 +27,9 @@ public class Game {
     private final Map<Integer, GameObject> gameObjects;
 
     private LogicThread logicThread;
+
     private RenderThread renderThread;
+
     private NetworkThread networkThread;
 
     public Game() {
@@ -41,8 +43,8 @@ public class Game {
 
         Utils.rawMode();
 
-        //networkThread = new NetworkThread(gameObjects, "localhost");
-        //executorService.submit(networkThread);
+        networkThread = new NetworkThread("localhost", this);
+        executorService.submit(networkThread);
 
         renderThread = new RenderThread(LevelFileLocator.SPLASH, 50, gameObjects);
         executorService.submit(renderThread);
@@ -55,28 +57,36 @@ public class Game {
 
     public void keyPressed(Keys key) {
 
+        if(renderThread.isDrawingMenu()) {
+
+            renderThread.keyPressed(key);
+            return;
+        }
+
         switch(key) {
 
             case QUIT_GAME:
                 Utils.quitGame();
                 break;
             case ENTER:
-                renderThread.keyPressed(key);
                 break;
             case DOWN:
-                renderThread.keyPressed(key);
-                //logicThread.keyPressed(key);
+                logicThread.keyPressed(key);
                 break;
             case UP:
-                renderThread.keyPressed(key);
-                //logicThread.keyPressed(key);
-                break;
-            case TAB:
-                renderThread.keyPressed(key);
+                logicThread.keyPressed(key);
                 break;
             case PLACE_BOMB:
                 logicThread.keyPressed(key);
                 break;
         }
+    }
+
+    public void refreshRenderThread() {
+        renderThread.refresh();
+    }
+
+    public Map<Integer, GameObject> getGameObjects() {
+        return gameObjects;
     }
 }

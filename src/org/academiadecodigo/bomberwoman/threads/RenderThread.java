@@ -65,4 +65,9 @@ public class RenderThread implements Runnable {
 
         screen.changeFrame(level, gameObjectMap);
     }
+
+    public boolean isDrawingMenu() {
+
+        return screen.isMenu();
+    }
 }
