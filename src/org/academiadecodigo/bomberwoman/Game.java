@@ -80,6 +80,6 @@ public class Game {
     }
 
     public void refreshRenderThread() {
-        //renderThread.refresh();
+        renderThread.refresh();
     }
 }

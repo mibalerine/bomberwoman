@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
@@ -31,8 +32,11 @@ public class NetworkThread implements Runnable {
 
     private String ipAddress;
 
-    public NetworkThread(Map<Integer, GameObject> gameObjects, String ipAddress) {
+    private Game game
 
+    public NetworkThread(Map<Integer, GameObject> gameObjects, String ipAddress, Game game) {
+
+        this.game = game;
         this.gameObjects = gameObjects;
         this.ipAddress = ipAddress;
     }
@@ -118,6 +122,7 @@ public class NetworkThread implements Runnable {
                 int x = Integer.parseInt(eventInfo[4]);
                 int y = Integer.parseInt(eventInfo[5]);
                 spawnObject(goType, id, x, y);
+                game.refreshRenderThread();
                 break;
 
             case OBJECT_MOVE:
