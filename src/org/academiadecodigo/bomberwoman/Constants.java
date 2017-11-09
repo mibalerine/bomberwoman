@@ -11,12 +11,9 @@ public class Constants {
     public static final String BRICK_CHAR = "#";
     public static final String PLAYER_CHAR = "x";
     public static final String WALL_CHAR = "▓";
+    public static final String WALL_CHAR_BLUE = "█";
 
-    public static String VERTICAL_CHAR = "▓";
     public static String CORNER_CHAR = "▓";
-    public static String HORIZONTAL_CHAR = "▓";
-
-    public static String BAR_LIMIT_CHAR = "▓";
 
     public static String OBJECT_CONTROL_MENU = ">";
     public static String OBJECT_BOMB = "δ";
