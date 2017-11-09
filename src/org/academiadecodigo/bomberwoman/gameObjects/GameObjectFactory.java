@@ -5,12 +5,12 @@ package org.academiadecodigo.bomberwoman.gameObjects;
  */
 public class GameObjectFactory {
 
-    public static GameObject byType(GameObjectType gameObjectType, int x, int y) {
+    public static GameObject byType(int id, GameObjectType gameObjectType, int x, int y) {
 
         switch(gameObjectType) {
 
             case PLAYER:
-                return new GameObject(gameObjectType.getDrawChar(), x, y);
+                return new GameObject(id, gameObjectType.getDrawChar(), x, y);
 
             case BRICK:
             default:

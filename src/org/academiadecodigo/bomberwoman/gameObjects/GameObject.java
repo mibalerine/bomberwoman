@@ -9,19 +9,26 @@ public class GameObject{
 
     private String representation;
 
-    public GameObject(String representation) {
+    private int id;
 
-        this(representation, 0, 0);
+    public GameObject(int id, String representation) {
+
+        this(id, representation, 0, 0);
     }
 
-    public GameObject(String representation, int x, int y) {
+    public GameObject(int id, String representation, int x, int y) {
 
         this.representation = representation;
         setPosition(x, y);
+        this.id = id;
     }
 
     public static boolean isGameObject(int id) {
         return id >= 0 && id < GameObjectType.values().length;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getX() {

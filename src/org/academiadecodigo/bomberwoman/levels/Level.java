@@ -109,7 +109,8 @@ public class Level {
                 }
                 else {
 
-                    letters.put(id++, new GameObject(cells[x][y], x, y));
+                    letters.put(id, new GameObject(id, cells[x][y], x, y));
+                    id++;
                 }
             }
         }

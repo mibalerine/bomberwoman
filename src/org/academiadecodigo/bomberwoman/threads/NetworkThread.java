@@ -125,7 +125,7 @@ public class NetworkThread implements Runnable {
 
     private void spawnObject(GameObjectType goType, int id, int x, int y) {
 
-        GameObject gameObject = GameObjectFactory.byType(goType, x, y);
+        GameObject gameObject = GameObjectFactory.byType(id, goType, x, y);
 
         synchronized (gameObjects) {
 
