@@ -1,9 +1,5 @@
 package org.academiadecodigo.bomberwoman;
 
-import org.academiadecodigo.bomberwoman.threads.ServerThread;
-
-import java.util.ResourceBundle;
-
 /**
  * Created by codecadet on 06/11/17.
  */

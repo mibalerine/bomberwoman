@@ -90,6 +90,9 @@ public class Screen {
             case ENTER:
                 changeFrame(chooseMenu(isSplash() ? 0 : choice()), gameObjectMap);
                 break;
+            case BACKSPACE:
+                changeFrame(chooseMenu(2), gameObjectMap);
+                break;
         }
     }
 

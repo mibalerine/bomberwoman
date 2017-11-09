@@ -13,7 +13,6 @@ import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,7 +40,7 @@ public class Game {
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        int timeToDraw = 80;
+        int timeToDraw = 100;
         Utils.rawMode();
 
         networkThread = new NetworkThread(gameObjects, "localhost");
@@ -73,6 +72,9 @@ public class Game {
             case UP:
                 renderThread.keyPressed(key);
                 logicThread.keyPressed(key);
+                break;
+            case BACKSPACE:
+                renderThread.keyPressed(key);
                 break;
             case PLACE_BOMB:
                 logicThread.keyPressed(key);
