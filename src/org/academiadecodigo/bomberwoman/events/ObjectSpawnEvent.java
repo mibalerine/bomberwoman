@@ -18,7 +18,7 @@ public class ObjectSpawnEvent extends Event {
     }
 
     public ObjectSpawnEvent(GameObjectType gameObjectType, int id, int x, int y) {
-        super(GameObjectFactory.byType(gameObjectType, x, y), EventType.OBJECT_SPAWN);
+        super(EventType.OBJECT_SPAWN);
 
         this.x = x;
         this.y = y;

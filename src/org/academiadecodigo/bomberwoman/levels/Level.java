@@ -115,7 +115,8 @@ public class Level {
                 }
                 else {
 
-                    letters.put(id++, new GameObject(cells[x][y], x, y));
+                    letters.put(id, new GameObject(id, cells[x][y], x, y));
+                    id++;
                 }
             }
         }
@@ -143,9 +144,11 @@ public class Level {
 
                 for(char c : chars) {
 
-                    letters.put(id++, new GameObject(c + "", x++, y));
+                    letters.put(id, new GameObject(id, c + "", x++, y));
+                    id++;
                 }
-                letters.put(id++, new GameObject(".", x++, y));
+                letters.put(id, new GameObject(id, ".", x++, y));
+                id++;
             }
             letters.remove(id - 1);
             menuSelect = null;

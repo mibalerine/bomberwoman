@@ -165,7 +165,7 @@ public class ServerThread implements Runnable {
 
                 synchronized (id) {
                     GameObjectType goType = GameObjectType.values()[objectTypeNum];
-                    gameObjectMap.put(id, GameObjectFactory.byType(goType, x, y));
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, goType, x, y));
                     broadcast((new ObjectSpawnEvent(goType, id, x, y)).toString());
                     id++;
                 }
