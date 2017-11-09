@@ -1,14 +1,15 @@
 package org.academiadecodigo.bomberwoman.levels;
 
+import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
-import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.io.*;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -17,13 +18,17 @@ import java.util.Map;
  */
 public class Level {
 
-    String path;
+    private final Map<Integer, GameObject> letters;
+
+    private int id = 0;
+
+    private String path;
+
+    private boolean setupIP;
 
     private int width;
 
     private int height;
-
-    private final Map<Integer, GameObject> letters;
 
     private MenuSelect menuSelect;
 
@@ -47,7 +52,7 @@ public class Level {
 
     private void init() throws FileNotFoundException {
 
-        synchronized (letters) {
+        synchronized(letters) {
             letters.clear();
         }
 
@@ -64,8 +69,7 @@ public class Level {
                 lines.add(line);
                 if(width == 0) {
 
-                    String[] chars = line.split(Constants.LEVEL_SEPARATOR);
-                    width = chars.length;
+                    width = line.toCharArray().length;
                 }
             }
             height = lines.size();
@@ -80,16 +84,17 @@ public class Level {
 
     private void populateCells(List<String> lineList) {
 
-        int id = 0;
-
+        id = 0;
         String[][] cells = new String[width][height];
         int lineIndex = 0;
         for(String line : lineList) {
 
-            String[] chars = line.split(Constants.LEVEL_SEPARATOR);
-            for(int i = 0; i < chars.length; i++) {
+            char[] chars = line.toCharArray();
 
-                cells[i][lineIndex] = chars[i] == null ? " " : chars[i];
+            int i = 0;
+            for(char c : chars) {
+
+                cells[i++][lineIndex] = c + "";
             }
             lineIndex++;
         }
@@ -98,7 +103,7 @@ public class Level {
 
             for(int x = 0; x < cells.length; x++) {
 
-                if(cells[x][y] == null || cells[x][y].equals(" ")) {
+                if(cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
 
                     continue;
                 }
@@ -110,13 +115,57 @@ public class Level {
                 }
                 else {
 
-                    letters.put(id++, new GameObject(cells[x][y], x, y));
+                    letters.put(id, new GameObject(id, cells[x][y], x, y));
+                    id++;
                 }
+            }
+        }
+
+        if(levelFileLocator == LevelFileLocator.MENU_MP_HOST) {
+
+            if(!setupIP) {
+
+                setupIP = true;
+                replaceIP();
             }
         }
     }
 
+    private void replaceIP() {
+
+        try {
+
+            String IP = InetAddress.getLocalHost().getHostAddress();
+            int x = menuSelect.getX();
+            int y = menuSelect.getY();
+            for(String s : IP.split("\\.")) {
+
+                char[] chars = s.toCharArray();
+
+                for(char c : chars) {
+
+                    letters.put(id, new GameObject(id, c + "", x++, y));
+                    id++;
+                }
+                letters.put(id, new GameObject(id, ".", x++, y));
+                id++;
+            }
+            letters.remove(id - 1);
+            menuSelect = null;
+        }
+        catch(UnknownHostException e) {
+
+            e.printStackTrace();
+            Utils.quitGame();
+        }
+    }
+
     public void update() {
+
+        if(menuSelect == null) {
+
+            return;
+        }
 
         menuSelect.update();
     }
@@ -147,6 +196,11 @@ public class Level {
     }
 
     public void moveSelectionBy(int y) {
+
+        if(menuSelect == null) {
+
+            return;
+        }
 
         if(menuSelect.getY() + y < menuSelect.getOriginalY()) {
 

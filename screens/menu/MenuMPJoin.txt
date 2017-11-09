@@ -27,15 +27,15 @@
                                                                             WX0kdollllloxkOKN
 
 
+                                                        Server IP
+                                                     ___.___.___.___
 
 
+                                                          PORT
+                                                          _____
 
-                                                      >[HOST GAME]
 
-                                                       [JOIN GAME]
-
-                                                         [QUIT]
-
+                               +Press [ENTER] to select option and [BACKSPACE] to cancel+
 
 
 ~                                                                                                                     ~

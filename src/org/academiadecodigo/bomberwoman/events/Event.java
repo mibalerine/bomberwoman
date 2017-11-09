@@ -11,13 +11,11 @@ public abstract class Event {
     public static final String SEPARATOR = " ";
     public static final String EVENT_IDENTIFIER = "ev";
 
-    private GameObject gameObject;
 
     private EventType eventType;
 
-    public Event(GameObject gameObject, EventType eventType) {
+    public Event(EventType eventType) {
 
-        this.gameObject = gameObject;
         this.eventType = eventType;
     }
 
@@ -52,11 +50,6 @@ public abstract class Event {
     public String toString() {
 
         return "ev" + Event.SEPARATOR + eventType.ordinal();
-    }
-
-    public GameObject getTrigger() {
-
-        return gameObject;
     }
 
     public EventType getEventType() {

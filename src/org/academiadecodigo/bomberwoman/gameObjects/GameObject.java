@@ -1,27 +1,46 @@
 package org.academiadecodigo.bomberwoman.gameObjects;
 
+import org.academiadecodigo.bomberwoman.ConsoleColors;
+
 /**
  * Created by codecadet on 06/11/17.
  */
-public class GameObject{
+public class GameObject {
 
     private Position position = new Position();
 
     private String representation;
 
-    public GameObject(String representation) {
+    private String color;
 
-        this(representation, 0, 0);
+    private int id;
+
+    public GameObject(int id, String representation) {
+
+        this(id, representation, 0, 0);
     }
 
-    public GameObject(String representation, int x, int y) {
+    public GameObject(int id, String representation, int x, int y) {
+
+        this(id, representation, x, y, null);
+    }
+
+    public GameObject(int id, String representation, int x, int y, String color) {
 
         this.representation = representation;
         setPosition(x, y);
+        this.color = color;
+        this.id = id;
     }
 
     public static boolean isGameObject(int id) {
+
         return id >= 0 && id < GameObjectType.values().length;
+    }
+
+    public int getId() {
+
+        return id;
     }
 
     public int getX() {
@@ -44,8 +63,13 @@ public class GameObject{
         position.translate(x, y);
     }
 
-    public String getDrawChar() {
+    public String getDrawInfo() {
 
-        return representation;
+        if(color == null) {
+
+            return representation;
+        }
+
+        return color + representation + ConsoleColors.RESET;
     }
 }

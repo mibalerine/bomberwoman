@@ -3,6 +3,7 @@ package org.academiadecodigo.bomberwoman;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.gameObjects.Player;
 import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
 import org.academiadecodigo.bomberwoman.threads.LogicThread;
@@ -13,7 +14,6 @@ import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -41,18 +41,18 @@ public class Game {
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        int timeToDraw = 80;
+        int timeToDraw = 100;
         Utils.rawMode();
 
-        networkThread = new NetworkThread(gameObjects, "192.168.0.18");
-        executorService.submit(networkThread);
+        //networkThread = new NetworkThread(gameObjects, "localhost");
+        //executorService.submit(networkThread);
 
         renderThread = new RenderThread(LevelFileLocator.SPLASH, timeToDraw, gameObjects);
         executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
 
-        logicThread = new LogicThread();
+        logicThread = new LogicThread(networkThread, gameObjects, new Player(-23));
         executorService.submit(logicThread);
     }
 
@@ -68,12 +68,16 @@ public class Game {
                 break;
             case DOWN:
                 renderThread.keyPressed(key);
+                logicThread.keyPressed(key);
                 break;
             case UP:
                 renderThread.keyPressed(key);
+                logicThread.keyPressed(key);
+                break;
+            case BACKSPACE:
+                renderThread.keyPressed(key);
                 break;
             case PLACE_BOMB:
-                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, 10, 10).toString());
                 logicThread.keyPressed(key);
                 break;
         }
