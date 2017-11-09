@@ -42,7 +42,7 @@ public class Game {
 
         Utils.rawMode();
 
-        networkThread = new NetworkThread(gameObjects, "localhost", this);
+        networkThread = new NetworkThread("localhost", this);
         executorService.submit(networkThread);
 
         renderThread = new RenderThread(LevelFileLocator.SPLASH, 50, gameObjects);
@@ -56,34 +56,24 @@ public class Game {
 
     public void keyPressed(Keys key) {
 
+        if(renderThread.isDrawingMenu()) {
+
+            renderThread.keyPressed(key);
+            return;
+        }
+
         switch(key) {
 
             case QUIT_GAME:
                 Utils.quitGame();
                 break;
             case ENTER:
-                renderThread.keyPressed(key);
                 break;
             case DOWN:
-                if(renderThread.isDrawingMenu()) {
-
-                    renderThread.keyPressed(key);
-                    return;
-                }
-
                 logicThread.keyPressed(key);
                 break;
             case UP:
-                if(renderThread.isDrawingMenu()) {
-
-                    renderThread.keyPressed(key);
-                    return;
-                }
-
                 logicThread.keyPressed(key);
-                break;
-            case TAB:
-                renderThread.keyPressed(key);
                 break;
             case PLACE_BOMB:
                 logicThread.keyPressed(key);
