@@ -34,4 +34,17 @@ public class ClientEventHandler {
         }
 
     }
+
+    public static void handleObjectMoveEvent(String[] eventInfo, Game game) {
+
+        Map<Integer, GameObject> gameObjectMap = game.getGameObjects();
+
+        synchronized (gameObjectMap) {
+
+            GameObject obj = gameObjectMap.get(Integer.parseInt(eventInfo[2]));
+            obj.setPosition(Integer.parseInt(eventInfo[3]), Integer.parseInt(eventInfo[4]));
+        }
+
+        game.refreshRenderThread();
+    }
 }

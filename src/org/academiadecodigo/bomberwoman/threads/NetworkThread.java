@@ -116,6 +116,7 @@ public class NetworkThread implements Runnable {
                 break;
 
             case OBJECT_MOVE:
+                ClientEventHandler.handleObjectMoveEvent(eventInfo, game);
                 break;
         }
 
