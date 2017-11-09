@@ -1,8 +1,6 @@
 package org.academiadecodigo.bomberwoman;
 
-import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.Player;
 import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
@@ -40,13 +38,12 @@ public class Game {
 
         ExecutorService executorService = Executors.newFixedThreadPool(4);
 
-        int timeToDraw = 100;
         Utils.rawMode();
 
         //networkThread = new NetworkThread(gameObjects, "localhost");
         //executorService.submit(networkThread);
 
-        renderThread = new RenderThread(LevelFileLocator.SPLASH, timeToDraw, gameObjects);
+        renderThread = new RenderThread(LevelFileLocator.SPLASH, 50, gameObjects);
         executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
@@ -67,13 +64,13 @@ public class Game {
                 break;
             case DOWN:
                 renderThread.keyPressed(key);
-                logicThread.keyPressed(key);
+                //logicThread.keyPressed(key);
                 break;
             case UP:
                 renderThread.keyPressed(key);
-                logicThread.keyPressed(key);
+                //logicThread.keyPressed(key);
                 break;
-            case BACKSPACE:
+            case TAB:
                 renderThread.keyPressed(key);
                 break;
             case PLACE_BOMB:
