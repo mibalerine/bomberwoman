@@ -75,7 +75,6 @@ public class Game {
                 logicThread.keyPressed(key);
                 break;
             case PLACE_BOMB:
-                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, 10, 10).toString());
                 logicThread.keyPressed(key);
                 break;
         }

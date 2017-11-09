@@ -49,7 +49,7 @@ public class LogicThread implements Runnable {
                 moveLeft();
                 break;
             case PLACE_BOMB:
-                new ObjectSpawnEvent(GameObjectType.PLAYER, 10, 10);
+                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, player.getX(), player.getY()).toString());
                 break;
             case ENTER:
                 break;
