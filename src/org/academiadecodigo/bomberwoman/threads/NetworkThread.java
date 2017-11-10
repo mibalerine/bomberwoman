@@ -116,6 +116,10 @@ public class NetworkThread implements Runnable {
             case OBJECT_DESTROY:
                 ClientEventHandler.handleObjectDestroyEvent(eventInfo, game);
                 break;
+
+            case PLAYER_ID:
+                ClientEventHandler.handlePlayerAssignEvent(eventInfo, game);
+                break;
         }
 
     }

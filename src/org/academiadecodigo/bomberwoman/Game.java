@@ -86,6 +86,11 @@ public class Game {
         renderThread.refresh();
     }
 
+    public void setPlayerId(int id) {
+
+        logicThread.setPlayerId(id);
+    }
+
     public Map<Integer, GameObject> getGameObjects() {
         return gameObjects;
     }
