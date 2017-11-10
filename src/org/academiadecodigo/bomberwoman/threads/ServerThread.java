@@ -101,6 +101,7 @@ public class ServerThread implements Runnable {
     private void startGame() {
 
         //broadcast("start");
+        //TODO change everyone's screen to load the level1.txt
     }
 
     private void sendMessage(Socket clientSocket, String message) {
@@ -216,7 +217,7 @@ public class ServerThread implements Runnable {
 
     public void spawnObject(GameObjectType gameObjectType, int id, int x, int y) {
 
-        gameObjectMap.put(this.id, GameObjectFactory.byType(this.id, gameObjectType, x, y));
-        broadcast(new ObjectSpawnEvent(gameObjectType, this.id, x, y).toString());
+        gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
+        broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y).toString());
     }
 }
