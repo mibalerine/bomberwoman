@@ -15,9 +15,14 @@ public class GameObjectFactory {
         switch(gameObjectType) {
 
             case PLAYER:
-                return new GameObject(id, gameObjectType.getDrawChar(), x, y);
+                return new Player(id, x, y);
 
             case BRICK:
+                return new Brick(id, x, y);
+
+            case WALL:
+                return new Wall(id, x, y);
+
             default:
                 return null;
         }

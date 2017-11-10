@@ -5,15 +5,14 @@ import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
+import org.academiadecodigo.bomberwoman.gameObjects.Brick;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
 import org.academiadecodigo.bomberwoman.threads.server.ServerEventHandler;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
@@ -60,6 +59,9 @@ public class ServerThread implements Runnable {
         }
 
         waitClientConnections();
+
+        createGameObjects();
+
         startGame();
     }
 
@@ -168,5 +170,63 @@ public class ServerThread implements Runnable {
                 break;
         }
 
+    }
+
+    private void createGameObjects() {
+
+        try {
+
+            InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(LevelFileLocator.LEVEL_1.getFilePath()));
+            BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
+
+            String line;
+            int i = 0;
+
+            while ((line = bf.readLine()) != null) {
+
+                String[] chars = line.split("");
+
+                for (int j = 0; j < chars.length; j++) {
+
+                    createObject(chars[j], i, j);
+
+                }
+
+                i++;
+            }
+
+        } catch (IOException e) {
+            System.out.println("Could not read file: " + e.getMessage());
+        }
+    }
+
+    private void createObject(String objectChar, int x, int y) {
+
+        synchronized (gameObjectMap) {
+
+            switch (objectChar) {
+
+                case Constants.BRICK_CHAR:
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.BRICK, x, y));
+                    broadcast(new ObjectSpawnEvent(GameObjectType.BRICK, id, x, y).toString());
+                    break;
+
+                case Constants.PLAYER_CHAR:
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, x, y));
+                    broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, id, x, y).toString());
+
+                    break;
+
+                case Constants.WALL_CHAR:
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.WALL, x, y));
+                    broadcast(new ObjectSpawnEvent(GameObjectType.WALL, id, x, y).toString());
+                    break;
+
+                default:
+                    return;
+            }
+
+            id++;
+        }
     }
 }

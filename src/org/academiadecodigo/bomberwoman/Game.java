@@ -51,8 +51,8 @@ public class Game {
 
         executorService.submit(new InputThread(this));
 
-        logicThread = new LogicThread(networkThread, gameObjects, new Player(-23));
-        executorService.submit(logicThread);
+        //logicThread = new LogicThread(networkThread, gameObjects, new Player(-23));
+        //executorService.submit(logicThread);
     }
 
     public void keyPressed(Keys key) {
