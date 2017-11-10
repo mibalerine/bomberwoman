@@ -13,7 +13,8 @@ public enum ScreenHolder {
     MENU_MAIN("MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
     MENU_MP_MAIN("MenuMPMain", 3, NO_LEVEL_CREATED, MENU_MAIN.ordinal()),
     MENU_MP_HOST("MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
-    MENU_MP_JOIN("MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal());
+    MENU_MP_JOIN("MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
+    MENU_MP_WAIT_CLIENT("MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal());
 
 
     private String filePath;

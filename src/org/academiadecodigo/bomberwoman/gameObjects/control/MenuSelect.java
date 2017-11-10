@@ -1,6 +1,7 @@
-package org.academiadecodigo.bomberwoman.gameObjects;
+package org.academiadecodigo.bomberwoman.gameObjects.control;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 
 /**
  * Created by miro on 07/11/2017.

@@ -1,12 +1,13 @@
-package org.academiadecodigo.bomberwoman.gameObjects;
+package org.academiadecodigo.bomberwoman.gameObjects.control;
 
 import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 
 /**
  * Created by miro on 09/11/2017.
  */
-public class UserInputObject extends GameObject {
+public class UserInput extends GameObject {
 
     private int originalX;
 
@@ -14,7 +15,7 @@ public class UserInputObject extends GameObject {
 
     private int translations;
 
-    public UserInputObject(int id, int x, int y, int maxTranslation) {
+    public UserInput(int id, int x, int y, int maxTranslation) {
 
         super(id, Constants.OBJECT_INPUT_TEXT, x, y, ConsoleColors.GREEN);
 

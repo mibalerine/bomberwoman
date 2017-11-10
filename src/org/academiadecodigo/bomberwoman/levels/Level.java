@@ -3,8 +3,9 @@ package org.academiadecodigo.bomberwoman.levels;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
-import org.academiadecodigo.bomberwoman.gameObjects.UserInputObject;
+import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
+import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
+import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -12,7 +13,6 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 /**
  * Created by miro on 07/11/2017.
@@ -31,19 +31,16 @@ public class Level {
 
     private int height;
 
-    private MenuSelect menuSelect;
-
-    private UserInputObject userInputObject;
+    private SpecialObjectHolder specialObjectHolder;
 
     private ScreenHolder screenHolder;
-
-    private Stack<GameObject> inputNumbers = new Stack<>();
 
     public Level(ScreenHolder screenHolder, Map<Integer, GameObject> letters) {
 
         this.screenHolder = screenHolder;
         this.path = this.screenHolder.getFilePath();
         this.letters = letters;
+        specialObjectHolder = new SpecialObjectHolder();
 
         try {
 
@@ -118,13 +115,18 @@ public class Level {
 
                     if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
-                        menuSelect = new MenuSelect(id, x, y);
-                        letters.put(id++, menuSelect);
+                        specialObjectHolder.setMenuSelect(new MenuSelect(id, x, y));
+                        letters.put(id++, specialObjectHolder.getMenuSelect());
                     }
                     else if(cells[x][y].equals(Constants.OBJECT_INPUT_TEXT)) {
 
-                        userInputObject = new UserInputObject(id, x, y, 4);
-                        letters.put(id++, userInputObject);
+                        specialObjectHolder.setUserInput(new UserInput(id, x, y, 4));
+                        letters.put(id++, specialObjectHolder.getUserInput());
+                    }
+                    else if(cells[x][y].equals(Constants.OBJECT_PLAYER_POINTER)) {
+
+                        specialObjectHolder.setPlayerPointer(new PlayerPointer(id, x, y));
+                        letters.put(id++, specialObjectHolder.getPlayerPointer());
                     }
                     else {
 
@@ -150,8 +152,8 @@ public class Level {
         try {
 
             String IP = InetAddress.getLocalHost().getHostAddress();
-            int x = menuSelect.getX();
-            int y = menuSelect.getY();
+            int x = specialObjectHolder.getMenuSelect().getX();
+            int y = specialObjectHolder.getMenuSelect().getY();
             for(String s : IP.split("\\.")) {
 
                 char[] chars = s.toCharArray();
@@ -165,7 +167,7 @@ public class Level {
                 id++;
             }
             letters.remove(id - 1);
-            menuSelect = null;
+            specialObjectHolder.setMenuSelect(null);
         }
         catch(UnknownHostException e) {
 
@@ -176,22 +178,12 @@ public class Level {
 
     public void update() {
 
-        if(menuSelect == null) {
-
-            return;
-        }
-
-        menuSelect.update();
+        specialObjectHolder.update();
     }
 
     public int choice() {
 
-        if(menuSelect == null) {
-
-            return 2;
-        }
-
-        return menuSelect.choice();
+        return specialObjectHolder.choice();
     }
 
     public int getWidth() {
@@ -216,54 +208,22 @@ public class Level {
 
     public void moveSelectionBy(int y) {
 
-        if(menuSelect == null) {
-
-            return;
-        }
-
-        if(menuSelect.getY() + y < menuSelect.getOriginalY()) {
-
-            y = 4;
-        }
-
-        if(menuSelect.getY() + y > menuSelect.getOriginalY() + 4) {
-
-            y = -4;
-        }
-
-        menuSelect.translate(0, y);
+        specialObjectHolder.moveSelectionBy(0, y);
     }
 
     public void erase() {
 
         synchronized(letters) {
 
-            if(userInputObject == null || inputNumbers.isEmpty()) {
-
-                return;
-            }
-
-            GameObject gameObject = inputNumbers.pop();
-
-            if(gameObject != null) {
-
-                letters.remove(gameObject.getId());
-            }
-
-            userInputObject.translate(-1, 0);
+            specialObjectHolder.erase(letters);
         }
     }
 
     public void inputNumber(int num) {
 
-        if(userInputObject == null || userInputObject.getMaxTranslation() + 1 <= inputNumbers.size()) {
+        synchronized(letters) {
 
-            return;
+            id = specialObjectHolder.inputNumber(num, id, letters);
         }
-
-        GameObject gameObject = new GameObject(id, num + "", userInputObject.getX(), userInputObject.getY() - 1);
-        letters.put(id++, gameObject);
-        inputNumbers.add(gameObject);
-        userInputObject.translate(1, 0);
     }
 }
