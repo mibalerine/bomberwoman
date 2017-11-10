@@ -1,21 +1,18 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
-import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
-import org.academiadecodigo.bomberwoman.gameObjects.Brick;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
+import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.server.ServerEventHandler;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -53,7 +50,8 @@ public class ServerThread implements Runnable {
         try {
 
             serverSocket = new ServerSocket(Constants.PORT);
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
 
             e.printStackTrace();
         }
@@ -69,14 +67,15 @@ public class ServerThread implements Runnable {
 
         int numberOfConnections = 0;
 
-        while (numberOfConnections < numberOfPlayers) {
+        while(numberOfConnections < numberOfPlayers) {
 
             try {
 
                 clientConnections[numberOfConnections] = serverSocket.accept();
                 System.out.println("Client connected");
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections]));
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
 
             }
 
@@ -92,7 +91,7 @@ public class ServerThread implements Runnable {
     public void broadcast(String message) {
 
         System.out.println("Broadcast: " + message);
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
             try {
 
@@ -100,7 +99,8 @@ public class ServerThread implements Runnable {
 
                 out.write(message + "\n");
                 out.flush();
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
 
                 e.printStackTrace();
             }
@@ -108,55 +108,21 @@ public class ServerThread implements Runnable {
     }
 
     public Map<Integer, GameObject> getGameObjectMap() {
+
         return gameObjectMap;
     }
 
-    private class ClientDispatcher implements Runnable {
-
-        private Socket clientConnection;
-
-        private ClientDispatcher(Socket clientConnection) {
-
-            this.clientConnection = clientConnection;
-        }
-
-        @Override
-        public void run() {
-
-            while (!clientConnection.isClosed()) {
-
-                try {
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-
-                    String line = in.readLine();
-                    if (line != null) {
-
-                        if (!Event.isEvent(line)) {
-                            continue;
-                        }
-
-                        handleEvent(line.split(Event.SEPARATOR));
-                    }
-                } catch (IOException e) {
-
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-
     public void handleEvent(String[] eventInfo) {
+
         int eventId = Integer.parseInt(eventInfo[1]);
 
         EventType eType = EventType.values()[eventId];
 
-        switch (eType) {
+        switch(eType) {
 
             case OBJECT_SPAWN:
 
-                synchronized (gameObjectMap) {
+                synchronized(gameObjectMap) {
                     id = ServerEventHandler.handleObjectSpawnEvent(eventInfo, id, this);
                 }
 
@@ -164,7 +130,7 @@ public class ServerThread implements Runnable {
 
             case OBJECT_MOVE:
 
-                synchronized (gameObjectMap) {
+                synchronized(gameObjectMap) {
                     ServerEventHandler.handleObjectMoveEvent(eventInfo, this);
                 }
                 break;
@@ -176,17 +142,17 @@ public class ServerThread implements Runnable {
 
         try {
 
-            InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(LevelFileLocator.LEVEL_1.getFilePath()));
+            InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(ScreenHolder.LEVEL_1.getFilePath()));
             BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
             int i = 0;
 
-            while ((line = bf.readLine()) != null) {
+            while((line = bf.readLine()) != null) {
 
                 String[] chars = line.split("");
 
-                for (int j = 0; j < chars.length; j++) {
+                for(int j = 0; j < chars.length; j++) {
 
                     createObject(chars[j], i, j);
 
@@ -195,16 +161,17 @@ public class ServerThread implements Runnable {
                 i++;
             }
 
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
             System.out.println("Could not read file: " + e.getMessage());
         }
     }
 
     private void createObject(String objectChar, int x, int y) {
 
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
 
-            switch (objectChar) {
+            switch(objectChar) {
 
                 case Constants.BRICK_CHAR:
                     gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.BRICK, x, y));
@@ -227,6 +194,43 @@ public class ServerThread implements Runnable {
             }
 
             id++;
+        }
+    }
+
+
+    private class ClientDispatcher implements Runnable {
+
+        private Socket clientConnection;
+
+        private ClientDispatcher(Socket clientConnection) {
+
+            this.clientConnection = clientConnection;
+        }
+
+        @Override
+        public void run() {
+
+            while(!clientConnection.isClosed()) {
+
+                try {
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
+
+                    String line = in.readLine();
+                    if(line != null) {
+
+                        if(!Event.isEvent(line)) {
+                            continue;
+                        }
+
+                        handleEvent(line.split(Event.SEPARATOR));
+                    }
+                }
+                catch(IOException e) {
+
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }
