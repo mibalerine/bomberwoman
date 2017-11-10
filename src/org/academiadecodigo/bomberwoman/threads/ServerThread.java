@@ -203,7 +203,7 @@ public class ServerThread implements Runnable {
                 case Constants.BRICK_CHAR:
                 case Constants.PLAYER_CHAR:
                 case Constants.WALL_CHAR:
-                    spawnObject(GameObjectType.byChar(objectChar), x, y);
+                    spawnObject(GameObjectType.byChar(objectChar), id, x, y);
                     break;
 
                 default:
@@ -214,9 +214,9 @@ public class ServerThread implements Runnable {
         }
     }
 
-    private void spawnObject(GameObjectType gameObjectType, int x, int y) {
+    public void spawnObject(GameObjectType gameObjectType, int id, int x, int y) {
 
-        gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
-        broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y).toString());
+        gameObjectMap.put(this.id, GameObjectFactory.byType(this.id, gameObjectType, x, y));
+        broadcast(new ObjectSpawnEvent(gameObjectType, this.id, x, y).toString());
     }
 }

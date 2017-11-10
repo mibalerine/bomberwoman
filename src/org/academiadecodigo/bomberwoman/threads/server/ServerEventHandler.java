@@ -31,9 +31,7 @@ public abstract class ServerEventHandler {
         int x = Integer.parseInt(eventInfo[4]);
         int y = Integer.parseInt(eventInfo[5]);
 
-        GameObjectType goType = GameObjectType.values()[objectTypeNum];
-        serverThread.getGameObjectMap().put(id, GameObjectFactory.byType(id, goType, x, y));
-        serverThread.broadcast((new ObjectSpawnEvent(goType, id, x, y)).toString());
+        serverThread.spawnObject(GameObjectType.values()[objectTypeNum], id, x, y);
         return ++id;
     }
 
@@ -42,12 +40,12 @@ public abstract class ServerEventHandler {
         if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
 
             System.out.println("not a number!");
+            return;
         }
 
         int id = Integer.parseInt(eventInfo[2]);
         int x = Integer.parseInt(eventInfo[3]);
         int y = Integer.parseInt(eventInfo[4]);
-
 
         GameObject gameObject = serverThread.getGameObjectMap().get(id);
 
@@ -57,7 +55,5 @@ public abstract class ServerEventHandler {
 
         gameObject.setPosition(x, y);
         serverThread.broadcast(new ObjectMoveEvent(gameObject, Direction.STAY).toString());
-
     }
-
 }
