@@ -84,7 +84,7 @@ public class NetworkThread implements Runnable {
 
                 handleEvent(line);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
 
                 Utils.bufferedMode();
                 System.out.println("I'm out bitch");

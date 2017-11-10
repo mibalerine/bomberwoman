@@ -103,7 +103,7 @@ public class ServerThread implements Runnable {
 
     private void startGame() {
 
-        // broadcast("start");
+        broadcast("start");
     }
 
     private void sendMessage(Socket clientSocket, String message) {
@@ -203,6 +203,14 @@ public class ServerThread implements Runnable {
     }
 
     private void createGameObjects() {
+
+        synchronized (gameObjectMap) {
+
+            for (GameObject go : gameObjectMap.values()) {
+                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY()).toString());
+            }
+
+        }
 
         try {
 

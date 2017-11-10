@@ -43,11 +43,12 @@ public class Game {
 
         Utils.rawMode();
 
+        renderThread = new RenderThread(LevelFileLocator.LEVEL_1, 50, gameObjects);
+        executorService.submit(renderThread);
+
         networkThread = new NetworkThread("localhost", this);
         executorService.submit(networkThread);
 
-        renderThread = new RenderThread(LevelFileLocator.LEVEL_1, 50, gameObjects);
-        executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
 
