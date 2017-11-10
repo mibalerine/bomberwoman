@@ -88,6 +88,7 @@ public class NetworkThread implements Runnable {
 
                 Utils.bufferedMode();
                 System.out.println("I'm out bitch");
+                e.printStackTrace();
             }
         }
     }

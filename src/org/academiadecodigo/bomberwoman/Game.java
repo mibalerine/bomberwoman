@@ -43,17 +43,18 @@ public class Game {
 
         Utils.rawMode();
 
-        renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
-        executorService.submit(renderThread);
-
         networkThread = new NetworkThread("localhost", this);
+
+        renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
+
+        logicThread = new LogicThread(gameObjects);
+        logicThread.setNetworkThread(networkThread);
+
+        executorService.submit(logicThread);
         executorService.submit(networkThread);
-
-
+        executorService.submit(renderThread);
         executorService.submit(new InputThread(this));
 
-        //logicThread = new LogicThread(networkThread, gameObjects, new Player(-23));
-        //executorService.submit(logicThread);
     }
 
     public void keyPressed(Keys key) {
@@ -70,18 +71,8 @@ public class Game {
             return;
         }
 
-        switch(key) {
+        logicThread.keyPressed(key);
 
-            case DOWN:
-                logicThread.keyPressed(key);
-                break;
-            case UP:
-                logicThread.keyPressed(key);
-                break;
-            case PLACE_BOMB:
-                logicThread.keyPressed(key);
-                break;
-        }
     }
 
     public void refreshRenderThread() {

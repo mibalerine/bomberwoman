@@ -1,17 +1,11 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
-<<<<<<< HEAD
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.events.PlayerAssignEvent;
-=======
-import org.academiadecodigo.bomberwoman.events.Event;
-import org.academiadecodigo.bomberwoman.events.EventType;
-import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
->>>>>>> master
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
@@ -167,6 +161,7 @@ public class ServerThread implements Runnable {
                 break;
 
             case OBJECT_MOVE:
+                System.out.println("moving");
 
                 synchronized(gameObjectMap) {
                     ServerEventHandler.handleObjectMoveEvent(eventInfo, this);

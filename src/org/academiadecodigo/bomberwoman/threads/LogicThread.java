@@ -20,8 +20,7 @@ public class LogicThread implements Runnable {
     private final Map<Integer, GameObject> gameObjects;
     private int playerId;
 
-    public LogicThread(NetworkThread networkThread, Map<Integer, GameObject> gameObjectMap) {
-        this.networkThread = networkThread;
+    public LogicThread(Map<Integer, GameObject> gameObjectMap) {
         gameObjects = gameObjectMap;
     }
 
@@ -110,6 +109,10 @@ public class LogicThread implements Runnable {
 
             return true;
         }
+    }
+
+    public void setNetworkThread(NetworkThread networkThread) {
+        this.networkThread = networkThread;
     }
 
     public void setPlayerId(int playerId) {
