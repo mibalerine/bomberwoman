@@ -2,7 +2,7 @@ package org.academiadecodigo.bomberwoman;
 
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.Player;
-import org.academiadecodigo.bomberwoman.levels.LevelFileLocator;
+import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.InputThread;
 import org.academiadecodigo.bomberwoman.threads.LogicThread;
 import org.academiadecodigo.bomberwoman.threads.NetworkThread;
@@ -43,7 +43,7 @@ public class Game {
 
         Utils.rawMode();
 
-        renderThread = new RenderThread(LevelFileLocator.LEVEL_1, 50, gameObjects);
+        renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
         executorService.submit(renderThread);
 
         networkThread = new NetworkThread("localhost", this);
@@ -58,6 +58,12 @@ public class Game {
 
     public void keyPressed(Keys key) {
 
+        if(key == Keys.QUIT_GAME) {
+
+            Utils.quitGame();
+            return;
+        }
+
         if(renderThread.isDrawingMenu()) {
 
             renderThread.keyPressed(key);
@@ -66,11 +72,6 @@ public class Game {
 
         switch(key) {
 
-            case QUIT_GAME:
-                Utils.quitGame();
-                break;
-            case ENTER:
-                break;
             case DOWN:
                 logicThread.keyPressed(key);
                 break;
@@ -84,6 +85,7 @@ public class Game {
     }
 
     public void refreshRenderThread() {
+
         renderThread.refresh();
     }
 

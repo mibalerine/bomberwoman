@@ -1,11 +1,11 @@
 package org.academiadecodigo.bomberwoman.levels;
 
-import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
-import org.academiadecodigo.bomberwoman.gameObjects.MenuSelect;
+import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
+import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
+import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -31,15 +31,16 @@ public class Level {
 
     private int height;
 
-    private MenuSelect menuSelect;
+    private SpecialObjectHolder specialObjectHolder;
 
-    private LevelFileLocator levelFileLocator;
+    private ScreenHolder screenHolder;
 
-    public Level(LevelFileLocator levelFileLocator, Map<Integer, GameObject> letters) {
+    public Level(ScreenHolder screenHolder, Map<Integer, GameObject> letters) {
 
-        this.levelFileLocator = levelFileLocator;
-        this.path = this.levelFileLocator.getFilePath();
+        this.screenHolder = screenHolder;
+        this.path = this.screenHolder.getFilePath();
         this.letters = letters;
+        specialObjectHolder = new SpecialObjectHolder();
 
         try {
 
@@ -54,6 +55,7 @@ public class Level {
     private void init() throws FileNotFoundException {
 
         synchronized(letters) {
+
             letters.clear();
         }
 
@@ -100,34 +102,49 @@ public class Level {
             lineIndex++;
         }
 
-        for(int y = 0; y < cells[0].length; y++) {
+        synchronized(letters) {
 
-            for(int x = 0; x < cells.length; x++) {
+            for(int y = 0; y < cells[0].length; y++) {
 
-                if(cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
+                for(int x = 0; x < cells.length; x++) {
 
-                    continue;
-                }
+                    if(cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
 
-                if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
+                        continue;
+                    }
 
-                    menuSelect = new MenuSelect(x, y);
-                    letters.put(id++, menuSelect);
-                }
-                else {
+                    GameObject gameObject = null;
+                    if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
-                    letters.put(id, GameObjectFactory.byString(cells[x][y], id, x, y));
-                    id++;
+                        gameObject = new MenuSelect(id, x, y);
+                        specialObjectHolder.setMenuSelect((MenuSelect) gameObject);
+                    }
+                    else if(cells[x][y].equals(Constants.OBJECT_INPUT_TEXT)) {
+
+                        gameObject = new UserInput(id, x, y, 11);
+                        specialObjectHolder.setUserInput((UserInput) gameObject);
+                    }
+                    else if(cells[x][y].equals(Constants.OBJECT_PLAYER_POINTER)) {
+
+                        gameObject = new PlayerPointer(id, x, y);
+                        specialObjectHolder.setPlayerPointer((PlayerPointer) gameObject);
+                    }
+                    else {
+
+                        gameObject = new GameObject(id, cells[x][y], x, y);
+                    }
+
+                    letters.put(id++, gameObject);
                 }
             }
-        }
 
-        if(levelFileLocator == LevelFileLocator.MENU_MP_HOST) {
+            if(screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-            if(!setupIP) {
+                if(!setupIP) {
 
-                setupIP = true;
-                replaceIP();
+                    setupIP = true;
+                    replaceIP();
+                }
             }
         }
     }
@@ -137,8 +154,8 @@ public class Level {
         try {
 
             String IP = InetAddress.getLocalHost().getHostAddress();
-            int x = menuSelect.getX();
-            int y = menuSelect.getY();
+            int x = specialObjectHolder.getMenuSelect().getX();
+            int y = specialObjectHolder.getMenuSelect().getY();
             for(String s : IP.split("\\.")) {
 
                 char[] chars = s.toCharArray();
@@ -152,7 +169,7 @@ public class Level {
                 id++;
             }
             letters.remove(id - 1);
-            menuSelect = null;
+            specialObjectHolder.setMenuSelect(null);
         }
         catch(UnknownHostException e) {
 
@@ -163,17 +180,11 @@ public class Level {
 
     public void update() {
 
-        if(menuSelect == null) {
-
-            return;
-        }
-
-        menuSelect.update();
     }
 
     public int choice() {
 
-        return menuSelect.choice();
+        return specialObjectHolder.choice();
     }
 
     public int getWidth() {
@@ -191,28 +202,51 @@ public class Level {
         return letters;
     }
 
-    public LevelFileLocator getLevelFileLocator() {
+    public ScreenHolder getScreenHolder() {
 
-        return levelFileLocator;
+        return screenHolder;
     }
 
     public void moveSelectionBy(int y) {
 
-        if(menuSelect == null) {
+        specialObjectHolder.moveSelectionBy(0, y);
+    }
 
-            return;
+    public void erase() {
+
+        synchronized(letters) {
+
+            specialObjectHolder.erase(letters);
         }
+    }
 
-        if(menuSelect.getY() + y < menuSelect.getOriginalY()) {
+    public void inputNumber(int num) {
 
-            y = 4;
+        synchronized(letters) {
+
+            id = specialObjectHolder.inputNumber(num, id, letters);
         }
+    }
 
-        if(menuSelect.getY() + y > menuSelect.getOriginalY() + 4) {
+    public void pressedEnter() {
 
-            y = -4;
+        //int number = specialObjectHolder.getNumberOnInput();
+        if(screenHolder == ScreenHolder.MENU_MP_HOST) {
+
+            host();
         }
+        else {
 
-        menuSelect.translate(0, y);
+            join();
+        }
+    }
+
+    private void join() {
+
+
+    }
+
+    private void host() {
+
     }
 }

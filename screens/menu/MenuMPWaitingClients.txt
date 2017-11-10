@@ -26,16 +26,16 @@
    '--'   '--'      `-----' `--'   `--'  `--' `--'`--'  `--'             W0d:'..       ....';lkXW
                                                                             WX0kdollllloxkOKN
 
-
-                                                        Server IP
-                                                     ___.___.___.___
-                                                     ^
-
-                                                          PORT
-                                                         _____
+                                                    WAITING CLIENTS
+                                                  @
 
 
-                                   +Press [ENTER] to select option and [TAB] to go back+
 
+
+
+
+
+
+                                    +Press [ENTER] to start game and [TAB] to go back+
 
 ~                                                                                                                     ~

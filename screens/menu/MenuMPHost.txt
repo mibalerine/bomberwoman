@@ -27,15 +27,15 @@
                                                                             WX0kdollllloxkOKN
 
 
-                                                         Your IP
-                                                      >
+                                                        Your IP
+                                                     >
 
 
-                                                          PORT                                                         
-                                                          _____                                                        
+
+                                                       PORT: 8080
+
 
                                              + Please input the port number+
                                     +Press [ENTER] to host game and [TAB] to go back+
-                               
-                               
+
 ~                                                                                                                     ~

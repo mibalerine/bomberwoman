@@ -1,7 +1,5 @@
 package org.academiadecodigo.bomberwoman;
 
-import org.academiadecodigo.bomberwoman.threads.ServerThread;
-
 /**
  * Created by codecadet on 06/11/17.
  */

@@ -72,4 +72,14 @@ public class GameObject {
 
         return color + representation + ConsoleColors.RESET;
     }
+
+    public String getRepresentation() {
+
+        return representation;
+    }
+
+    public void setRepresentation(String s) {
+
+        representation = s;
+    }
 }
