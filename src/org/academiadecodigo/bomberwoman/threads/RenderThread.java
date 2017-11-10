@@ -41,7 +41,7 @@ public class RenderThread implements Runnable {
 
                 screen.update();
 
-                if(dirty) {
+                if (dirty) {
 
                     dirty = false;
                     screen.draw();

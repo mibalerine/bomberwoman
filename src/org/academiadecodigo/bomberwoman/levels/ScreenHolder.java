@@ -2,31 +2,33 @@ package org.academiadecodigo.bomberwoman.levels;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
-import static org.academiadecodigo.bomberwoman.Constants.*;
+
+import static org.academiadecodigo.bomberwoman.Constants.NO_LEVEL_CREATED;
+import static org.academiadecodigo.bomberwoman.Constants.QUIT_GAME;
 
 /**
  * Created by miro on 08/11/2017.
  */
 public enum ScreenHolder {
 
-    SPLASH("Splash", 1, 1, 1),
-    MENU_MAIN("MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
-    MENU_MP_MAIN("MenuMPMain", 3, 4, MENU_MAIN.ordinal()),
-    MENU_MP_HOST("MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
-    MENU_MP_JOIN("MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
-    MENU_MP_WAIT_CLIENT("MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal());
-
+    SPLASH("/menu/Splash", 1, 1, 1),
+    MENU_MAIN("/menu/MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
+    MENU_MP_MAIN("/menu/MenuMPMain", 3, NO_LEVEL_CREATED, MENU_MAIN.ordinal()),
+    MENU_MP_HOST("/menu/MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
+    MENU_MP_JOIN("/menu/MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
+    MENU_MP_WAIT_CLIENT("/menu/MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal()),
+    LEVEL_1("/levels/level1", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED);
 
     private String filePath;
 
+    private int[] choices;
+
     ScreenHolder(String fileName, int... choices) {
 
-        this.filePath = "/menu/" + fileName + ".txt";
+        this.filePath = fileName + ".txt";
 
         this.choices = choices;
     }
-
-    private int[] choices;
 
     public String getFilePath() {
 

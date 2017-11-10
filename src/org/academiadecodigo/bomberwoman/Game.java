@@ -10,6 +10,7 @@ import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -42,8 +43,8 @@ public class Game {
 
         Utils.rawMode();
 
-        //networkThread = new NetworkThread(gameObjects, "localhost");
-        //executorService.submit(networkThread);
+        networkThread = new NetworkThread("localhost", this);
+        executorService.submit(networkThread);
 
         renderThread = new RenderThread(ScreenHolder.MENU_MP_JOIN, 50, gameObjects);
         executorService.submit(renderThread);
@@ -85,5 +86,9 @@ public class Game {
     public void refreshRenderThread() {
 
         renderThread.refresh();
+    }
+
+    public Map<Integer, GameObject> getGameObjects() {
+        return gameObjects;
     }
 }
