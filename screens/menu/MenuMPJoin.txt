@@ -29,10 +29,10 @@
 
                                                         Server IP
                                                      ___.___.___.___
-
+                                                     ^
 
                                                           PORT
-                                                          _____
+                                                         _____
 
 
                                    +Press [ENTER] to select option and [TAB] to go back+

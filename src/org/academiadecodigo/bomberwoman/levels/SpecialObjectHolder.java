@@ -5,6 +5,8 @@ import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 
@@ -18,6 +20,8 @@ public class SpecialObjectHolder {
     private UserInput userInput;
 
     private PlayerPointer playerPointer;
+
+    private Stack<GameObject> inputNumbers = new Stack<>();
 
     public MenuSelect getMenuSelect() {
 
@@ -49,23 +53,13 @@ public class SpecialObjectHolder {
         this.playerPointer = playerPointer;
     }
 
-    public void update() {
-
-        if(menuSelect == null) {
-
-            return;
-        }
-
-        menuSelect.update();
-    }
-
     public int choice() {
 
         if(menuSelect == null) {
-            
+
             return 2;
         }
-        
+
         return menuSelect.choice();
     }
 
@@ -76,49 +70,88 @@ public class SpecialObjectHolder {
             return;
         }
 
-        if(menuSelect.getY() + y < menuSelect.getOriginalY()) {
-
-            y = 4;
-        }
-
-        if(menuSelect.getY() + y > menuSelect.getOriginalY() + 4) {
-
-            y = -4;
-        }
-
         menuSelect.translate(x, y);
     }
 
-    private Stack<GameObject> inputNumbers = new Stack<>();
+    void erase(Map<Integer, GameObject> letters) {
 
-    public void erase(Map<Integer, GameObject> letters) {
-
-        if(userInput == null || inputNumbers.isEmpty()) {
+        if(userInput == null) {
 
             return;
         }
 
-        GameObject gameObject = inputNumbers.pop();
+        if(userInput.underADot(-1)) {
 
-        if(gameObject != null) {
-
-            letters.remove(gameObject.getId());
+            userInput.setPosition(userInput.getX() - 1, userInput.getY());
+            erase(letters);
+            return;
         }
 
+        GameObject gameObject = getObjectAct(letters.values(), userInput.getX() - 1, userInput.getY() - 1);
+
+        if(gameObject == null) {
+
+            return;
+        }
+
+        gameObject.setRepresentation("_");
         userInput.translate(-1, 0);
     }
 
-    public int inputNumber(int num, int id, Map<Integer, GameObject> letters) {
+    int inputNumber(int num, int id, Map<Integer, GameObject> letters) {
 
-        if(userInput == null || userInput.getMaxTranslation() + 1 <= inputNumbers.size()) {
+        if(userInput == null || !userInput.canMove()) {
 
             return id;
         }
 
-        GameObject gameObject = new GameObject(id, num + "", userInput.getX(), userInput.getY() - 1);
-        letters.put(id++, gameObject);
-        inputNumbers.add(gameObject);
+        if(underDot(letters.values(), userInput.getX(), userInput.getY() - 1)) {
+
+            userInput.setPosition(userInput.getX() + 1, userInput.getY());
+        }
+
+        GameObject gameObject = getObjectAct(letters.values(), userInput.getX(), userInput.getY() - 1);
+
+        if(gameObject == null) {
+
+            return id;
+        }
+
+        gameObject.setRepresentation(num + "");
         userInput.translate(1, 0);
+
         return id;
+    }
+
+    private String getStringAt(Collection<GameObject> gameObjects, int x, int y) {
+
+        GameObject go = getObjectAct(gameObjects, x, y);
+
+        if(go == null) {
+
+            return " ";
+        }
+
+        return go.getRepresentation();
+    }
+
+    private boolean underDot(Collection<GameObject> gameObjects, int x, int y) {
+
+        return getStringAt(gameObjects, x, y).equals(".");
+    }
+
+    private GameObject getObjectAct(Collection<GameObject> gameObjects, int x, int y) {
+
+        Iterator<GameObject> iterator = gameObjects.iterator();
+        while(iterator.hasNext()) {
+
+            GameObject go = iterator.next();
+            if(go.getX() == x && go.getY() == y) {
+
+                return go;
+            }
+        }
+
+        return null;
     }
 }

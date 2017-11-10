@@ -73,14 +73,13 @@ public class GameObject {
         return color + representation + ConsoleColors.RESET;
     }
 
-    public void kill() {
+    public String getRepresentation() {
 
-        representation = "";
-        color = null;
+        return representation;
     }
 
-    public boolean isDead() {
+    public void setRepresentation(String s) {
 
-        return representation.equals("");
+        representation = s;
     }
 }

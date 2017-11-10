@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.gameObjects.control;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 
 /**
@@ -17,19 +18,6 @@ public class MenuSelect extends GameObject {
         originalY = y;
     }
 
-    public void update() {
-
-        if(getY() < originalY) {
-
-            setPosition(getX(), originalY + 4);
-        }
-
-        if(getY() > originalY + 4) {
-
-            setPosition(getX(), originalY);
-        }
-    }
-
     public int choice() {
 
         if(getY() == originalY) {
@@ -44,8 +32,20 @@ public class MenuSelect extends GameObject {
         return 2;
     }
 
-    public int getOriginalY() {
+    @Override
+    public void translate(int x, int y) {
 
-        return originalY;
+
+        if(getY() + y < originalY) {
+
+            y = 4;
+        }
+
+        if(getY() + y > originalY + 4) {
+
+            y = -4;
+        }
+
+        super.translate(x, y);
     }
 }

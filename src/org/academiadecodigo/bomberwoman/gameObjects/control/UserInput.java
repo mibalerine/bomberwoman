@@ -9,34 +9,69 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
  */
 public class UserInput extends GameObject {
 
-    private int originalX;
+    private int originalX, originalY;
 
-    private int maxTranslation;
+    private int endIPX;
 
-    private int translations;
+    private int maxTranslationsUP;
 
-    public UserInput(int id, int x, int y, int maxTranslation) {
+    private int upTransitions, downTransitions;
+
+    //4 down, 4 right
+
+    public UserInput(int id, int x, int y, int maxTranslationUP) {
 
         super(id, Constants.OBJECT_INPUT_TEXT, x, y, ConsoleColors.GREEN);
 
         originalX = x;
-        this.maxTranslation = maxTranslation;
+        endIPX = originalX + 15;
+        originalY = y;
+        this.maxTranslationsUP = maxTranslationUP;
     }
 
     @Override
     public void translate(int x, int y) {
 
-        if(translations + x < 0 || translations + x > maxTranslation + 1) {
-
-            x = 0;
-        }
-
-        translations += x;
         super.translate(x, y);
+
+        if(!movedDown()) {
+
+            upTransitions += x;
+
+            if(upTransitions - 1 >= maxTranslationsUP) {
+
+                super.setPosition(originalX + 4, originalY + 4);
+            }
+        }
+        else {
+
+            downTransitions += x;
+
+            if(downTransitions <= 0) {
+
+                super.setPosition(endIPX, originalY);
+            }
+        }
     }
 
-    public int getMaxTranslation() {
+    private boolean movedDown() {
 
-        return maxTranslation;
+        return getY() == originalY + 4;
+    }
+
+    public boolean underADot(int increment) {
+
+        int distanceToSource = getX() + increment - originalX;
+        if(getY() != originalY) {
+
+            return false;
+        }
+
+        return distanceToSource == 3 || distanceToSource == 7 || distanceToSource == 11;
+    }
+
+    public boolean canMove() {
+
+        return downTransitions < 5;
     }
 }

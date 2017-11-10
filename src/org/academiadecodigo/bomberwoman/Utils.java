@@ -7,6 +7,21 @@ import java.io.IOException;
  */
 public class Utils {
 
+    public static int wrapAround(int value, int min, int max) {
+
+        if(value > max) {
+
+            value = min;
+        }
+
+        if(value < min) {
+
+            value = max;
+        }
+
+        return value;
+    }
+
     public static int clamp(int value, int min, int max) {
 
         if(value < min) {
@@ -50,6 +65,7 @@ public class Utils {
     }
 
     public static boolean isNumber(String text) {
+
         return text.matches("-?\\d+(\\.\\d+)?");
     }
 

@@ -35,9 +35,12 @@ public class Screen {
 
         screenFrame.update();
 
-        for(GameObject letter : level.getLetters().values()) {
+        synchronized(level.getLetters()) {
 
-            putObjectInScreen(letter);
+            for(GameObject letter : level.getLetters().values()) {
+
+                putObjectInScreen(letter);
+            }
         }
 
         level.update();
@@ -79,38 +82,39 @@ public class Screen {
 
     public void keyPressed(Keys key) {
 
-        if(Keys.isNumber(key) || key == Keys.BACKSPACE) {
+        if(level.getScreenHolder().canHandleNumberInput()) {
 
-            if(!level.getScreenHolder().canHandleNumberInput()) {
+            if(Keys.isNumber(key) || key == Keys.BACKSPACE) {
 
+                if(key == Keys.BACKSPACE) {
+
+                    level.erase();
+                }
+                else {
+
+                    level.inputNumber(Integer.parseInt(key.toString().replaceAll("NUM_", "")));
+                }
+            }
+            else if(key == Keys.ENTER) {
+
+                level.pressedEnter();
                 return;
             }
-
-            if(key == Keys.BACKSPACE) {
-
-                level.erase();
-            }
-            else {
-
-                level.inputNumber(Integer.parseInt(key.toString().replaceAll("NUM_", "")));
-            }
         }
-        else {
 
-            switch(key) {
-                case UP:
-                    level.moveSelectionBy(-2);
-                    break;
-                case DOWN:
-                    level.moveSelectionBy(2);
-                    break;
-                case ENTER:
-                    changeFrame(chooseMenu(level.choice()), gameObjectMap);
-                    break;
-                case TAB:
-                    changeFrame(chooseMenu(2), gameObjectMap);
-                    break;
-            }
+        switch(key) {
+            case UP:
+                level.moveSelectionBy(-2);
+                break;
+            case DOWN:
+                level.moveSelectionBy(2);
+                break;
+            case ENTER:
+                changeFrame(chooseMenu(level.choice()), gameObjectMap);
+                break;
+            case TAB:
+                changeFrame(chooseMenu(2), gameObjectMap);
+                break;
         }
 
         renderThread.refresh();

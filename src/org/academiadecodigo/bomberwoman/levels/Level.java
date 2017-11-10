@@ -113,26 +113,28 @@ public class Level {
                         continue;
                     }
 
+                    GameObject gameObject = null;
                     if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
-                        specialObjectHolder.setMenuSelect(new MenuSelect(id, x, y));
-                        letters.put(id++, specialObjectHolder.getMenuSelect());
+                        gameObject = new MenuSelect(id, x, y);
+                        specialObjectHolder.setMenuSelect((MenuSelect) gameObject);
                     }
                     else if(cells[x][y].equals(Constants.OBJECT_INPUT_TEXT)) {
 
-                        specialObjectHolder.setUserInput(new UserInput(id, x, y, 4));
-                        letters.put(id++, specialObjectHolder.getUserInput());
+                        gameObject = new UserInput(id, x, y, 11);
+                        specialObjectHolder.setUserInput((UserInput) gameObject);
                     }
                     else if(cells[x][y].equals(Constants.OBJECT_PLAYER_POINTER)) {
 
-                        specialObjectHolder.setPlayerPointer(new PlayerPointer(id, x, y));
-                        letters.put(id++, specialObjectHolder.getPlayerPointer());
+                        gameObject = new PlayerPointer(id, x, y);
+                        specialObjectHolder.setPlayerPointer((PlayerPointer) gameObject);
                     }
                     else {
 
-                        letters.put(id, new GameObject(id, cells[x][y], x, y));
-                        id++;
+                        gameObject = new GameObject(id, cells[x][y], x, y);
                     }
+
+                    letters.put(id++, gameObject);
                 }
             }
 
@@ -178,7 +180,6 @@ public class Level {
 
     public void update() {
 
-        specialObjectHolder.update();
     }
 
     public int choice() {
@@ -224,6 +225,19 @@ public class Level {
         synchronized(letters) {
 
             id = specialObjectHolder.inputNumber(num, id, letters);
+        }
+    }
+
+    public void pressedEnter() {
+
+        //int number = specialObjectHolder.getNumberOnInput();
+        if(screenHolder == ScreenHolder.MENU_MP_HOST) {
+
+            System.out.println("INITIALIZE A SERVER THREAD HERE");
+        }
+        else {
+
+            System.out.println("Im inside a join?");
         }
     }
 }

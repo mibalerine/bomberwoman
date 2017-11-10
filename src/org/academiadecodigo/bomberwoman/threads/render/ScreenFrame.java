@@ -31,14 +31,6 @@ class ScreenFrame {
 
                     cell = Constants.CORNER_CHAR;
                 }
-                /*else if(isSide(y)) {
-
-                    cell = Constants.VERTICAL_CHAR;
-                }
-                else if(isVert(y)) {
-
-                    cell = Constants.HORIZONTAL_CHAR;
-                }*/
 
                 cells[x][y] = cell;
             }
@@ -99,7 +91,7 @@ class ScreenFrame {
         return y == 0 || y == height() - 1;
     }
 
-    int width() {
+    private int width() {
 
         if(cells == null) {
 
@@ -108,17 +100,12 @@ class ScreenFrame {
         return cells.length;
     }
 
-    int height() {
+    private int height() {
 
         if(cells == null) {
 
             return 0;
         }
         return cells[0].length;
-    }
-
-    public void setCells(String[][] cells) {
-
-        System.arraycopy(cells, 0, this.cells, 0, this.cells.length);
     }
 }

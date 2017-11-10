@@ -45,7 +45,7 @@ public class Game {
         //networkThread = new NetworkThread(gameObjects, "localhost");
         //executorService.submit(networkThread);
 
-        renderThread = new RenderThread(ScreenHolder.MENU_MP_WAIT_CLIENT, 50, gameObjects);
+        renderThread = new RenderThread(ScreenHolder.MENU_MP_JOIN, 50, gameObjects);
         executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
