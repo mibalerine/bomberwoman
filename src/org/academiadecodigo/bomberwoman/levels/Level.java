@@ -1,11 +1,15 @@
 package org.academiadecodigo.bomberwoman.levels;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
+import org.academiadecodigo.bomberwoman.threads.NetworkThread;
+import org.academiadecodigo.bomberwoman.threads.ServerThread;
+import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -228,25 +232,29 @@ public class Level {
         }
     }
 
-    public void pressedEnter() {
+    public void pressedEnter(Screen screen, Map<Integer, GameObject> gameObjectMap) {
 
         //int number = specialObjectHolder.getNumberOnInput();
         if(screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-            host();
+            host(screen, gameObjectMap);
         }
         else {
 
-            join();
+            join(screen, gameObjectMap);
         }
     }
 
-    private void join() {
+    private void join(Screen screen, Map<Integer, GameObject> gameObjectMap) {
 
 
     }
 
-    private void host() {
+    private void host(Screen screen, Map<Integer, GameObject> gameObjectMap) {
 
+        screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
+        new Thread(new ServerThread(2)).start();
+
+        Game.getInstance().connectTo("localhost");
     }
 }

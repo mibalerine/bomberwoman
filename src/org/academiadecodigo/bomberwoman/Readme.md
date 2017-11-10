@@ -9,20 +9,21 @@
 
 
 # Todo
-- Menus;
 - Bomb;
-- Player;
-- Events(miro)
+- Collision detector with flames (Bomb);
 
 # Doing
+- Events
+- Player;
 - Screen (miro);
-- Client (miro)
+- Client
 - LogicThread (milena);
 - NetworkThread (brehm);
 - ServerThread (francisco) (needs to change the PrintWriter, don't instantiate a new one every broadcast);
 
 # Done
-- Level.java, line:52, make the IP auto-appear
+- Menus;
+- Level.java
 - RenderThread (miro);
 - GameObject;
 - InputThread (milena);

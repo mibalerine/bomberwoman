@@ -10,7 +10,6 @@ import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,22 +23,38 @@ public class Game {
 
     public static int HEIGHT = 40;
 
+    private static Game instance;
+
     private final Map<Integer, GameObject> gameObjects;
 
     private LogicThread logicThread;
 
     private RenderThread renderThread;
 
+    private ExecutorService executorService;
+
     private NetworkThread networkThread;
 
-    public Game() {
+    private Game() {
 
         gameObjects = new HashMap<>();
     }
 
+    public static Game getInstance() {
+
+        if(instance == null) {
+
+            instance = new Game();
+        }
+
+        return instance;
+    }
+
     void start() {
 
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
+        executorService = Executors.newFixedThreadPool(4);
+
+        networkThread = new NetworkThread("localhost", this);
 
         Utils.rawMode();
 
@@ -86,6 +101,19 @@ public class Game {
     }
 
     public Map<Integer, GameObject> getGameObjects() {
+
         return gameObjects;
+    }
+
+    public void submitTask(Runnable thread) {
+
+        executorService.submit(thread);
+    }
+
+    public void connectTo(String ipAddress) {
+
+        networkThread.setIpAddress(ipAddress);
+
+        executorService.submit(networkThread);
     }
 }

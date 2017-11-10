@@ -10,6 +10,7 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
+import org.academiadecodigo.bomberwoman.threads.server.ClientDispatcher;
 import org.academiadecodigo.bomberwoman.threads.server.ServerEventHandler;
 
 import java.io.*;
@@ -33,7 +34,7 @@ public class ServerThread implements Runnable {
 
     private ExecutorService threadPool;
 
-    private Map<Integer, GameObject> gameObjectMap;
+    private final Map<Integer, GameObject> gameObjectMap;
 
     private Integer id;
 
@@ -84,7 +85,7 @@ public class ServerThread implements Runnable {
 
                 clientConnections[numberOfConnections] = serverSocket.accept();
                 System.out.println("Client connected");
-                threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections]));
+                threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections], this));
 
                 synchronized (gameObjectMap) {
                     sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
@@ -125,17 +126,7 @@ public class ServerThread implements Runnable {
         System.out.println("Broadcast: " + message);
         for(Socket s : clientConnections) {
 
-            try {
-
-                PrintWriter out = new PrintWriter(s.getOutputStream());
-
-                out.write(message + "\n");
-                out.flush();
-            }
-            catch(IOException e) {
-
-                e.printStackTrace();
-            }
+            sendMessage(s, message);
         }
     }
 
@@ -235,43 +226,6 @@ public class ServerThread implements Runnable {
             }
 
             id++;
-        }
-    }
-
-
-    private class ClientDispatcher implements Runnable {
-
-        private Socket clientConnection;
-
-        private ClientDispatcher(Socket clientConnection) {
-
-            this.clientConnection = clientConnection;
-        }
-
-        @Override
-        public void run() {
-
-            while(!clientConnection.isClosed()) {
-
-                try {
-
-                    BufferedReader in = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
-
-                    String line = in.readLine();
-                    if(line != null) {
-
-                        if(!Event.isEvent(line)) {
-                            continue;
-                        }
-
-                        handleEvent(line.split(Event.SEPARATOR));
-                    }
-                }
-                catch(IOException e) {
-
-                    e.printStackTrace();
-                }
-            }
         }
     }
 }

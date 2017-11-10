@@ -5,7 +5,6 @@ import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.threads.network.ClientEventHandler;
 
 import java.io.BufferedReader;
@@ -13,7 +12,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Map;
 
 /**
  * Created by codecadet on 06/11/17.
@@ -51,7 +49,8 @@ public class NetworkThread implements Runnable {
             clientSocket = new Socket(idAddress, Constants.PORT);
             clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             clientWriter = new PrintWriter(clientSocket.getOutputStream());
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
 
             e.printStackTrace();
         }
@@ -59,7 +58,7 @@ public class NetworkThread implements Runnable {
 
     public void sendMessage(String message) {
 
-        if (clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
+        if(clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
             return;
@@ -71,31 +70,30 @@ public class NetworkThread implements Runnable {
 
     private void start() {
 
-        while (!clientSocket.isClosed() && clientReader != null) {
+        while(!clientSocket.isClosed() && clientReader != null) {
 
             try {
 
                 String line = clientReader.readLine();
 
-                if (line == null) {
+                if(line == null) {
 
                     continue;
                 }
 
                 handleEvent(line);
-
-            } catch (Exception e) {
+            }
+            catch(Exception e) {
 
                 Utils.bufferedMode();
                 System.out.println("I'm out bitch");
-                e.printStackTrace();
             }
         }
     }
 
     private void handleEvent(String eventPacket) {
 
-        if (!Event.isEvent(eventPacket)) {
+        if(!Event.isEvent(eventPacket)) {
             System.out.println("Invalid event");
             return;
         }
@@ -104,7 +102,7 @@ public class NetworkThread implements Runnable {
 
         EventType eType = EventType.values()[Integer.parseInt(eventInfo[1])];
 
-        switch (eType) {
+        switch(eType) {
 
             case OBJECT_SPAWN:
                 ClientEventHandler.handleObjectSpawnEvent(eventInfo, game);
@@ -122,7 +120,10 @@ public class NetworkThread implements Runnable {
                 ClientEventHandler.handlePlayerAssignEvent(eventInfo, game);
                 break;
         }
-
     }
 
+    public void setIpAddress(String ipAddress) {
+
+        this.ipAddress = ipAddress;
+    }
 }
