@@ -1,14 +1,12 @@
 package org.academiadecodigo.bomberwoman.threads.server;
 
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
-import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
+import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.gameObjects.Player;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
 /**
@@ -18,14 +16,13 @@ public abstract class ServerEventHandler {
 
     public static int handleObjectSpawnEvent(String[] eventInfo, Integer id, ServerThread serverThread) {
 
-        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) ||
-                !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
+        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
 
             System.out.println("not a number!");
             return id;
         }
 
-        if (!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
+        if(!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
             System.out.println("not a game object!");
             return id;
         }
@@ -42,8 +39,7 @@ public abstract class ServerEventHandler {
 
     public static void handleObjectMoveEvent(String[] eventInfo, ServerThread serverThread) {
 
-        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) ||
-                !Utils.isNumber(eventInfo[4])) {
+        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
 
             System.out.println("not a number!");
         }

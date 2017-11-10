@@ -11,7 +11,7 @@ class ScreenFrame {
 
     private StringBuilder content = new StringBuilder("");
 
-    private String[][] cells;
+    private volatile String[][] cells;
 
     ScreenFrame(int width, int height) {
 
@@ -22,17 +22,20 @@ class ScreenFrame {
 
     private void clearBoard() {
 
-        for(int x = 0; x < width(); x++) {
+        synchronized(cells) {
 
-            for(int y = 0; y < height(); y++) {
+            for(int x = 0; x < width(); x++) {
 
-                String cell = " ";
-                if(isCorner(x, y) || isSide(x) || isVert(y)) {
+                for(int y = 0; y < height(); y++) {
 
-                    cell = Constants.CORNER_CHAR;
+                    String cell = " ";
+                    if(isCorner(x, y) || isSide(x) || isVert(y)) {
+
+                        cell = Constants.CORNER_CHAR;
+                    }
+
+                    cells[x][y] = cell;
                 }
-
-                cells[x][y] = cell;
             }
         }
     }
@@ -44,20 +47,23 @@ class ScreenFrame {
         clearBoard();
     }
 
-    private void updateContent() {
+    private synchronized void updateContent() {
 
-        content.setLength(0);        //This clears the content of the StringBuilder
-        content.append("\r");
-        for(int y = 0; y < height(); y++) {
+        synchronized(cells) {
 
-            for(int x = 0; x < width(); x++) {
+            content.setLength(0);        //This clears the content of the StringBuilder
+            content.append("\r");
+            for(int y = 0; y < height(); y++) {
 
-                content.append(cells[x][y]);
+                for(int x = 0; x < width(); x++) {
 
-                if(x == width() - 1) {
+                    content.append(cells[x][y]);
 
-                    content.append("\r");
-                    content.append(System.lineSeparator());
+                    if(x == width() - 1) {
+
+                        content.append("\r");
+                        content.append(System.lineSeparator());
+                    }
                 }
             }
         }

@@ -66,7 +66,7 @@ public class Game {
         logicThread.setNetworkThread(networkThread);
 
         executorService.submit(logicThread);
-        executorService.submit(networkThread);
+        //executorService.submit(networkThread);
         executorService.submit(renderThread);
         executorService.submit(new InputThread(this));
 
