@@ -1,11 +1,10 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
-import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
-import org.academiadecodigo.bomberwoman.gameObjects.Brick;
+import org.academiadecodigo.bomberwoman.events.PlayerAssignEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
@@ -15,7 +14,6 @@ import org.academiadecodigo.bomberwoman.threads.server.ServerEventHandler;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -76,6 +74,13 @@ public class ServerThread implements Runnable {
                 clientConnections[numberOfConnections] = serverSocket.accept();
                 System.out.println("Client connected");
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections]));
+
+                synchronized (gameObjectMap) {
+                    sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, 0, 0));
+                    id++;
+                }
+
             } catch (IOException e) {
 
             }
@@ -86,7 +91,20 @@ public class ServerThread implements Runnable {
 
     private void startGame() {
 
-        broadcast("start");
+        // broadcast("start");
+    }
+
+    private void sendMessage(Socket clientSocket, String message) {
+
+        try {
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+
+            out.write(message + "\n");
+            out.flush();
+
+        } catch (IOException e) {
+            System.out.println("Socket closed: " + e.getMessage());
+        }
     }
 
     public void broadcast(String message) {
