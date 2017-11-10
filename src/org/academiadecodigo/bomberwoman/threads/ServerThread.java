@@ -152,6 +152,7 @@ public class ServerThread implements Runnable {
                 break;
 
             case OBJECT_MOVE:
+                System.out.println("moving");
 
                 synchronized(gameObjectMap) {
                     ServerEventHandler.handleObjectMoveEvent(eventInfo, this);
