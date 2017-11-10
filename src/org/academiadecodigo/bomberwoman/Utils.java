@@ -1,11 +1,17 @@
 package org.academiadecodigo.bomberwoman;
 
 import java.io.IOException;
+import java.net.Socket;
 
 /**
  * Created by codecadet on 06/11/17.
  */
 public class Utils {
+
+    public static void connectTo(String host, int port) throws IOException {
+
+        new Socket(host, port);
+    }
 
     public static int wrapAround(int value, int min, int max) {
 

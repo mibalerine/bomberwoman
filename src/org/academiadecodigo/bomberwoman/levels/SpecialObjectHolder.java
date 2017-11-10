@@ -140,7 +140,7 @@ public class SpecialObjectHolder {
         return getStringAt(gameObjects, x, y).equals(".");
     }
 
-    private GameObject getObjectAct(Collection<GameObject> gameObjects, int x, int y) {
+    public GameObject getObjectAct(Collection<GameObject> gameObjects, int x, int y) {
 
         Iterator<GameObject> iterator = gameObjects.iterator();
         while(iterator.hasNext()) {

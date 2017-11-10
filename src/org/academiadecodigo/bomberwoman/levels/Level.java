@@ -7,12 +7,12 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
-import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
 import java.io.*;
 import java.net.InetAddress;
+import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -247,7 +247,32 @@ public class Level {
 
     private void join(Screen screen, Map<Integer, GameObject> gameObjectMap) {
 
+        //
+        int initialX = 53;
 
+        StringBuilder ipAddress = new StringBuilder();
+
+        for(int x = 0; x < 15; x++) {
+
+            GameObject gameObject = specialObjectHolder.getObjectAct(gameObjectMap.values(), initialX + x, 30);
+
+            if(gameObject == null) {
+
+                continue;
+            }
+
+            ipAddress.append(gameObject.getRepresentation());
+        }
+
+        try {
+
+            Utils.connectTo(ipAddress.toString(), Constants.PORT);
+        }
+        catch(IOException e) {
+
+            System.out.println("Invalid IP");
+            Game.getInstance().refreshRenderThread();
+        }
     }
 
     private void host(Screen screen, Map<Integer, GameObject> gameObjectMap) {

@@ -82,4 +82,10 @@ public class GameObject {
 
         representation = s;
     }
+
+    @Override
+    public String toString() {
+
+        return getDrawInfo();
+    }
 }
