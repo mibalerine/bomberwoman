@@ -233,11 +233,20 @@ public class Level {
         //int number = specialObjectHolder.getNumberOnInput();
         if(screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-            System.out.println("INITIALIZE A SERVER THREAD HERE");
+            host();
         }
         else {
 
-            System.out.println("Im inside a join?");
+            join();
         }
+    }
+
+    private void join() {
+
+
+    }
+
+    private void host() {
+
     }
 }
