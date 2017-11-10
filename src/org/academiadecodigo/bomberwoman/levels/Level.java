@@ -278,7 +278,7 @@ public class Level {
     private void host(Screen screen, Map<Integer, GameObject> gameObjectMap) {
 
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
-        new Thread(new ServerThread(2)).start();
+        new Thread(new ServerThread(1)).start();
 
         Game.getInstance().connectTo("localhost");
     }

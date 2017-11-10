@@ -2,7 +2,6 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
-import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.events.PlayerAssignEvent;
@@ -26,25 +25,20 @@ import java.util.concurrent.Executors;
  */
 public class ServerThread implements Runnable {
 
-    private ServerSocket serverSocket;
-
-    private int numberOfPlayers;
-
-    private Socket[] clientConnections;
-
-    private ExecutorService threadPool;
-
     private final Map<Integer, GameObject> gameObjectMap;
-
+    private final int[][] PLAYER_SPAWN_POSITIONS = { { 1,
+            1 },
+            { Game.WIDTH - 2,
+                    Game.HEIGHT - 2 },
+            { Game.WIDTH - 2,
+                    1 },
+            { 1,
+                    Game.HEIGHT - 2 } };
+    private ServerSocket serverSocket;
+    private int numberOfPlayers;
+    private Socket[] clientConnections;
+    private ExecutorService threadPool;
     private Integer id;
-
-    private final int[][] PLAYER_SPAWN_POSITIONS = {
-            { 1, 1 },
-            { Game.WIDTH - 2, 1 },
-            { 1, Game.HEIGHT - 2 },
-            { Game.WIDTH - 2, Game.HEIGHT - 2}
-    };
-
     private int nextPlayerPosition = 0;
 
     public ServerThread(int numberOfPlayers) {
@@ -84,10 +78,10 @@ public class ServerThread implements Runnable {
             try {
 
                 clientConnections[numberOfConnections] = serverSocket.accept();
-                System.out.println("Client connected");
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections], this));
 
-                synchronized (gameObjectMap) {
+                synchronized(gameObjectMap) {
+
                     sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
 
                     int[] playerPosition = PLAYER_SPAWN_POSITIONS[nextPlayerPosition++];
@@ -95,7 +89,8 @@ public class ServerThread implements Runnable {
                     id++;
                 }
 
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
                 e.printStackTrace();
             }
 
@@ -105,7 +100,7 @@ public class ServerThread implements Runnable {
 
     private void startGame() {
 
-        broadcast("start");
+        //broadcast("start");
     }
 
     private void sendMessage(Socket clientSocket, String message) {
@@ -116,14 +111,14 @@ public class ServerThread implements Runnable {
             out.write(message + "\n");
             out.flush();
 
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
             System.out.println("Socket closed: " + e.getMessage());
         }
     }
 
     public void broadcast(String message) {
 
-        System.out.println("Broadcast: " + message);
         for(Socket s : clientConnections) {
 
             sendMessage(s, message);
@@ -164,9 +159,9 @@ public class ServerThread implements Runnable {
 
     private void createGameObjects() {
 
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
 
-            for (GameObject go : gameObjectMap.values()) {
+            for(GameObject go : gameObjectMap.values()) {
                 broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY()).toString());
             }
 
@@ -206,19 +201,9 @@ public class ServerThread implements Runnable {
             switch(objectChar) {
 
                 case Constants.BRICK_CHAR:
-                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.BRICK, x, y));
-                    broadcast(new ObjectSpawnEvent(GameObjectType.BRICK, id, x, y).toString());
-                    break;
-
                 case Constants.PLAYER_CHAR:
-                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, x, y));
-                    broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, id, x, y).toString());
-
-                    break;
-
                 case Constants.WALL_CHAR:
-                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.WALL, x, y));
-                    broadcast(new ObjectSpawnEvent(GameObjectType.WALL, id, x, y).toString());
+                    spawnObject(GameObjectType.byChar(objectChar), x, y);
                     break;
 
                 default:
@@ -227,5 +212,11 @@ public class ServerThread implements Runnable {
 
             id++;
         }
+    }
+
+    private void spawnObject(GameObjectType gameObjectType, int x, int y) {
+
+        gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
+        broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y).toString());
     }
 }
