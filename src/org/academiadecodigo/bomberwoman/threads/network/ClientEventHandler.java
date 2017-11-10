@@ -62,6 +62,5 @@ public class ClientEventHandler {
     public static void handlePlayerAssignEvent(String[] eventInfo, Game game) {
 
         game.setPlayerId(Integer.parseInt(eventInfo[2]));
-
     }
 }

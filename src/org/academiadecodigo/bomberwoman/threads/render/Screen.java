@@ -97,7 +97,7 @@ public class Screen {
             }
             else if(key == Keys.ENTER) {
 
-                level.pressedEnter();
+                level.pressedEnter(this, gameObjectMap);
                 return;
             }
         }

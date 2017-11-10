@@ -10,10 +10,11 @@
 
 # Todo
 - Bomb;
-- Player;
-- Events
+- Collision detector with flames (Bomb);
 
 # Doing
+- Events
+- Player;
 - Screen (miro);
 - Client
 - LogicThread (milena);
@@ -22,7 +23,7 @@
 
 # Done
 - Menus;
-- Level.java, line:52, make the IP auto-appear
+- Level.java
 - RenderThread (miro);
 - GameObject;
 - InputThread (milena);

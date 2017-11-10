@@ -7,8 +7,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Game game = new Game();
-        game.start();
+        Game.getInstance().start();
         //new Thread(new ServerThread(2)).start();
     }
 }
