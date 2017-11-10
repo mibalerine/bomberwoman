@@ -43,11 +43,12 @@ public class Game {
 
         Utils.rawMode();
 
+        renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
+        executorService.submit(renderThread);
+
         networkThread = new NetworkThread("localhost", this);
         executorService.submit(networkThread);
 
-        renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
-        executorService.submit(renderThread);
 
         executorService.submit(new InputThread(this));
 
@@ -86,6 +87,11 @@ public class Game {
     public void refreshRenderThread() {
 
         renderThread.refresh();
+    }
+
+    public void setPlayerId(int id) {
+
+        logicThread.setPlayerId(id);
     }
 
     public Map<Integer, GameObject> getGameObjects() {

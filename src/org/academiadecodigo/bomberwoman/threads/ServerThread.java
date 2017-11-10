@@ -1,9 +1,11 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
+import org.academiadecodigo.bomberwoman.events.PlayerAssignEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
@@ -34,6 +36,15 @@ public class ServerThread implements Runnable {
     private Map<Integer, GameObject> gameObjectMap;
 
     private Integer id;
+
+    private final int[][] PLAYER_SPAWN_POSITIONS = {
+            { 1, 1 },
+            { Game.WIDTH - 2, 1 },
+            { 1, Game.HEIGHT - 2 },
+            { Game.WIDTH - 2, Game.HEIGHT - 2}
+    };
+
+    private int nextPlayerPosition = 0;
 
     public ServerThread(int numberOfPlayers) {
 
@@ -74,9 +85,17 @@ public class ServerThread implements Runnable {
                 clientConnections[numberOfConnections] = serverSocket.accept();
                 System.out.println("Client connected");
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections]));
-            }
-            catch(IOException e) {
 
+                synchronized (gameObjectMap) {
+                    sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
+
+                    int[] playerPosition = PLAYER_SPAWN_POSITIONS[nextPlayerPosition++];
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, playerPosition[0], playerPosition[1]));
+                    id++;
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
             numberOfConnections++;
@@ -86,6 +105,19 @@ public class ServerThread implements Runnable {
     private void startGame() {
 
         broadcast("start");
+    }
+
+    private void sendMessage(Socket clientSocket, String message) {
+
+        try {
+            PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
+
+            out.write(message + "\n");
+            out.flush();
+
+        } catch (IOException e) {
+            System.out.println("Socket closed: " + e.getMessage());
+        }
     }
 
     public void broadcast(String message) {
@@ -139,6 +171,14 @@ public class ServerThread implements Runnable {
     }
 
     private void createGameObjects() {
+
+        synchronized (gameObjectMap) {
+
+            for (GameObject go : gameObjectMap.values()) {
+                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY()).toString());
+            }
+
+        }
 
         try {
 

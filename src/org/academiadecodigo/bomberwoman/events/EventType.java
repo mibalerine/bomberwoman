@@ -7,5 +7,6 @@ public enum EventType {
 
     OBJECT_SPAWN,
     OBJECT_MOVE,
-    OBJECT_DESTROY
+    OBJECT_DESTROY,
+    PLAYER_ID
 }

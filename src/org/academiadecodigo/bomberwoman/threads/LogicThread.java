@@ -18,12 +18,11 @@ public class LogicThread implements Runnable {
 
     private NetworkThread networkThread;
     private final Map<Integer, GameObject> gameObjects;
-    private Player player;
+    private int playerId;
 
-    public LogicThread(NetworkThread networkThread, Map<Integer, GameObject> gameObjectMap, Player player) {
+    public LogicThread(NetworkThread networkThread, Map<Integer, GameObject> gameObjectMap) {
         this.networkThread = networkThread;
         gameObjects = gameObjectMap;
-        this.player = player;
     }
 
     @Override
@@ -34,80 +33,86 @@ public class LogicThread implements Runnable {
 
     public void keyPressed(Keys keyPressed) {
 
+        GameObject go = gameObjects.get(playerId);
+
         switch(keyPressed) {
 
             case UP:
-                moveUp();
+                moveUp(go);
                 break;
             case DOWN:
-                moveDown();
+                moveDown(go);
                 break;
             case RIGHT:
-                moveRight();
+                moveRight(go);
                 break;
             case LEFT:
-                moveLeft();
+                moveLeft(go);
                 break;
             case PLACE_BOMB:
-                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, player.getX(), player.getY()).toString());
+                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getX(), go.getY()).toString());
                 break;
             case ENTER:
                 break;
         }
     }
 
-    private void moveUp() {
-        if (!checkMove(Direction.UP)) {
+    private void moveUp(GameObject go) {
+        if (!checkMove(Direction.UP, go)) {
             return;
         }
 
-        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.UP)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.UP)).toString());
     }
 
-    private void moveDown() {
-        if (!checkMove(Direction.DOWN)) {
+    private void moveDown(GameObject go) {
+        if (!checkMove(Direction.DOWN, go)) {
             return;
         }
 
-        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.DOWN)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.DOWN)).toString());
     }
 
-    private void moveRight() {
-        if (!checkMove(Direction.RIGHT)) {
+    private void moveRight(GameObject go) {
+        if (!checkMove(Direction.RIGHT, go)) {
             return;
         }
 
-        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.RIGHT)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.RIGHT)).toString());
     }
 
-    private void moveLeft() {
-        if (!checkMove(Direction.LEFT)) {
+    private void moveLeft(GameObject go) {
+        if (!checkMove(Direction.LEFT, go)) {
             return;
         }
 
-        networkThread.sendMessage((new ObjectMoveEvent(player, Direction.LEFT)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.LEFT)).toString());
     }
 
-    private boolean checkMove(Direction direction) {
+    private boolean checkMove(Direction direction, GameObject go) {
 
         int vertical = direction.getVertical();
         int horizontal = direction.getHorizontal();
 
-        if (!(player.getX() + horizontal > 0) || !(player.getX() + horizontal < Game.WIDTH) ||
-                !(player.getY() + vertical > 0) || !(player.getY() + vertical < Game.HEIGHT)) {
+        if (!(go.getX() + horizontal > 0) || !(go.getX() + horizontal < Game.WIDTH) ||
+                !(go.getY() + vertical > 0) || !(go.getY() + vertical < Game.HEIGHT)) {
             return false;
         }
 
         synchronized (gameObjects) {
 
-            for (GameObject go : gameObjects.values()) {
+            for (GameObject gObj : gameObjects.values()) {
 
-                if (player.getX() + horizontal == go.getX() && player.getY() + vertical == go.getY()) {
+                if (gObj.getX() + horizontal == gObj.getX() && gObj.getY() + vertical == gObj.getY()) {
                     return false;
                 }
             }
 
             return true;
         }
+    }
+
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 }

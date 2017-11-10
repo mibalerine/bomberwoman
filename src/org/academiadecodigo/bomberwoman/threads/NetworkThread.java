@@ -84,7 +84,7 @@ public class NetworkThread implements Runnable {
 
                 handleEvent(line);
 
-            } catch (IOException e) {
+            } catch (Exception e) {
 
                 Utils.bufferedMode();
                 System.out.println("I'm out bitch");
@@ -115,6 +115,10 @@ public class NetworkThread implements Runnable {
 
             case OBJECT_DESTROY:
                 ClientEventHandler.handleObjectDestroyEvent(eventInfo, game);
+                break;
+
+            case PLAYER_ID:
+                ClientEventHandler.handlePlayerAssignEvent(eventInfo, game);
                 break;
         }
 
