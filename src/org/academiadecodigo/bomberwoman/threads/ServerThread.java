@@ -1,6 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
@@ -35,6 +36,15 @@ public class ServerThread implements Runnable {
     private Map<Integer, GameObject> gameObjectMap;
 
     private Integer id;
+
+    private final int[][] PLAYER_SPAWN_POSITIONS = {
+            { 1, 1 },
+            { Game.WIDTH - 2, 1 },
+            { 1, Game.HEIGHT - 2 },
+            { Game.WIDTH - 2, Game.HEIGHT - 2}
+    };
+
+    private int nextPlayerPosition = 0;
 
     public ServerThread(int numberOfPlayers) {
 
@@ -77,7 +87,9 @@ public class ServerThread implements Runnable {
 
                 synchronized (gameObjectMap) {
                     sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
-                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, 0, 0));
+
+                    int[] playerPosition = PLAYER_SPAWN_POSITIONS[nextPlayerPosition++];
+                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, playerPosition[0], playerPosition[1]));
                     id++;
                 }
 
