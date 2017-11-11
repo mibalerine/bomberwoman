@@ -4,6 +4,10 @@ import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 
+import java.sql.Time;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by miro on 04-11-2017.
  */
@@ -97,7 +101,7 @@ class ScreenFrame {
         return y == 0 || y == height() - 1;
     }
 
-    private int width() {
+    int width() {
 
         if(cells == null) {
 
@@ -106,7 +110,7 @@ class ScreenFrame {
         return cells.length;
     }
 
-    private int height() {
+    int height() {
 
         if(cells == null) {
 

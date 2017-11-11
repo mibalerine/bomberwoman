@@ -70,6 +70,10 @@ public class Screen {
         this.gameObjectMap = gameObjectMap;
         this.level = new Level(level, gameObjectMap);
         init(this.level.getWidth(), this.level.getHeight());
+
+        Game.WIDTH = this.level.getWidth();
+        Game.HEIGHT = this.level.getHeight();
+
         update();
         Game.getInstance().refreshRenderThread();
     }
