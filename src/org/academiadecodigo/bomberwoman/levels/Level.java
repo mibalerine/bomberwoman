@@ -293,7 +293,7 @@ public class Level {
 
         try {
 
-            Game.getInstance().getServerThread().spawnObject(GameObjectType.BRICK, id++, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY());
+            Game.getInstance().getServerThread().spawnObject(GameObjectType.BRICK, id++, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY(), true);
             specialObjectHolder.getPlayerPointer().translate(0, 1);
         } catch (NullPointerException e) {
 

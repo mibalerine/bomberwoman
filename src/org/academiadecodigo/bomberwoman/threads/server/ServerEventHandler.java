@@ -3,9 +3,7 @@ package org.academiadecodigo.bomberwoman.threads.server;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
-import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
@@ -31,7 +29,7 @@ public abstract class ServerEventHandler {
         int x = Integer.parseInt(eventInfo[4]);
         int y = Integer.parseInt(eventInfo[5]);
 
-        serverThread.spawnObject(GameObjectType.values()[objectTypeNum], id, x, y);
+        serverThread.spawnObject(GameObjectType.values()[objectTypeNum], id, x, y, true);
         return ++id;
     }
 

@@ -26,7 +26,15 @@ public class ClientEventHandler {
             int id = Integer.parseInt(eventInfo[3]);
             int x = Integer.parseInt(eventInfo[4]);
             int y = Integer.parseInt(eventInfo[5]);
+
+            boolean shouldRefresh = Boolean.valueOf(eventInfo[6]);
+
             spawnObject(goType, id, x, y, game);
+
+            if (!shouldRefresh) {
+
+                return;
+            }
 
             game.refreshRenderThread();
         } catch (Exception e) {
