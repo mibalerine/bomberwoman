@@ -1,5 +1,7 @@
 package org.academiadecodigo.bomberwoman;
 
+import org.academiadecodigo.bomberwoman.threads.ServerThread;
+
 import java.io.IOException;
 import java.net.Socket;
 
@@ -75,5 +77,11 @@ public class Utils {
         bufferedMode();
         clearScreen();
         System.exit(0);
+    }
+
+    public static void hostAndConnect(int numbersOfPlayers) {
+
+        Game.getInstance().submitTask(new ServerThread(numbersOfPlayers));
+        Game.getInstance().connectTo("localhost");
     }
 }

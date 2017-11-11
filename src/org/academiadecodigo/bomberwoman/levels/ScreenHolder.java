@@ -2,7 +2,6 @@ package org.academiadecodigo.bomberwoman.levels;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
-import org.omg.CORBA.NO_PERMISSION;
 
 import static org.academiadecodigo.bomberwoman.Constants.NO_LEVEL_CREATED;
 import static org.academiadecodigo.bomberwoman.Constants.QUIT_GAME;
@@ -13,11 +12,11 @@ import static org.academiadecodigo.bomberwoman.Constants.QUIT_GAME;
 public enum ScreenHolder {
 
     SPLASH("/menu/Splash", 1, 1, 1),
-    MENU_MAIN("/menu/MenuMain", NO_LEVEL_CREATED, 2, QUIT_GAME),
+    MENU_MAIN("/menu/MenuMain", 6, 2, QUIT_GAME),
     MENU_MP_MAIN("/menu/MenuMPMain", 3, 4, MENU_MAIN.ordinal()),
     MENU_MP_HOST("/menu/MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
     MENU_MP_JOIN("/menu/MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
-    MENU_MP_WAIT_CLIENT("/menu/MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal()),
+    /*5*/MENU_MP_WAIT_CLIENT("/menu/MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal()),
     LEVEL_1("/levels/level1", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
     LEVEL_0("/levels/level0", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED);
 

@@ -243,11 +243,11 @@ public class Level {
         }
         else {
 
-            join(screen, gameObjectMap);
+            join(gameObjectMap);
         }
     }
 
-    private void join(Screen screen, Map<Integer, GameObject> gameObjectMap) {
+    private void join(Map<Integer, GameObject> gameObjectMap) {
 
         //
         int initialX = 53;
@@ -266,18 +266,15 @@ public class Level {
             ipAddress.append(gameObject.getRepresentation());
         }
 
-        System.out.println(ipAddress.toString());
         Game.getInstance().connectTo(ipAddress.toString());
         Game.getInstance().refreshRenderThread();
-
     }
 
     private void host(Screen screen) {
 
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
-        Game.getInstance().submitTask(new ServerThread(2));
 
-        Game.getInstance().connectTo("localhost");
+        Utils.hostAndConnect(2);
     }
 
     public void pressedKeyOnWaitClient(Keys key, Collection<GameObject> objects) {

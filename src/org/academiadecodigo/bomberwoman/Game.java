@@ -58,7 +58,7 @@ public class Game {
 
         networkThread = new NetworkThread("localhost", this);
 
-        renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
+        renderThread = new RenderThread(ScreenHolder.SPLASH, 250, gameObjects);
 
         logicThread = new LogicThread(gameObjects);
         logicThread.setNetworkThread(networkThread);
