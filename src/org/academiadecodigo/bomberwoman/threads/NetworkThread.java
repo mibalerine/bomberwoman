@@ -93,10 +93,7 @@ public class NetworkThread implements Runnable {
 
     private void handleEvent(String eventPacket) {
 
-
-
         if(!Event.isEvent(eventPacket)) {
-            System.out.println("Invalid event");
             return;
         }
 
@@ -107,7 +104,6 @@ public class NetworkThread implements Runnable {
         switch(eType) {
 
             case LEVEL_START:
-                System.out.println("NEW LEVEL");
                 ClientEventHandler.handleLevelStartEvent();
                 break;
 

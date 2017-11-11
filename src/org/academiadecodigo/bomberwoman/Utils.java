@@ -8,11 +8,6 @@ import java.net.Socket;
  */
 public class Utils {
 
-    public static void connectTo(String host, int port) throws IOException {
-
-        new Socket(host, port);
-    }
-
     public static int wrapAround(int value, int min, int max) {
 
         if(value > max) {

@@ -49,8 +49,7 @@ public class Level {
         try {
 
             init();
-        }
-        catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
 
             e.printStackTrace();
         }
@@ -58,7 +57,7 @@ public class Level {
 
     private void init() throws FileNotFoundException {
 
-        synchronized(letters) {
+        synchronized (letters) {
 
             letters.clear();
         }
@@ -71,10 +70,10 @@ public class Level {
 
             //////////////////////////////////////////////////SETUP THE DIMENSIONS OF THIS FILE
             List<String> lines = new ArrayList<>();
-            while((line = reader.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
 
                 lines.add(line);
-                if(width == 0) {
+                if (width == 0) {
 
                     width = line.toCharArray().length;
                 }
@@ -82,8 +81,7 @@ public class Level {
             height = lines.size();
 
             populateCells(lines);
-        }
-        catch(IOException e) {
+        } catch (IOException e) {
 
             e.printStackTrace();
         }
@@ -94,46 +92,43 @@ public class Level {
         id = 0;
         String[][] cells = new String[width][height];
         int lineIndex = 0;
-        for(String line : lineList) {
+        for (String line : lineList) {
 
             char[] chars = line.toCharArray();
 
             int i = 0;
-            for(char c : chars) {
+            for (char c : chars) {
 
                 cells[i++][lineIndex] = c + "";
             }
             lineIndex++;
         }
 
-        synchronized(letters) {
+        synchronized (letters) {
 
-            for(int y = 0; y < cells[0].length; y++) {
+            for (int y = 0; y < cells[0].length; y++) {
 
-                for(int x = 0; x < cells.length; x++) {
+                for (int x = 0; x < cells.length; x++) {
 
-                    if(cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
+                    if (cells[x][y] == null || cells[x][y].equals(" ") || cells[x][y].equals("~")) {
 
                         continue;
                     }
 
                     GameObject gameObject = null;
-                    if(cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
+                    if (cells[x][y].equals(Constants.OBJECT_CONTROL_MENU)) {
 
                         gameObject = new MenuSelect(id, x, y);
                         specialObjectHolder.setMenuSelect((MenuSelect) gameObject);
-                    }
-                    else if(cells[x][y].equals(Constants.OBJECT_INPUT_TEXT)) {
+                    } else if (cells[x][y].equals(Constants.OBJECT_INPUT_TEXT)) {
 
                         gameObject = new UserInput(id, x, y, 11);
                         specialObjectHolder.setUserInput((UserInput) gameObject);
-                    }
-                    else if(cells[x][y].equals(Constants.OBJECT_PLAYER_POINTER)) {
+                    } else if (cells[x][y].equals(Constants.OBJECT_PLAYER_POINTER)) {
 
                         gameObject = new PlayerPointer(id, x, y);
                         specialObjectHolder.setPlayerPointer((PlayerPointer) gameObject);
-                    }
-                    else {
+                    } else {
 
                         gameObject = new GameObject(id, cells[x][y], x, y);
                     }
@@ -142,9 +137,9 @@ public class Level {
                 }
             }
 
-            if(screenHolder == ScreenHolder.MENU_MP_HOST) {
+            if (screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-                if(!setupIP) {
+                if (!setupIP) {
 
                     setupIP = true;
                     replaceIP();
@@ -160,11 +155,11 @@ public class Level {
             String IP = InetAddress.getLocalHost().getHostAddress();
             int x = specialObjectHolder.getMenuSelect().getX();
             int y = specialObjectHolder.getMenuSelect().getY();
-            for(String s : IP.split("\\.")) {
+            for (String s : IP.split("\\.")) {
 
                 char[] chars = s.toCharArray();
 
-                for(char c : chars) {
+                for (char c : chars) {
 
                     letters.put(id, new GameObject(id, c + "", x++, y));
                     id++;
@@ -174,8 +169,7 @@ public class Level {
             }
             letters.remove(id - 1);
             specialObjectHolder.setMenuSelect(null);
-        }
-        catch(UnknownHostException e) {
+        } catch (UnknownHostException e) {
 
             e.printStackTrace();
             Utils.quitGame();
@@ -218,7 +212,7 @@ public class Level {
 
     public void erase() {
 
-        synchronized(letters) {
+        synchronized (letters) {
 
             specialObjectHolder.erase(letters);
         }
@@ -226,7 +220,7 @@ public class Level {
 
     public void inputNumber(int num) {
 
-        synchronized(letters) {
+        synchronized (letters) {
 
             id = specialObjectHolder.inputNumber(num, id, letters);
         }
@@ -235,11 +229,10 @@ public class Level {
     public void pressedEnter(Screen screen, Map<Integer, GameObject> gameObjectMap) {
 
         //int number = specialObjectHolder.getNumberOnInput();
-        if(screenHolder == ScreenHolder.MENU_MP_HOST) {
+        if (screenHolder == ScreenHolder.MENU_MP_HOST) {
 
             host(screen, gameObjectMap);
-        }
-        else {
+        } else {
 
             join(screen, gameObjectMap);
         }
@@ -252,11 +245,11 @@ public class Level {
 
         StringBuilder ipAddress = new StringBuilder();
 
-        for(int x = 0; x < 15; x++) {
+        for (int x = 0; x < 15; x++) {
 
             GameObject gameObject = specialObjectHolder.getObjectAct(gameObjectMap.values(), initialX + x, 30);
 
-            if(gameObject == null) {
+            if (gameObject == null) {
 
                 continue;
             }
@@ -264,15 +257,9 @@ public class Level {
             ipAddress.append(gameObject.getRepresentation());
         }
 
-        try {
+        Game.getInstance().connectTo(ipAddress.toString());
+        Game.getInstance().refreshRenderThread();
 
-            Utils.connectTo(ipAddress.toString(), Constants.PORT);
-        }
-        catch(IOException e) {
-
-            System.out.println("Invalid IP");
-            Game.getInstance().refreshRenderThread();
-        }
     }
 
     private void host(Screen screen, Map<Integer, GameObject> gameObjectMap) {
