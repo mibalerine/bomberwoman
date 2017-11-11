@@ -44,8 +44,6 @@ public class NetworkThread implements Runnable {
 
     public void establishConnection(String idAddress) {
 
-        System.out.println(idAddress);
-
         try {
 
             clientSocket = new Socket(idAddress, Constants.PORT);

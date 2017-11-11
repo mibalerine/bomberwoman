@@ -44,7 +44,6 @@ public class Game {
 
             instance = new Game();
             instance.executorService = Executors.newFixedThreadPool(4);
-
         }
 
         return instance;
