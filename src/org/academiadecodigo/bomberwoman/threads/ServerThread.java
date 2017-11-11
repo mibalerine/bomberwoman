@@ -247,4 +247,16 @@ public class ServerThread implements Runnable {
             broadcast(new ObjectDestroyEvent(id));
         }
     }
+
+    public boolean allowMorePlayers() {
+
+        for(Socket s : clientConnections) {
+
+            if(s == null) {
+
+                return true;
+            }
+        }
+        return false;
+    }
 }

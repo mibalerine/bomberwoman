@@ -24,7 +24,7 @@ public class RenderThread implements Runnable {
 
     public RenderThread(ScreenHolder startingLevel, int timeToUpdate, Map<Integer, GameObject> gameObjectMap) {
 
-        this.screen = new Screen(this);
+        this.screen = new Screen();
 
         changeScreen(startingLevel, gameObjectMap);
 

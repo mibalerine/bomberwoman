@@ -239,7 +239,7 @@ public class Level {
         //int number = specialObjectHolder.getNumberOnInput();
         if(screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-            host(screen, gameObjectMap);
+            host(screen);
         }
         else {
 
@@ -278,10 +278,10 @@ public class Level {
         }
     }
 
-    private void host(Screen screen, Map<Integer, GameObject> gameObjectMap) {
+    private void host(Screen screen) {
 
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
-        Game.getInstance().submitTask(new ServerThread(1));
+        Game.getInstance().submitTask(new ServerThread(2));
 
         Game.getInstance().connectTo("localhost");
     }
@@ -290,15 +290,12 @@ public class Level {
 
         if(key == Keys.PLACE_BOMB) {
 
-            try {
+            if(!Game.getInstance().getServerThread().allowMorePlayers()) {
 
-                Game.getInstance().getServerThread().spawnObject(GameObjectType.BRICK, id++, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY());
-                specialObjectHolder.getPlayerPointer().translate(0, 1);
+                return;
             }
-            catch(NullPointerException e) {
 
-                e.printStackTrace();
-            }
+            addNewClient();
         }
         else {
 
@@ -308,18 +305,27 @@ public class Level {
 
     private void addNewClient() {
 
+        try {
+
+            Game.getInstance().getServerThread().spawnObject(GameObjectType.BRICK, id++, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY());
+            specialObjectHolder.getPlayerPointer().translate(0, 1);
+        }
+        catch(NullPointerException e) {
+
+            e.printStackTrace();
+        }
     }
 
     private void removeClient(Collection<GameObject> objects) {
 
-        specialObjectHolder.getPlayerPointer().translate(0, -1);
-        GameObject gameObject = specialObjectHolder.getObjectAct(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY());
+        GameObject gameObject = specialObjectHolder.getObjectAct(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
+
         if(gameObject == null) {
 
-            specialObjectHolder.getPlayerPointer().translate(0, 1);
             return;
         }
 
+        specialObjectHolder.getPlayerPointer().translate(0, -1);
         Game.getInstance().getServerThread().removeObject(gameObject.getId());
     }
 }

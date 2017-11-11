@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman.threads.render;
 
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.levels.Level;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
@@ -13,18 +14,11 @@ import java.util.Map;
  */
 public class Screen {
 
-    private final RenderThread renderThread;
-
     private Level level;
 
     private ScreenFrame screenFrame;
 
     private Map<Integer, GameObject> gameObjectMap;
-
-    public Screen(RenderThread renderThread) {
-
-        this.renderThread = renderThread;
-    }
 
     public void init(int width, int height) {
 
@@ -77,7 +71,7 @@ public class Screen {
         this.level = new Level(level, gameObjectMap);
         init(this.level.getWidth(), this.level.getHeight());
         update();
-        renderThread.refresh();
+        Game.getInstance().refreshRenderThread();
     }
 
     public void keyPressed(Keys key) {
@@ -124,7 +118,7 @@ public class Screen {
             }
         }
 
-        renderThread.refresh();
+        Game.getInstance().refreshRenderThread();
     }
 
     private ScreenHolder chooseMenu(int choice) {
