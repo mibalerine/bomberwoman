@@ -4,6 +4,7 @@ import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 
 import java.util.Map;
 
@@ -12,7 +13,14 @@ import java.util.Map;
  */
 public class ClientEventHandler {
 
+    public static void handleLevelStartEvent() {
+        System.out.println("123");
+        Game.getInstance().changeScreen(ScreenHolder.LEVEL_0);
+    }
+
     public static void handleObjectSpawnEvent(String[] eventInfo, Game game) {
+
+        try {
 
         GameObjectType goType = GameObjectType.values()[Integer.parseInt(eventInfo[2])];
         int id = Integer.parseInt(eventInfo[3]);
@@ -20,6 +28,9 @@ public class ClientEventHandler {
         int y = Integer.parseInt(eventInfo[5]);
         spawnObject(goType, id, x, y, game);
         game.refreshRenderThread();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private static void spawnObject(GameObjectType goType, int id, int x, int y, Game game) {

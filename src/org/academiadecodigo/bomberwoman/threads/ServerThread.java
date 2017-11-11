@@ -69,8 +69,6 @@ public class ServerThread implements Runnable {
 
         waitClientConnections();
 
-        createGameObjects();
-
         startGame();
     }
 
@@ -105,8 +103,8 @@ public class ServerThread implements Runnable {
 
     private void startGame() {
 
-        //broadcast("start");
-        //TODO change everyone's screen to load the level1.txt
+        broadcast(new LevelStartEvent().toString());
+        createGameObjects();
     }
 
     private void sendMessage(Socket clientSocket, String message) {
@@ -264,13 +262,14 @@ public class ServerThread implements Runnable {
 
         threadPool.shutdown();
 
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
             try {
 
-            s.close();
+                s.close();
 
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
                 e.getMessage();
             }
         }

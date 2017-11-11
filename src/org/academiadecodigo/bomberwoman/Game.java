@@ -128,4 +128,9 @@ public class Game {
 
         return serverThread;
     }
+
+    public void changeScreen(ScreenHolder screenHolder) {
+
+        renderThread.changeScreen(screenHolder, gameObjects);
+    }
 }

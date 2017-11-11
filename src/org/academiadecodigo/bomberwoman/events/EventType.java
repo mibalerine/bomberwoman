@@ -8,5 +8,6 @@ public enum EventType {
     OBJECT_SPAWN,
     OBJECT_MOVE,
     OBJECT_DESTROY,
-    PLAYER_ID
+    PLAYER_ID,
+    LEVEL_START
 }
