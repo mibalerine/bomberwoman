@@ -87,7 +87,7 @@ public class SpecialObjectHolder {
             return;
         }
 
-        GameObject gameObject = getObjectAct(letters.values(), userInput.getX() - 1, userInput.getY() - 1);
+        GameObject gameObject = getObjectAt(letters.values(), userInput.getX() - 1, userInput.getY() - 1);
 
         if(gameObject == null) {
 
@@ -110,7 +110,7 @@ public class SpecialObjectHolder {
             userInput.setPosition(userInput.getX() + 1, userInput.getY());
         }
 
-        GameObject gameObject = getObjectAct(letters.values(), userInput.getX(), userInput.getY() - 1);
+        GameObject gameObject = getObjectAt(letters.values(), userInput.getX(), userInput.getY() - 1);
 
         if(gameObject == null) {
 
@@ -125,7 +125,7 @@ public class SpecialObjectHolder {
 
     private String getStringAt(Collection<GameObject> gameObjects, int x, int y) {
 
-        GameObject go = getObjectAct(gameObjects, x, y);
+        GameObject go = getObjectAt(gameObjects, x, y);
 
         if(go == null) {
 
@@ -140,7 +140,7 @@ public class SpecialObjectHolder {
         return getStringAt(gameObjects, x, y).equals(".");
     }
 
-    public GameObject getObjectAct(Collection<GameObject> gameObjects, int x, int y) {
+    GameObject getObjectAt(Collection<GameObject> gameObjects, int x, int y) {
 
         Iterator<GameObject> iterator = gameObjects.iterator();
         while(iterator.hasNext()) {
