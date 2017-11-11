@@ -1,4 +1,4 @@
-~                                                                                                                     ~
+~                                                                                                                      ~
 
                                                                                                           WW
                                                                                                         0xKWW
@@ -35,7 +35,6 @@
                                                        PORT: 8080
 
 
-
                                     +Press [ENTER] to host game and [TAB] to go back+
 
-~                                                                                                                     ~
+~                                                                                                                      ~

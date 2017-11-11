@@ -21,5 +21,8 @@ public class Constants {
     public static String OBJECT_BOMB = "δ";
     public static String OBJECT_FLAME = "Θ";
 
+    public static final int TERMINAL_WIDTH = 120;
+    public static final int TERMINAL_HEIGHT = 40;
+
     public static int PORT = 8080;
 }

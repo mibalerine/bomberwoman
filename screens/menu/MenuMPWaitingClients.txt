@@ -1,4 +1,4 @@
-~                                                                                                                     ~
+~                                                                                                                      ~
 
                                                                                                           WW
                                                                                                         0xKWW
@@ -35,7 +35,6 @@
 
 
 
-
                                     +Press [ENTER] to start game and [TAB] to go back+
 
-~                                                                                                                     ~
+~                                                                                                                      ~

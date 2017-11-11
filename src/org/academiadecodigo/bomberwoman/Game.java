@@ -15,9 +15,9 @@ import java.util.concurrent.Executors;
  */
 public class Game {
 
-    public static int WIDTH = 120;
+    public static int WIDTH = Constants.TERMINAL_WIDTH;
 
-    public static int HEIGHT = 40;
+    public static int HEIGHT = Constants.TERMINAL_HEIGHT;
 
     private static Game instance;
 

@@ -4,10 +4,6 @@ import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 
-import java.sql.Time;
-import java.util.Timer;
-import java.util.TimerTask;
-
 /**
  * Created by miro on 04-11-2017.
  */
@@ -57,13 +53,31 @@ class ScreenFrame {
 
             content.setLength(0);        //This clears the content of the StringBuilder
             content.append("\r");
-            for(int y = 0; y < height(); y++) {
+            for(int y = 0; y < Constants.TERMINAL_HEIGHT; y++) {
 
-                for(int x = 0; x < width(); x++) {
+                for(int x = 0; x < Constants.TERMINAL_WIDTH; x++) {
 
-                    content.append(cells[x][y]);
+                    int winX = x;
+                    int winY = y;
+                    int startGameWindowX = (Constants.TERMINAL_WIDTH - width()) / 2;
+                    int startGameWindowY = (Constants.TERMINAL_HEIGHT - height()) / 2;
+                    if(width() != Constants.TERMINAL_WIDTH && height() != Constants.TERMINAL_HEIGHT) {
 
-                    if(x == width() - 1) {
+                        System.out.println("Trying " + startGameWindowX + ", " + winX);
+
+                        if(startGameWindowX - winX >= 0) {
+
+                            winX = startGameWindowX - winX;
+                        }
+
+                        if(startGameWindowY - winY >= 0) {
+
+                            winY = startGameWindowY - winY;
+                        }
+                    }
+                    content.append(cells[winX][winY]);
+
+                    if(x == Constants.TERMINAL_WIDTH - 1) {
 
                         content.append("\r");
                         content.append(System.lineSeparator());
