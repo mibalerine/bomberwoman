@@ -116,4 +116,8 @@ public class Game {
 
         executorService.submit(networkThread);
     }
+
+    public void changeScreen(ScreenHolder screenHolder) {
+        renderThread.changeScreen(screenHolder, gameObjects);
+    }
 }

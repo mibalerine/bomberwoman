@@ -25,7 +25,7 @@ public abstract class Event {
         //event, eventType.ordinal(), triggerID(?), posX, posY
 
         String[] stringComponents = string.split(SEPARATOR);
-        if(stringComponents.length < 3) {
+        if(stringComponents.length < 2) {
 
             return false;
         }

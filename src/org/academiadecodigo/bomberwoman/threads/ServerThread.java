@@ -3,6 +3,7 @@ package org.academiadecodigo.bomberwoman.threads;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.events.EventType;
+import org.academiadecodigo.bomberwoman.events.LevelStartEvent;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.events.PlayerAssignEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
@@ -64,8 +65,6 @@ public class ServerThread implements Runnable {
 
         waitClientConnections();
 
-        createGameObjects();
-
         startGame();
     }
 
@@ -100,8 +99,8 @@ public class ServerThread implements Runnable {
 
     private void startGame() {
 
-        //broadcast("start");
-        //TODO change everyone's screen to load the level1.txt
+        broadcast(new LevelStartEvent().toString());
+        createGameObjects();
     }
 
     private void sendMessage(Socket clientSocket, String message) {
@@ -218,6 +217,7 @@ public class ServerThread implements Runnable {
     public void spawnObject(GameObjectType gameObjectType, int id, int x, int y) {
 
         gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
+        System.out.println(gameObjectMap.get(id));
         broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y).toString());
     }
 

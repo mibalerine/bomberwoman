@@ -23,8 +23,9 @@ public class GameObjectFactory {
             case WALL:
                 return new Wall(id, x, y);
 
+            case EMPTY:
             default:
-                return null;
+                return new GameObject(id, " ", x, y);
         }
     }
 
