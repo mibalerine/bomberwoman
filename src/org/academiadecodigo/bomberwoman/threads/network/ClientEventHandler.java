@@ -73,7 +73,7 @@ public class ClientEventHandler {
 
         synchronized (gameObjectMap) {
 
-            System.out.println(gameObjectMap.remove(Integer.parseInt(eventInfo[2])));
+            gameObjectMap.remove(Integer.parseInt(eventInfo[2]));
         }
 
         game.refreshRenderThread();

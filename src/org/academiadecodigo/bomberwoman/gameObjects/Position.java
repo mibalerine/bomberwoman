@@ -29,7 +29,7 @@ public class Position {
 
     public void setX(int x) {
 
-        this.x = Utils.clamp(x, 1, Game.WIDTH - 3);
+        this.x = Utils.clamp(x, 1, Game.WIDTH - 2);
     }
 
     public void translate(int x, int y) {
