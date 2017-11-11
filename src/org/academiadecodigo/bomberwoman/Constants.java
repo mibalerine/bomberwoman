@@ -13,6 +13,8 @@ public class Constants {
     public static final String WALL_CHAR = "▓";
     public static final String WALL_CHAR_BLUE = "█";
 
+    public static final int INVALID_POSITION = -100;
+
     public static String CORNER_CHAR = "▓";
 
     public static String OBJECT_CONTROL_MENU = ">";

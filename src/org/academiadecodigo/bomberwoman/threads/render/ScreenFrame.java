@@ -63,19 +63,28 @@ class ScreenFrame {
                     int startGameWindowY = (Constants.TERMINAL_HEIGHT - height()) / 2;
                     if(width() != Constants.TERMINAL_WIDTH && height() != Constants.TERMINAL_HEIGHT) {
 
-                        System.out.println("Trying " + startGameWindowX + ", " + winX);
+                        boolean pointIsAboveStartX = winX >= startGameWindowX;
+                        boolean pointIsBelowEndX = winX - startGameWindowX < width();
 
-                        if(startGameWindowX - winX >= 0) {
+                        boolean pointIsAboveStartY = winY >= startGameWindowY;
+                        boolean pointIsBelowEndY = winY - startGameWindowY < height();
 
-                            winX = startGameWindowX - winX;
+                        winX -= startGameWindowX;
+                        winY -= startGameWindowY;
+
+                        if(!(pointIsAboveStartX && pointIsBelowEndX)) {
+
+                            winX = Constants.INVALID_POSITION;
                         }
 
-                        if(startGameWindowY - winY >= 0) {
+                        if(!(pointIsAboveStartY && pointIsBelowEndY)) {
 
-                            winY = startGameWindowY - winY;
+                            winY = Constants.INVALID_POSITION;
                         }
                     }
-                    content.append(cells[winX][winY]);
+                    boolean isInvalidX = winX == Constants.INVALID_POSITION;
+                    boolean isInvalidY = winY == Constants.INVALID_POSITION;
+                    content.append(isInvalidX || isInvalidY ? " " : cells[winX][winY]);
 
                     if(x == Constants.TERMINAL_WIDTH - 1) {
 
