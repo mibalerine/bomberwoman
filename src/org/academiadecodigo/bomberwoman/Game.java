@@ -90,6 +90,10 @@ public class Game {
 
     public void refreshRenderThread() {
 
+        if(renderThread == null) {
+
+            return;
+        }
         renderThread.refresh();
     }
 

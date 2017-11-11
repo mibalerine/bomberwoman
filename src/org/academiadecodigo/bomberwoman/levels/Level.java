@@ -243,7 +243,6 @@ public class Level {
         }
         else {
 
-            System.out.println("Level.pressedEnter");
             join(screen, gameObjectMap);
         }
     }
@@ -273,7 +272,7 @@ public class Level {
         }
         catch(IOException e) {
 
-            System.out.println("Invalid IP");
+            System.out.println("Could not connect - " + e.getMessage());
             Game.getInstance().refreshRenderThread();
         }
     }

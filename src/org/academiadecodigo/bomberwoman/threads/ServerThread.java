@@ -261,6 +261,7 @@ public class ServerThread implements Runnable {
     }
 
     public void closeServer() {
+
         threadPool.shutdown();
 
         for (Socket s : clientConnections) {
