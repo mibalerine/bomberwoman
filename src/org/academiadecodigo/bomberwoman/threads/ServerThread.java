@@ -26,14 +26,11 @@ public class ServerThread implements Runnable {
 
     private final Map<Integer, GameObject> gameObjectMap;
 
-    private final int[][] PLAYER_SPAWN_POSITIONS = {{1,
-            1},
-            {Game.WIDTH - 2,
-                    Game.HEIGHT - 2},
-            {Game.WIDTH - 2,
-                    1},
-            {1,
-                    Game.HEIGHT - 2}};
+    private final int[][] PLAYER_SPAWN_POSITIONS = {
+            {1, 1},
+            {Game.WIDTH - 2, Game.HEIGHT - 2},
+            {Game.WIDTH - 2, 1},
+            {1, Game.HEIGHT - 2}};
 
     private ServerSocket serverSocket;
 

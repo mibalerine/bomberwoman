@@ -9,20 +9,17 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
  */
 public class UserInput extends GameObject {
 
-    private int originalX, originalY;
+    private int originalX;
 
     private int maxTranslationsUP;
 
     private int upTransitions;
-
-    //4 down, 4 right
 
     public UserInput(int id, int x, int y, int maxTranslationUP) {
 
         super(id, Constants.OBJECT_INPUT_TEXT, x, y, ConsoleColors.GREEN);
 
         originalX = x;
-        originalY = y;
         this.maxTranslationsUP = maxTranslationUP;
     }
 
@@ -43,11 +40,6 @@ public class UserInput extends GameObject {
 
         int distanceToSource = getX() + increment - originalX;
 
-        if(getY() != originalY) {
-
-            return false;
-        }
-
         return distanceToSource == 3 || distanceToSource == 7 || distanceToSource == 11;
     }
 
@@ -56,7 +48,7 @@ public class UserInput extends GameObject {
         return onLastCell() && upTransitions >= 0;
     }
 
-    public boolean onLastCell() {
+    private boolean onLastCell() {
 
         return upTransitions - 1 < maxTranslationsUP;
     }

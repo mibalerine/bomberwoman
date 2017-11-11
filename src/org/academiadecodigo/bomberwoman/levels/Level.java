@@ -256,7 +256,7 @@ public class Level {
 
         for(int x = 0; x < 15; x++) {
 
-            GameObject gameObject = specialObjectHolder.getObjectAt(gameObjectMap.values(), initialX + x, 30);
+            GameObject gameObject = specialObjectHolder.getObjectAt(gameObjectMap.values(), initialX + x, 33);
 
             if(gameObject == null) {
 
@@ -266,6 +266,7 @@ public class Level {
             ipAddress.append(gameObject.getRepresentation());
         }
 
+        System.out.println(ipAddress.toString());
         Game.getInstance().connectTo(ipAddress.toString());
         Game.getInstance().refreshRenderThread();
 
