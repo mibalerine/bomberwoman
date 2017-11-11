@@ -27,5 +27,6 @@ public class Constants {
     public static final int TERMINAL_HEIGHT = 40;
 
     public static int PORT = 8080;
-    public static int DELAY = 3000;
+    public static int BOMB_DELAY = 3000;
+    public static int BOMB_RADIUS = 2;
 }

@@ -1,7 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads.server;
 
-import com.sun.org.apache.bcel.internal.generic.ObjectType;
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
@@ -12,7 +12,6 @@ import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
 
 /**
  * Created by codecadet on 09/11/2017.
@@ -76,9 +75,12 @@ public abstract class ServerEventHandler {
             @Override
             public void run() {
 
-                bomb.explode();
+                if(Game.getInstance().getServerThread().getGameObjectMap().get(bomb.getId()) != null) {
+
+                    bomb.explode();
+                }
             }
-        }, Constants.DELAY);
+        }, Constants.BOMB_DELAY);
     }
 
 }

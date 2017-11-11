@@ -2,11 +2,14 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.*;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.gameObjects.Wall;
+import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.server.ClientDispatcher;
 import org.academiadecodigo.bomberwoman.threads.server.ServerEventHandler;
@@ -199,7 +202,7 @@ public class ServerThread implements Runnable {
                 y++;
             }
 
-            if(temp == null){
+            if (temp == null) {
 
                 return;
             }
@@ -261,6 +264,34 @@ public class ServerThread implements Runnable {
             }
         }
         return false;
+    }
+
+    public void explode(int x, int y, int blastRadius) {
+
+        for (Direction d : Direction.values()) {
+            propagateExplosion(d, x, y, blastRadius);
+        }
+    }
+
+    private void propagateExplosion(Direction dir, int x, int y, int blastRadius) {
+
+        int horizontal = dir.getHorizontal();
+        int vertical = dir.getVertical();
+
+        for (int i = 1; i < blastRadius + 1; i++) {
+
+            GameObject gameObject = Utils.getObjectAt(gameObjectMap.values(), x + i * horizontal, y + i * vertical);
+
+            if (gameObject instanceof Wall) {
+                break;
+            }
+
+            if(gameObject instanceof Destroyable) {
+                removeObject(gameObject.getId());
+                break;
+            }
+
+        }
     }
 
     public void closeServer() {

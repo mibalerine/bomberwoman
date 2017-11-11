@@ -1,7 +1,7 @@
 package org.academiadecodigo.bomberwoman.gameObjects;
 
+import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
-import org.academiadecodigo.bomberwoman.events.ObjectDestroyEvent;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
 /**
@@ -9,8 +9,16 @@ import org.academiadecodigo.bomberwoman.threads.ServerThread;
  */
 public class Bomb extends GameObject{
 
-    public Bomb(int id, int x, int y) {
+    private int blastRadius;
+
+    public Bomb (int id, int x, int y, int blastRadius) {
         super(id, GameObjectType.BOMB.getDrawChar(), x, y);
+        this.blastRadius = blastRadius;
+    }
+
+    public Bomb(int id, int x, int y) {
+
+        this(id, x, y, Constants.BOMB_RADIUS);
     }
 
     public void explode() {
@@ -18,6 +26,7 @@ public class Bomb extends GameObject{
         ServerThread serverThread = Game.getInstance().getServerThread();
 
         serverThread.removeObject(getId());
+        serverThread.explode(getX(), getY(), blastRadius );
     }
 
 

@@ -13,6 +13,7 @@ public enum GameObjectType {
     WALL(Constants.WALL_CHAR),
     BLUE_WALL(Constants.WALL_CHAR_BLUE),
     BOMB(Constants.OBJECT_BOMB),
+    FLAME(Constants.OBJECT_FLAME),
     EMPTY(" ");
 
     private String drawChar;
