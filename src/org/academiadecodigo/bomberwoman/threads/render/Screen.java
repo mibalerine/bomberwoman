@@ -102,19 +102,26 @@ public class Screen {
             }
         }
 
-        switch(key) {
-            case UP:
-                level.moveSelectionBy(-2);
-                break;
-            case DOWN:
-                level.moveSelectionBy(2);
-                break;
-            case ENTER:
-                changeFrame(chooseMenu(level.choice()), gameObjectMap);
-                break;
-            case TAB:
-                changeFrame(chooseMenu(2), gameObjectMap);
-                break;
+        if(level.getScreenHolder() == ScreenHolder.MENU_MP_WAIT_CLIENT) {
+
+            level.pressedKeyOnWaitClient(key, gameObjectMap.values());
+        }
+        else {
+
+            switch(key) {
+                case UP:
+                    level.moveSelectionBy(-2);
+                    break;
+                case DOWN:
+                    level.moveSelectionBy(2);
+                    break;
+                case ENTER:
+                    changeFrame(chooseMenu(level.choice()), gameObjectMap);
+                    break;
+                case TAB:
+                    changeFrame(chooseMenu(2), gameObjectMap);
+                    break;
+            }
         }
 
         renderThread.refresh();
