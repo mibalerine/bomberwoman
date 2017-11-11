@@ -29,7 +29,7 @@ public class GameObjectFactory {
                 return new GameObject(id, Constants.WALL_CHAR, x, y, ConsoleColors.BLUE);
 
             case BOMB:
-                return new GameObject(id, Constants.OBJECT_BOMB, x ,y);
+                return new Bomb(id, x ,y);
 
             case EMPTY:
             default:

@@ -22,4 +22,5 @@ public class Constants {
     public static String OBJECT_FLAME = "Θ";
 
     public static int PORT = 8080;
+    public static int DELAY = 3000;
 }
