@@ -10,7 +10,6 @@ public class Main {
     public static void main(String[] args) {
 
         Game.getInstance().start();
-        //new Thread(new ServerThread(2)).start();
-        Game.getInstance().submitTask(new ServerThread(2));
+        //Game.getInstance().submitTask(new ServerThread(2));
     }
 }
