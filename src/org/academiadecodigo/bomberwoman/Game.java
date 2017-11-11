@@ -1,12 +1,8 @@
 package org.academiadecodigo.bomberwoman;
 
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.Player;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
-import org.academiadecodigo.bomberwoman.threads.InputThread;
-import org.academiadecodigo.bomberwoman.threads.LogicThread;
-import org.academiadecodigo.bomberwoman.threads.NetworkThread;
-import org.academiadecodigo.bomberwoman.threads.RenderThread;
+import org.academiadecodigo.bomberwoman.threads.*;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.HashMap;
@@ -31,9 +27,11 @@ public class Game {
 
     private RenderThread renderThread;
 
-    private ExecutorService executorService;
-
     private NetworkThread networkThread;
+
+    private ServerThread serverThread;
+
+    private ExecutorService executorService;
 
     private Game() {
 
@@ -92,6 +90,10 @@ public class Game {
 
     public void refreshRenderThread() {
 
+        if(renderThread == null) {
+
+            return;
+        }
         renderThread.refresh();
     }
 
@@ -107,6 +109,11 @@ public class Game {
 
     public void submitTask(Runnable thread) {
 
+        if(thread instanceof ServerThread) {
+
+            serverThread = (ServerThread) thread;
+        }
+
         executorService.submit(thread);
     }
 
@@ -117,7 +124,13 @@ public class Game {
         executorService.submit(networkThread);
     }
 
+    public ServerThread getServerThread() {
+
+        return serverThread;
+    }
+
     public void changeScreen(ScreenHolder screenHolder) {
+
         renderThread.changeScreen(screenHolder, gameObjects);
     }
 }

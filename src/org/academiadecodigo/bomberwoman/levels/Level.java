@@ -4,17 +4,19 @@ import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
+import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
 import java.io.*;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -231,7 +233,7 @@ public class Level {
         //int number = specialObjectHolder.getNumberOnInput();
         if (screenHolder == ScreenHolder.MENU_MP_HOST) {
 
-            host(screen, gameObjectMap);
+            host(screen);
         } else {
 
             join(screen, gameObjectMap);
@@ -260,13 +262,55 @@ public class Level {
         Game.getInstance().connectTo(ipAddress.toString());
         Game.getInstance().refreshRenderThread();
 
+
     }
 
-    private void host(Screen screen, Map<Integer, GameObject> gameObjectMap) {
+    private void host(Screen screen) {
 
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
-        new Thread(new ServerThread(1)).start();
+        Game.getInstance().submitTask(new ServerThread(2));
 
         Game.getInstance().connectTo("localhost");
+    }
+
+    public void pressedKeyOnWaitClient(Keys key, Collection<GameObject> objects) {
+
+        if (key == Keys.PLACE_BOMB) {
+
+            if (!Game.getInstance().getServerThread().allowMorePlayers()) {
+
+                return;
+            }
+
+            addNewClient();
+        } else {
+
+            removeClient(objects);
+        }
+    }
+
+    private void addNewClient() {
+
+        try {
+
+            Game.getInstance().getServerThread().spawnObject(GameObjectType.BRICK, id++, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY());
+            specialObjectHolder.getPlayerPointer().translate(0, 1);
+        } catch (NullPointerException e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    private void removeClient(Collection<GameObject> objects) {
+
+        GameObject gameObject = specialObjectHolder.getObjectAct(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
+
+        if (gameObject == null) {
+
+            return;
+        }
+
+        specialObjectHolder.getPlayerPointer().translate(0, -1);
+        Game.getInstance().getServerThread().removeObject(gameObject.getId());
     }
 }

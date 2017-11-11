@@ -2,10 +2,7 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
-import org.academiadecodigo.bomberwoman.events.EventType;
-import org.academiadecodigo.bomberwoman.events.LevelStartEvent;
-import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
-import org.academiadecodigo.bomberwoman.events.PlayerAssignEvent;
+import org.academiadecodigo.bomberwoman.events.*;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
@@ -27,6 +24,7 @@ import java.util.concurrent.Executors;
 public class ServerThread implements Runnable {
 
     private final Map<Integer, GameObject> gameObjectMap;
+
     private final int[][] PLAYER_SPAWN_POSITIONS = { { 1,
             1 },
             { Game.WIDTH - 2,
@@ -35,11 +33,17 @@ public class ServerThread implements Runnable {
                     1 },
             { 1,
                     Game.HEIGHT - 2 } };
+
     private ServerSocket serverSocket;
+
     private int numberOfPlayers;
+
     private Socket[] clientConnections;
+
     private ExecutorService threadPool;
+
     private Integer id;
+
     private int nextPlayerPosition = 0;
 
     public ServerThread(int numberOfPlayers) {
@@ -49,6 +53,7 @@ public class ServerThread implements Runnable {
         threadPool = Executors.newFixedThreadPool(numberOfPlayers);
         gameObjectMap = new Hashtable<>();
         id = 4000;
+        System.out.println("SERVER THREAD IS RUNNING");
     }
 
     @Override
@@ -106,20 +111,30 @@ public class ServerThread implements Runnable {
     private void sendMessage(Socket clientSocket, String message) {
 
         try {
+            System.out.println(clientSocket + "<<<");
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 
             out.write(message + "\n");
             out.flush();
-
         }
         catch(IOException e) {
             System.out.println("Socket closed: " + e.getMessage());
         }
     }
 
+    public void broadcast(Event event) {
+
+        broadcast(event.toString());
+    }
+
     public void broadcast(String message) {
 
         for(Socket s : clientConnections) {
+
+            if(s == null) {
+
+                continue;
+            }
 
             sendMessage(s, message);
         }
@@ -216,21 +231,46 @@ public class ServerThread implements Runnable {
 
     public void spawnObject(GameObjectType gameObjectType, int id, int x, int y) {
 
-        gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
-        System.out.println(gameObjectMap.get(id));
-        broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y).toString());
+        synchronized(gameObjectMap) {
+
+            gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
+            broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y));
+        }
+    }
+
+    public void removeObject(int id) {
+
+        synchronized(gameObjectMap) {
+
+            gameObjectMap.remove(id);
+            broadcast(new ObjectDestroyEvent(id));
+        }
+    }
+
+    public boolean allowMorePlayers() {
+
+        for(Socket s : clientConnections) {
+
+            if(s == null) {
+
+                return true;
+            }
+        }
+        return false;
     }
 
     public void closeServer() {
+
         threadPool.shutdown();
 
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
             try {
 
-            s.close();
+                s.close();
 
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
                 e.getMessage();
             }
         }
