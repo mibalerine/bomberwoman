@@ -53,6 +53,7 @@ public class ServerThread implements Runnable {
         threadPool = Executors.newFixedThreadPool(numberOfPlayers);
         gameObjectMap = new Hashtable<>();
         id = 4000;
+        System.out.println("SERVER THREAD IS RUNNING");
     }
 
     @Override
