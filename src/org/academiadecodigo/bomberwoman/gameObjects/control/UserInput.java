@@ -11,11 +11,9 @@ public class UserInput extends GameObject {
 
     private int originalX, originalY;
 
-    private int endIPX;
-
     private int maxTranslationsUP;
 
-    private int upTransitions, downTransitions;
+    private int upTransitions;
 
     //4 down, 4 right
 
@@ -24,7 +22,6 @@ public class UserInput extends GameObject {
         super(id, Constants.OBJECT_INPUT_TEXT, x, y, ConsoleColors.GREEN);
 
         originalX = x;
-        endIPX = originalX + 15;
         originalY = y;
         this.maxTranslationsUP = maxTranslationUP;
     }
@@ -32,36 +29,20 @@ public class UserInput extends GameObject {
     @Override
     public void translate(int x, int y) {
 
+        if(upTransitions + x - 1> maxTranslationsUP || upTransitions + x < 0) {
+
+            return;
+        }
+
+        upTransitions += x;
+
         super.translate(x, y);
-
-        if(!movedDown()) {
-
-            upTransitions += x;
-
-            if(upTransitions - 1 >= maxTranslationsUP) {
-
-                super.setPosition(originalX + 4, originalY + 4);
-            }
-        }
-        else {
-
-            downTransitions += x;
-
-            if(downTransitions <= 0) {
-
-                super.setPosition(endIPX, originalY);
-            }
-        }
-    }
-
-    private boolean movedDown() {
-
-        return getY() == originalY + 4;
     }
 
     public boolean underADot(int increment) {
 
         int distanceToSource = getX() + increment - originalX;
+
         if(getY() != originalY) {
 
             return false;
@@ -72,6 +53,11 @@ public class UserInput extends GameObject {
 
     public boolean canMove() {
 
-        return downTransitions < 5;
+        return onLastCell() && upTransitions >= 0;
+    }
+
+    public boolean onLastCell() {
+
+        return upTransitions - 1 < maxTranslationsUP;
     }
 }

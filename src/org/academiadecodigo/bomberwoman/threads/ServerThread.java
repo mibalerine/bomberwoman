@@ -194,6 +194,7 @@ public class ServerThread implements Runnable {
 
                 i++;
             }
+
         } catch (IOException e) {
 
             System.out.println("Could not read file: " + e.getMessage());
