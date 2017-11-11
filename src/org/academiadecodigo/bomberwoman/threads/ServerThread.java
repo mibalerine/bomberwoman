@@ -259,4 +259,19 @@ public class ServerThread implements Runnable {
         }
         return false;
     }
+
+    public void closeServer() {
+        threadPool.shutdown();
+
+        for (Socket s : clientConnections) {
+
+            try {
+
+            s.close();
+
+            } catch (IOException e) {
+                e.getMessage();
+            }
+        }
+    }
 }
