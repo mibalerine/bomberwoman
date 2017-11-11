@@ -133,4 +133,12 @@ public class Game {
 
         renderThread.changeScreen(screenHolder, gameObjects);
     }
+
+    public void clearScreen() {
+
+        synchronized (gameObjects) {
+
+            gameObjects.clear();
+        }
+    }
 }
