@@ -2,6 +2,7 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.*;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
@@ -168,10 +169,12 @@ public class ServerThread implements Runnable {
 
     private void createGameObjects() {
 
+        GameObject temp = null;
         synchronized (gameObjectMap) {
 
             for (GameObject go : gameObjectMap.values()) {
-                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY()).toString());
+                temp = go;
+                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY(), false).toString());
             }
         }
 
@@ -185,22 +188,30 @@ public class ServerThread implements Runnable {
 
             while ((line = bf.readLine()) != null) {
 
-                String[] chars = line.split("");
+                char[] chars = line.toCharArray();
 
                 for (int j = 0; j < chars.length; j++) {
 
-                    createObject(chars[j], i, j);
+                    createObject(chars[j] + "", i, j, false);
                 }
 
                 i++;
             }
+
+            if(temp == null){
+
+                return;
+            }
+
+            broadcast(new ObjectMoveEvent(temp, Direction.STAY));
+
         } catch (IOException e) {
 
             System.out.println("Could not read file: " + e.getMessage());
         }
     }
 
-    private void createObject(String objectChar, int x, int y) {
+    private void createObject(String objectChar, int x, int y, boolean shouldRefresh) {
 
         synchronized (gameObjectMap) {
 
@@ -209,7 +220,7 @@ public class ServerThread implements Runnable {
                 case Constants.BRICK_CHAR:
                 case Constants.PLAYER_CHAR:
                 case Constants.WALL_CHAR:
-                    spawnObject(GameObjectType.byChar(objectChar), id, x, y);
+                    spawnObject(GameObjectType.byChar(objectChar), id, x, y, shouldRefresh);
                     break;
 
                 default:
@@ -220,12 +231,12 @@ public class ServerThread implements Runnable {
         }
     }
 
-    public void spawnObject(GameObjectType gameObjectType, int id, int x, int y) {
+    public void spawnObject(GameObjectType gameObjectType, int id, int x, int y, boolean shouldRefresh) {
 
         synchronized (gameObjectMap) {
 
             gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
-            broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y));
+            broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y, shouldRefresh));
         }
     }
 

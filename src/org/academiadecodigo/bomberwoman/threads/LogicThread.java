@@ -24,10 +24,9 @@ public class LogicThread implements Runnable {
         gameObjects = gameObjectMap;
     }
 
+    //TODO: logic thread por enquanto nao faz nada no run()
     @Override
     public void run() {
-
-
     }
 
     public void keyPressed(Keys keyPressed) {
