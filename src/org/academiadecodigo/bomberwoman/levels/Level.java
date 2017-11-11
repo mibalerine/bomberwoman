@@ -256,7 +256,7 @@ public class Level {
 
         for(int x = 0; x < 15; x++) {
 
-            GameObject gameObject = specialObjectHolder.getObjectAt(gameObjectMap.values(), initialX + x, 33);
+            GameObject gameObject = Utils.getObjectAt(gameObjectMap.values(), initialX + x, 33);
 
             if(gameObject == null) {
 
@@ -312,7 +312,7 @@ public class Level {
 
     private void removeClient(Collection<GameObject> objects) {
 
-        GameObject gameObject = specialObjectHolder.getObjectAt(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
+        GameObject gameObject = Utils.getObjectAt(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
 
         if(gameObject == null) {
 
@@ -325,6 +325,6 @@ public class Level {
 
     public GameObject getObjectAt(Collection<GameObject> gameObjects, int x, int y) {
 
-        return specialObjectHolder.getObjectAt(gameObjects, x, y);
+        return Utils.getObjectAt(gameObjects, x, y);
     }
 }

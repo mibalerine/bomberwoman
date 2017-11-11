@@ -1,7 +1,11 @@
 package org.academiadecodigo.bomberwoman;
 
+import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
+
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Created by codecadet on 06/11/17.
@@ -75,5 +79,20 @@ public class Utils {
         bufferedMode();
         clearScreen();
         System.exit(0);
+    }
+
+    public static GameObject getObjectAt(Collection<GameObject> gameObjects, int x, int y) {
+
+        Iterator<GameObject> iterator = gameObjects.iterator();
+        while(iterator.hasNext()) {
+
+            GameObject go = iterator.next();
+            if(go.getX() == x && go.getY() == y) {
+
+                return go;
+            }
+        }
+
+        return null;
     }
 }
