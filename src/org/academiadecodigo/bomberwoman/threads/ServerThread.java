@@ -159,6 +159,11 @@ public class ServerThread implements Runnable {
 
                     ServerEventHandler.handleObjectMoveEvent(eventInfo, this);
                     break;
+
+                case OBJECT_DESTROY:
+
+                    //ServerEventHandler.handleObjectDestroyEvent(eventInfo, this);
+                    break;
             }
         }
     }
@@ -226,12 +231,14 @@ public class ServerThread implements Runnable {
         }
     }
 
-    public void spawnObject(GameObjectType gameObjectType, int id, int x, int y, boolean shouldRefresh) {
+    public GameObject spawnObject(GameObjectType gameObjectType, int id, int x, int y, boolean shouldRefresh) {
 
         synchronized (gameObjectMap) {
 
-            gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
+            GameObject gameObject = GameObjectFactory.byType(id, gameObjectType, x, y);
+            gameObjectMap.put(id, gameObject);
             broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y, shouldRefresh));
+            return gameObject;
         }
     }
 

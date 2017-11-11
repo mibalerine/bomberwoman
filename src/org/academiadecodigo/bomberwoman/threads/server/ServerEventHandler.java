@@ -1,11 +1,18 @@
 package org.academiadecodigo.bomberwoman.threads.server;
 
+import com.sun.org.apache.bcel.internal.generic.ObjectType;
+import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
+import org.academiadecodigo.bomberwoman.gameObjects.Bomb;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
 
 /**
  * Created by codecadet on 09/11/2017.
@@ -25,11 +32,17 @@ public abstract class ServerEventHandler {
             return id;
         }
 
-        int objectTypeNum = Integer.parseInt(eventInfo[2]);
+        GameObjectType gameObjectType = GameObjectType.values()[Integer.parseInt(eventInfo[2])];
         int x = Integer.parseInt(eventInfo[4]);
         int y = Integer.parseInt(eventInfo[5]);
 
-        serverThread.spawnObject(GameObjectType.values()[objectTypeNum], id, x, y, true);
+        GameObject gameObject = serverThread.spawnObject(gameObjectType, id, x, y, true);
+
+        if(gameObjectType == GameObjectType.BOMB) {
+
+            setBombExplode((Bomb) gameObject);
+        }
+
         return ++id;
     }
 
@@ -54,4 +67,18 @@ public abstract class ServerEventHandler {
         gameObject.setPosition(x, y);
         serverThread.broadcast(new ObjectMoveEvent(gameObject, Direction.STAY).toString());
     }
+
+    public static void setBombExplode(final Bomb bomb) {
+
+        Timer timer = new Timer();
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                bomb.explode();
+            }
+        }, Constants.DELAY);
+    }
+
 }

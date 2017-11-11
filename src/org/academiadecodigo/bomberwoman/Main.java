@@ -11,5 +11,6 @@ public class Main {
 
         Game.getInstance().start();
         //new Thread(new ServerThread(2)).start();
+        Game.getInstance().submitTask(new ServerThread(2));
     }
 }

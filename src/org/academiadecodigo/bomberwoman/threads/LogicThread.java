@@ -49,7 +49,7 @@ public class LogicThread implements Runnable {
                 moveLeft(go);
                 break;
             case PLACE_BOMB:
-                networkThread.sendMessage(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getX(), go.getY()).toString());
+                placeBomb(go);
                 break;
             case ENTER:
                 break;
@@ -86,6 +86,11 @@ public class LogicThread implements Runnable {
         }
 
         networkThread.sendMessage((new ObjectMoveEvent(go, Direction.LEFT)).toString());
+    }
+
+    private void placeBomb(GameObject go) {
+
+        networkThread.sendMessage((new ObjectSpawnEvent(GameObjectType.BOMB, go.getX(), go.getY())).toString());
     }
 
     private boolean checkMove(Direction direction, GameObject go) {

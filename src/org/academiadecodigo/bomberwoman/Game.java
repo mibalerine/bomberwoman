@@ -43,6 +43,8 @@ public class Game {
         if(instance == null) {
 
             instance = new Game();
+            instance.executorService = Executors.newFixedThreadPool(4);
+
         }
 
         return instance;
