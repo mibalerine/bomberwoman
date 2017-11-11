@@ -220,4 +220,19 @@ public class ServerThread implements Runnable {
         gameObjectMap.put(id, GameObjectFactory.byType(id, gameObjectType, x, y));
         broadcast(new ObjectSpawnEvent(gameObjectType, id, x, y).toString());
     }
+
+    public void closeServer() {
+        threadPool.shutdown();
+
+        for (Socket s : clientConnections) {
+
+            try {
+
+            s.close();
+
+            } catch (IOException e) {
+                e.getMessage();
+            }
+        }
+    }
 }
