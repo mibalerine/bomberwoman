@@ -164,7 +164,6 @@ public class ServerThread implements Runnable {
                     break;
             }
         }
-
     }
 
     private void createGameObjects() {
@@ -192,7 +191,7 @@ public class ServerThread implements Runnable {
 
                 for (int x = 0; x < chars.length; x++) {
 
-                    createObject(chars[x] + "", x, y, false);
+                    createObject(chars[x] + "", x, y);
                 }
 
                 y++;
@@ -210,7 +209,7 @@ public class ServerThread implements Runnable {
         }
     }
 
-    private void createObject(String objectChar, int x, int y, boolean shouldRefresh) {
+    private void createObject(String objectChar, int x, int y) {
 
         synchronized (gameObjectMap) {
 
@@ -220,7 +219,7 @@ public class ServerThread implements Runnable {
                 case Constants.PLAYER_CHAR:
                 case Constants.WALL_CHAR:
                 case Constants.WALL_CHAR_BLUE:
-                    spawnObject(GameObjectType.byChar(objectChar), id, x, y, shouldRefresh);
+                    spawnObject(GameObjectType.byChar(objectChar), id, x, y, false);
                     break;
                 default:
                     return;
