@@ -8,6 +8,7 @@ import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.Bomb;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
 import java.util.Timer;
@@ -20,13 +21,13 @@ public abstract class ServerEventHandler {
 
     public static int handleObjectSpawnEvent(String[] eventInfo, Integer id, ServerThread serverThread) {
 
-        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
+        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
 
             System.out.println("not a number!");
             return id;
         }
 
-        if(!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
+        if (!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
             System.out.println("not a game object!");
             return id;
         }
@@ -37,9 +38,9 @@ public abstract class ServerEventHandler {
 
         GameObject gameObject = serverThread.spawnObject(gameObjectType, id, x, y, true);
 
-        if(gameObjectType == GameObjectType.BOMB) {
+        if (gameObjectType == GameObjectType.BOMB) {
 
-            setBombExplode((Bomb) gameObject);
+            setDestroyTimer((Bomb) gameObject, Constants.BOMB_DELAY);
         }
 
         return ++id;
@@ -47,7 +48,7 @@ public abstract class ServerEventHandler {
 
     public static void handleObjectMoveEvent(String[] eventInfo, ServerThread serverThread) {
 
-        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
+        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
 
             System.out.println("not a number!");
             return;
@@ -59,7 +60,7 @@ public abstract class ServerEventHandler {
 
         GameObject gameObject = serverThread.getGameObjectMap().get(id);
 
-        if(gameObject == null) {
+        if (gameObject == null) {
             return;
         }
 
@@ -67,7 +68,7 @@ public abstract class ServerEventHandler {
         serverThread.broadcast(new ObjectMoveEvent(gameObject, Direction.STAY).toString());
     }
 
-    public static void setBombExplode(final Bomb bomb) {
+    public static void setDestroyTimer(final GameObject object, int delay) {
 
         Timer timer = new Timer();
 
@@ -75,12 +76,18 @@ public abstract class ServerEventHandler {
             @Override
             public void run() {
 
-                if(Game.getInstance().getServerThread().getGameObjectMap().get(bomb.getId()) != null) {
+                if (Game.getInstance().getServerThread().getGameObjectMap().get(object.getId()) != null) {
 
-                    bomb.explode();
+                    if (object instanceof Bomb) {
+                        ((Bomb) object).explode();
+                    }
+
+                    else {
+                        Game.getInstance().getServerThread().removeObject(object.getId());
+                    }
                 }
             }
-        }, Constants.BOMB_DELAY);
+        }, delay);
     }
 
 }

@@ -29,4 +29,5 @@ public class Constants {
     public static int PORT = 8080;
     public static int BOMB_DELAY = 3000;
     public static int BOMB_RADIUS = 2;
+    public static int FLAME_DELAY = 500;
 }
