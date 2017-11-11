@@ -243,11 +243,11 @@ public class Level {
         }
         else {
 
-            join(screen, gameObjectMap);
+            join(gameObjectMap);
         }
     }
 
-    private void join(Screen screen, Map<Integer, GameObject> gameObjectMap) {
+    private void join(Map<Integer, GameObject> gameObjectMap) {
 
         //
         int initialX = 53;
@@ -256,7 +256,7 @@ public class Level {
 
         for(int x = 0; x < 15; x++) {
 
-            GameObject gameObject = specialObjectHolder.getObjectAt(gameObjectMap.values(), initialX + x, 33);
+            GameObject gameObject = Utils.getObjectAt(gameObjectMap.values(), initialX + x, 33);
 
             if(gameObject == null) {
 
@@ -266,18 +266,15 @@ public class Level {
             ipAddress.append(gameObject.getRepresentation());
         }
 
-        System.out.println(ipAddress.toString());
         Game.getInstance().connectTo(ipAddress.toString());
         Game.getInstance().refreshRenderThread();
-
     }
 
     private void host(Screen screen) {
 
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
-        Game.getInstance().submitTask(new ServerThread(2));
 
-        Game.getInstance().connectTo("localhost");
+        Utils.hostAndConnect(2);
     }
 
     public void pressedKeyOnWaitClient(Keys key, Collection<GameObject> objects) {
@@ -312,7 +309,7 @@ public class Level {
 
     private void removeClient(Collection<GameObject> objects) {
 
-        GameObject gameObject = specialObjectHolder.getObjectAt(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
+        GameObject gameObject = Utils.getObjectAt(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
 
         if(gameObject == null) {
 
@@ -325,6 +322,6 @@ public class Level {
 
     public GameObject getObjectAt(Collection<GameObject> gameObjects, int x, int y) {
 
-        return specialObjectHolder.getObjectAt(gameObjects, x, y);
+        return Utils.getObjectAt(gameObjects, x, y);
     }
 }

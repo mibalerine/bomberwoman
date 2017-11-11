@@ -1,12 +1,12 @@
 package org.academiadecodigo.bomberwoman.levels;
 
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Stack;
 
@@ -87,7 +87,7 @@ public class SpecialObjectHolder {
             return;
         }
 
-        GameObject gameObject = getObjectAt(letters.values(), userInput.getX() - 1, userInput.getY() - 1);
+        GameObject gameObject = Utils.getObjectAt(letters.values(), userInput.getX() - 1, userInput.getY() - 1);
 
         if(gameObject == null) {
 
@@ -110,7 +110,7 @@ public class SpecialObjectHolder {
             userInput.setPosition(userInput.getX() + 1, userInput.getY());
         }
 
-        GameObject gameObject = getObjectAt(letters.values(), userInput.getX(), userInput.getY() - 1);
+        GameObject gameObject = Utils.getObjectAt(letters.values(), userInput.getX(), userInput.getY() - 1);
 
         if(gameObject == null) {
 
@@ -125,7 +125,7 @@ public class SpecialObjectHolder {
 
     private String getStringAt(Collection<GameObject> gameObjects, int x, int y) {
 
-        GameObject go = getObjectAt(gameObjects, x, y);
+        GameObject go = Utils.getObjectAt(gameObjects, x, y);
 
         if(go == null) {
 
@@ -140,18 +140,5 @@ public class SpecialObjectHolder {
         return getStringAt(gameObjects, x, y).equals(".");
     }
 
-    GameObject getObjectAt(Collection<GameObject> gameObjects, int x, int y) {
 
-        Iterator<GameObject> iterator = gameObjects.iterator();
-        while(iterator.hasNext()) {
-
-            GameObject go = iterator.next();
-            if(go.getX() == x && go.getY() == y) {
-
-                return go;
-            }
-        }
-
-        return null;
-    }
 }

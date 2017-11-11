@@ -13,8 +13,4 @@ public class Brick extends GameObject implements Destroyable {
         super(id, GameObjectType.BRICK.getDrawChar(), x, y, ConsoleColors.RED);
     }
 
-    @Override
-    public void destroy() {
-
-    }
 }

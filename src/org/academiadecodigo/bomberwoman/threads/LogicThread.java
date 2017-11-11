@@ -8,6 +8,7 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.Player;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
+import org.academiadecodigo.bomberwoman.threads.logic.CollisionDetector;
 
 import java.util.Map;
 
@@ -97,22 +98,7 @@ public class LogicThread implements Runnable {
         int vertical = direction.getVertical();
         int horizontal = direction.getHorizontal();
 
-        if (!(go.getX() + horizontal > 0) || !(go.getX() + horizontal < Game.WIDTH) ||
-                !(go.getY() + vertical > 0) || !(go.getY() + vertical < Game.HEIGHT)) {
-            return false;
-        }
-
-        synchronized (gameObjects) {
-
-            for (GameObject gObj : gameObjects.values()) {
-
-                if (gObj.getX() + horizontal == gObj.getX() && gObj.getY() + vertical == gObj.getY()) {
-                    return false;
-                }
-            }
-
-            return true;
-        }
+        return CollisionDetector.canMove(go.getX() + horizontal, go.getY() + vertical);
     }
 
     public void setNetworkThread(NetworkThread networkThread) {

@@ -1,10 +1,10 @@
 package org.academiadecodigo.bomberwoman.threads.render;
 
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.levels.Level;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
-import org.academiadecodigo.bomberwoman.threads.RenderThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 
 import java.util.Map;
@@ -110,7 +110,15 @@ public class Screen {
                     level.moveSelectionBy(2);
                     break;
                 case ENTER:
-                    changeFrame(chooseMenu(level.choice()), gameObjectMap);
+                    ScreenHolder nextScreen = chooseMenu(level.choice());
+                    if(nextScreen == ScreenHolder.LEVEL_1) {
+
+                        Utils.hostAndConnect(1);
+                    }
+                    else {
+
+                        changeFrame(nextScreen, gameObjectMap);
+                    }
                     break;
                 case TAB:
                     changeFrame(chooseMenu(2), gameObjectMap);
