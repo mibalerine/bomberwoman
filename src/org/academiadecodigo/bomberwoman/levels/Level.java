@@ -266,6 +266,7 @@ public class Level {
             ipAddress.append(gameObject.getRepresentation());
         }
 
+        System.out.println(ipAddress.toString());
         Game.getInstance().connectTo(ipAddress.toString());
         Game.getInstance().refreshRenderThread();
     }

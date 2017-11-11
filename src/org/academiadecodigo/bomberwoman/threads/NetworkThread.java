@@ -37,16 +37,16 @@ public class NetworkThread implements Runnable {
     @Override
     public void run() {
 
-        establishConnection(ipAddress);
+        establishConnection();
 
         start();
     }
 
-    public void establishConnection(String idAddress) {
+    private void establishConnection() {
 
         try {
 
-            clientSocket = new Socket(idAddress, Constants.PORT);
+            clientSocket = new Socket(ipAddress, Constants.PORT);
             clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             clientWriter = new PrintWriter(clientSocket.getOutputStream());
         }
@@ -56,7 +56,7 @@ public class NetworkThread implements Runnable {
         }
     }
 
-    public void sendMessage(String message) {
+    void sendMessage(String message) {
 
         if(clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
 
