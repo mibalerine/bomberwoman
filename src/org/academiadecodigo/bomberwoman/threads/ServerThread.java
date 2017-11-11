@@ -111,7 +111,6 @@ public class ServerThread implements Runnable {
     private void sendMessage(Socket clientSocket, String message) {
 
         try {
-            System.out.println(clientSocket + "<<<");
             PrintWriter out = new PrintWriter(clientSocket.getOutputStream());
 
             out.write(message + "\n");
@@ -151,23 +150,21 @@ public class ServerThread implements Runnable {
 
         EventType eType = EventType.values()[eventId];
 
-        switch(eType) {
+        synchronized(gameObjectMap) {
 
-            case OBJECT_SPAWN:
+            switch(eType) {
 
-                synchronized(gameObjectMap) {
+                case OBJECT_SPAWN:
+
                     id = ServerEventHandler.handleObjectSpawnEvent(eventInfo, id, this);
-                }
 
-                break;
+                    break;
 
-            case OBJECT_MOVE:
-                System.out.println("moving");
+                case OBJECT_MOVE:
 
-                synchronized(gameObjectMap) {
                     ServerEventHandler.handleObjectMoveEvent(eventInfo, this);
-                }
-                break;
+                    break;
+            }
         }
 
     }

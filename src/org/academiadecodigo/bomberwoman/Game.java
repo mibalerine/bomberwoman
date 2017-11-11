@@ -67,7 +67,6 @@ public class Game {
         //executorService.submit(networkThread);
         executorService.submit(renderThread);
         executorService.submit(new InputThread(this));
-
     }
 
     public void keyPressed(Keys key) {
