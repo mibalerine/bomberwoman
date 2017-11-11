@@ -9,22 +9,22 @@ import org.academiadecodigo.bomberwoman.Constants;
 public enum GameObjectType {
 
     PLAYER(Constants.PLAYER_CHAR),
-    BRICK(ConsoleColors.RED + Constants.BRICK_CHAR),
-    WALL(ConsoleColors.WHITE + Constants.WALL_CHAR),
-    EMPTY(ConsoleColors.WHITE + " ");
+    BRICK(Constants.BRICK_CHAR),
+    WALL(Constants.WALL_CHAR),
+    EMPTY(" ");
 
     private String drawChar;
 
     GameObjectType(String drawChar) {
 
-        this.drawChar = drawChar + ConsoleColors.RESET;
+        this.drawChar = drawChar;
     }
 
     public static GameObjectType byChar(String c) {
 
-        for(GameObjectType gameObjectType : values()) {
+        for (GameObjectType gameObjectType : values()) {
 
-            if(gameObjectType.drawChar.equals(c)) {
+            if (gameObjectType.drawChar.equals(c)) {
 
                 return gameObjectType;
             }

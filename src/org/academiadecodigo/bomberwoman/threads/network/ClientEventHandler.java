@@ -22,12 +22,13 @@ public class ClientEventHandler {
 
         try {
 
-        GameObjectType goType = GameObjectType.values()[Integer.parseInt(eventInfo[2])];
-        int id = Integer.parseInt(eventInfo[3]);
-        int x = Integer.parseInt(eventInfo[4]);
-        int y = Integer.parseInt(eventInfo[5]);
-        spawnObject(goType, id, x, y, game);
-        game.refreshRenderThread();
+            GameObjectType goType = GameObjectType.values()[Integer.parseInt(eventInfo[2])];
+            int id = Integer.parseInt(eventInfo[3]);
+            int x = Integer.parseInt(eventInfo[4]);
+            int y = Integer.parseInt(eventInfo[5]);
+            spawnObject(goType, id, x, y, game);
+
+            game.refreshRenderThread();
         } catch (Exception e) {
             e.printStackTrace();
         }
