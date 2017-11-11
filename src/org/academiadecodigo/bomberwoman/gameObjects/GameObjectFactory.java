@@ -3,6 +3,8 @@ package org.academiadecodigo.bomberwoman.gameObjects;
 import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 
+import java.io.Console;
+
 import static org.academiadecodigo.bomberwoman.ConsoleColors.*;
 
 /**
@@ -25,6 +27,9 @@ public class GameObjectFactory {
 
             case BLUE_WALL:
                 return new GameObject(id, Constants.WALL_CHAR, x, y, ConsoleColors.BLUE);
+
+            case BOMB:
+                return new GameObject(id, Constants.OBJECT_BOMB, x ,y);
 
             case EMPTY:
             default:
