@@ -11,6 +11,7 @@ public enum GameObjectType {
     PLAYER(Constants.PLAYER_CHAR),
     BRICK(Constants.BRICK_CHAR),
     WALL(Constants.WALL_CHAR),
+    BLUE_WALL(Constants.WALL_CHAR_BLUE),
     EMPTY(" ");
 
     private String drawChar;

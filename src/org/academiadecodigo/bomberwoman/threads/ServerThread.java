@@ -184,18 +184,18 @@ public class ServerThread implements Runnable {
             BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
-            int i = 0;
+            int y = 0;
 
             while ((line = bf.readLine()) != null) {
 
                 char[] chars = line.toCharArray();
 
-                for (int j = 0; j < chars.length; j++) {
+                for (int x = 0; x < chars.length; x++) {
 
-                    createObject(chars[j] + "", i, j, false);
+                    createObject(chars[x] + "", x, y, false);
                 }
 
-                i++;
+                y++;
             }
 
             if(temp == null){
@@ -220,9 +220,9 @@ public class ServerThread implements Runnable {
                 case Constants.BRICK_CHAR:
                 case Constants.PLAYER_CHAR:
                 case Constants.WALL_CHAR:
+                case Constants.WALL_CHAR_BLUE:
                     spawnObject(GameObjectType.byChar(objectChar), id, x, y, shouldRefresh);
                     break;
-
                 default:
                     return;
             }

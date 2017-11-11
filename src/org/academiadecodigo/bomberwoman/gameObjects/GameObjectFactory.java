@@ -23,6 +23,9 @@ public class GameObjectFactory {
             case WALL:
                 return new Wall(id, x, y);
 
+            case BLUE_WALL:
+                return new GameObject(id, Constants.WALL_CHAR, x, y, ConsoleColors.BLUE);
+
             case EMPTY:
             default:
                 return new GameObject(id, " ", x, y);
