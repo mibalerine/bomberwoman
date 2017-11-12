@@ -293,7 +293,7 @@ public class ServerThread implements Runnable {
                     }
                 }
 
-                ServerEventHandler.setDestroyTimer(spawnObject(GameObjectType.FLAME, id++, x + i * horizontal, y + i * vertical, true), Constants.FLAME_DELAY);
+                ServerEventHandler.setDestroyTimer(spawnObject(GameObjectType.FLAME, id++, x + i * horizontal, y + i * vertical, false), Constants.FLAME_DELAY);
             }
 
         }

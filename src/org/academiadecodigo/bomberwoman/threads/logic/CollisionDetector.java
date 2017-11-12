@@ -13,7 +13,7 @@ public class CollisionDetector {
 
     public static boolean canMove(int x, int y) {
 
-        if (!(x > 0) || !(x < Game.WIDTH) || !(y > 0) || !(y < Game.HEIGHT)) {
+        if (!(x > 0) || !(x < Game.WIDTH) || !(y > 0) || !(y < Game.HEIGHT - 1)) {
             return false;
         }
 
