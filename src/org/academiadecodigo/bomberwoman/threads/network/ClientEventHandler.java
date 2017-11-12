@@ -31,6 +31,11 @@ public class ClientEventHandler {
 
             spawnObject(goType, id, x, y, game);
 
+            if (goType == GameObjectType.PLAYER) {
+                //System.out.println("x = " + x);
+                //System.out.println("y = " + y);
+            }
+
             if (!shouldRefresh) {
 
                 return;

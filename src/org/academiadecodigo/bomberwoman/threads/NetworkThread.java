@@ -56,7 +56,11 @@ public class NetworkThread implements Runnable {
         }
     }
 
-    void sendMessage(String message) {
+    public void sendEvent(Event event) {
+        sendMessage(event.toString());
+    }
+
+    public void sendMessage(String message) {
 
         if(clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
 

@@ -3,10 +3,10 @@ package org.academiadecodigo.bomberwoman.gameObjects;
 import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.gameObjects.powerups.PowerupFactory;
 
-import java.io.Console;
-
-import static org.academiadecodigo.bomberwoman.ConsoleColors.*;
+import static org.academiadecodigo.bomberwoman.ConsoleColors.BLUE;
+import static org.academiadecodigo.bomberwoman.ConsoleColors.RED;
 
 /**
  * Created by miro on 06/11/2017.
@@ -30,10 +30,13 @@ public class GameObjectFactory {
                 return new GameObject(id, Constants.WALL_CHAR, x, y, ConsoleColors.BLUE);
 
             case BOMB:
-                return new Bomb(id, x ,y);
+                return new Bomb(id, x, y);
 
             case FLAME:
                 return new Flame(id, x, y);
+
+            case POWER_UP:
+                return PowerupFactory.random(id, x, y);
 
             case EMPTY:
             default:

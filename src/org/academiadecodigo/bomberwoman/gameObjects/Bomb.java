@@ -11,14 +11,14 @@ public class Bomb extends GameObject{
 
     private int blastRadius;
 
-    public Bomb (int id, int x, int y, int blastRadius) {
-        super(id, GameObjectType.BOMB.getDrawChar(), x, y);
-        this.blastRadius = blastRadius;
-    }
-
     public Bomb(int id, int x, int y) {
 
         this(id, x, y, Constants.BOMB_RADIUS);
+    }
+
+    public Bomb (int id, int x, int y, int blastRadius) {
+        super(id, GameObjectType.BOMB.getDrawChar(), x, y);
+        this.blastRadius = blastRadius;
     }
 
     public void explode() {
@@ -29,5 +29,8 @@ public class Bomb extends GameObject{
         serverThread.explode(getX(), getY(), blastRadius );
     }
 
+    public void setBlastRadius(int blastRadius) {
 
+        this.blastRadius = blastRadius;
+    }
 }

@@ -266,13 +266,13 @@ public class Level {
             ipAddress.append(gameObject.getRepresentation());
         }
 
-        System.out.println(ipAddress.toString());
         Game.getInstance().connectTo(ipAddress.toString());
         Game.getInstance().refreshRenderThread();
     }
 
     private void host(Screen screen) {
 
+        System.out.println("Level.host");
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
 
         Utils.hostAndConnect(2);

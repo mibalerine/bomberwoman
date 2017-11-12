@@ -17,8 +17,11 @@ public enum ScreenHolder {
     MENU_MP_HOST("/menu/MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
     MENU_MP_JOIN("/menu/MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
     /*5*/MENU_MP_WAIT_CLIENT("/menu/MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal()),
-    LEVEL_1("/levels/level1", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
-    LEVEL_0("/levels/level0", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED);
+    /*6*/LEVEL_0("/levels/level0", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*7*/LEVEL_1("/levels/level1", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*8*/LEVEL_2("/levels/level2", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*9*/LEVEL_3("/levels/level3", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*10*/LEVEL_4("/levels/level4", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED);
 
     private String filePath;
 
@@ -45,7 +48,7 @@ public enum ScreenHolder {
                 Utils.quitGame();
             }
 
-            //choice 0-1-2
+            //choice 0-1-2-3-4
             return values()[choices[choice]];
         }
         catch(ArrayIndexOutOfBoundsException e) {

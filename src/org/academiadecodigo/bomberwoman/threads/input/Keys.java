@@ -1,5 +1,7 @@
 package org.academiadecodigo.bomberwoman.threads.input;
 
+import org.academiadecodigo.bomberwoman.direction.Direction;
+
 /**
  * Created by codecadet on 06/11/17.
  */
@@ -46,5 +48,10 @@ public enum Keys {
     public static boolean isNumber(Keys key) {
 
         return key.toString().contains("NUM");
+    }
+
+    public Direction toDirection() {
+
+        return Direction.valueOf(this.toString());
     }
 }
