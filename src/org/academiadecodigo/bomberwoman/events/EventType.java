@@ -10,5 +10,6 @@ public enum EventType {
     OBJECT_DESTROY,
     PLAYER_ID,
     LEVEL_START,
-    POWERUP_PICKUP
+    POWERUP_PICKUP,
+    REFRESH_SCREEN
 }

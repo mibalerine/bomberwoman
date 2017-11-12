@@ -111,6 +111,10 @@ public class NetworkThread implements Runnable {
                 ClientEventHandler.handleLevelStartEvent();
                 break;
 
+            case REFRESH_SCREEN:
+                Game.getInstance().refreshRenderThread();
+                break;
+
             case OBJECT_SPAWN:
                 ClientEventHandler.handleObjectSpawnEvent(eventInfo, game);
                 break;
