@@ -280,18 +280,20 @@ public class ServerThread implements Runnable {
 
         for (int i = 1; i < blastRadius + 1; i++) {
 
-            GameObject gameObject = Utils.getObjectAt(gameObjectMap.values(), x + i * horizontal, y + i * vertical);
+            synchronized (gameObjectMap) {
+                GameObject gameObject = Utils.getObjectAt(gameObjectMap.values(), x + i * horizontal, y + i * vertical);
 
-            if (gameObject instanceof Wall) {
-                break;
+                if (gameObject instanceof Wall) {
+                    break;
+                }
+
+                if (gameObject instanceof Destroyable) {
+                    removeObject(gameObject.getId());
+                    break;
+                }
+
+                ServerEventHandler.setDestroyTimer(spawnObject(GameObjectType.FLAME, id++, x + i * horizontal, y + i * vertical, true), Constants.FLAME_DELAY);
             }
-
-            if (gameObject instanceof Destroyable) {
-                removeObject(gameObject.getId());
-                break;
-            }
-
-            ServerEventHandler.setDestroyTimer(spawnObject(GameObjectType.FLAME, id++, x + i * horizontal, y + i * vertical, true), Constants.FLAME_DELAY);
 
         }
     }

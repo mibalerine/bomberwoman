@@ -84,7 +84,7 @@ public class Utils {
     public static void hostAndConnect(int numbersOfPlayers) {
 
         Game.getInstance().submitTask(new ServerThread(numbersOfPlayers));
-        Game.getInstance().connectTo("192.168.0.13");
+        Game.getInstance().connectTo("127.0.0.1");
     }
 
     public static GameObject getObjectAt(Collection<GameObject> gameObjects, int x, int y) {

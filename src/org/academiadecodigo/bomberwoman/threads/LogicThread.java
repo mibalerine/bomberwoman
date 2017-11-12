@@ -34,6 +34,10 @@ public class LogicThread implements Runnable {
 
         GameObject go = gameObjects.get(playerId);
 
+        if (go == null) {
+            return;
+        }
+
         switch(keyPressed) {
 
             case UP:

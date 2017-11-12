@@ -21,7 +21,7 @@ public class Constants {
     public static String OBJECT_INPUT_TEXT = "^";
     public static String OBJECT_PLAYER_POINTER = "@";
     public static String OBJECT_BOMB = "δ";
-    public static String OBJECT_FLAME = "Θ";
+    public static String OBJECT_FLAME = "ω";
 
     public static final int TERMINAL_WIDTH = 120;
     public static final int TERMINAL_HEIGHT = 40;
