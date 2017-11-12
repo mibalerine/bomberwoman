@@ -284,6 +284,8 @@ public class ServerThread implements Runnable {
         for(Direction d : Direction.values()) {
             propagateExplosion(d, x, y, blastRadius);
         }
+
+        broadcast(new RefreshScreenEvent());
     }
 
     private void propagateExplosion(Direction dir, int x, int y, int blastRadius) {
