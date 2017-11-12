@@ -1,12 +1,10 @@
 package org.academiadecodigo.bomberwoman.threads;
 
-import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.direction.Direction;
-import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
+import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.gameObjects.Player;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.logic.CollisionDetector;
 
@@ -17,40 +15,38 @@ import java.util.Map;
  */
 public class LogicThread implements Runnable {
 
-    private NetworkThread networkThread;
     private final Map<Integer, GameObject> gameObjects;
+
+    private NetworkThread networkThread;
+
     private int playerId;
 
     public LogicThread(Map<Integer, GameObject> gameObjectMap) {
+
         gameObjects = gameObjectMap;
     }
 
     //TODO: logic thread por enquanto nao faz nada no run()
     @Override
     public void run() {
+
     }
 
     public void keyPressed(Keys keyPressed) {
 
         GameObject go = gameObjects.get(playerId);
 
-        if (go == null) {
+        if(go == null) {
             return;
         }
 
         switch(keyPressed) {
 
             case UP:
-                moveUp(go);
-                break;
             case DOWN:
-                moveDown(go);
-                break;
             case RIGHT:
-                moveRight(go);
-                break;
             case LEFT:
-                moveLeft(go);
+                move(go, keyPressed.toDirection());
                 break;
             case PLACE_BOMB:
                 placeBomb(go);
@@ -60,36 +56,14 @@ public class LogicThread implements Runnable {
         }
     }
 
-    private void moveUp(GameObject go) {
-        if (!checkMove(Direction.UP, go)) {
+    private void move(GameObject go, Direction direction) {
+
+        if(!checkMove(direction, go)) {
+
             return;
         }
 
-        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.UP)).toString());
-    }
-
-    private void moveDown(GameObject go) {
-        if (!checkMove(Direction.DOWN, go)) {
-            return;
-        }
-
-        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.DOWN)).toString());
-    }
-
-    private void moveRight(GameObject go) {
-        if (!checkMove(Direction.RIGHT, go)) {
-            return;
-        }
-
-        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.RIGHT)).toString());
-    }
-
-    private void moveLeft(GameObject go) {
-        if (!checkMove(Direction.LEFT, go)) {
-            return;
-        }
-
-        networkThread.sendMessage((new ObjectMoveEvent(go, Direction.LEFT)).toString());
+        networkThread.sendMessage((new ObjectMoveEvent(go, direction)).toString());
     }
 
     private void placeBomb(GameObject go) {
@@ -102,14 +76,16 @@ public class LogicThread implements Runnable {
         int vertical = direction.getVertical();
         int horizontal = direction.getHorizontal();
 
-        return CollisionDetector.canMove(go.getX() + horizontal, go.getY() + vertical);
+        return CollisionDetector.canMove(go.getX() + horizontal, go.getY() + vertical, go.getId(), networkThread);
     }
 
     public void setNetworkThread(NetworkThread networkThread) {
+
         this.networkThread = networkThread;
     }
 
     public void setPlayerId(int playerId) {
+
         this.playerId = playerId;
     }
 }

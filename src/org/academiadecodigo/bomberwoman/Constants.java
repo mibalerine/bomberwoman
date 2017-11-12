@@ -15,6 +15,8 @@ public class Constants {
 
     public static final int INVALID_POSITION = -100;
 
+    public static final String POWERUP = "¤";
+
     public static String CORNER_CHAR = "▓";
 
     public static String OBJECT_CONTROL_MENU = ">";

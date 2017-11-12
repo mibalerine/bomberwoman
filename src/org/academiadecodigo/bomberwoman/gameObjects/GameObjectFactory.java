@@ -2,8 +2,7 @@ package org.academiadecodigo.bomberwoman.gameObjects;
 
 import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
-
-import java.io.Console;
+import org.academiadecodigo.bomberwoman.gameObjects.powerups.PowerupFactory;
 
 import static org.academiadecodigo.bomberwoman.ConsoleColors.*;
 
@@ -33,6 +32,9 @@ public class GameObjectFactory {
 
             case FLAME:
                 return new Flame(id, x, y);
+
+            case POWER_UP:
+                return PowerupFactory.random(id, x, y);
 
             case EMPTY:
             default:

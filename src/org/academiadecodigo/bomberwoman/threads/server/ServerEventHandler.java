@@ -8,7 +8,8 @@ import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.Bomb;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
+import org.academiadecodigo.bomberwoman.gameObjects.Player;
+import org.academiadecodigo.bomberwoman.gameObjects.powerups.Powerup;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
 import java.util.Timer;
@@ -21,13 +22,13 @@ public abstract class ServerEventHandler {
 
     public static int handleObjectSpawnEvent(String[] eventInfo, Integer id, ServerThread serverThread) {
 
-        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
+        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4]) || !Utils.isNumber(eventInfo[5])) {
 
             System.out.println("not a number!");
             return id;
         }
 
-        if (!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
+        if(!GameObject.isGameObject(Integer.parseInt(eventInfo[2]))) {
             System.out.println("not a game object!");
             return id;
         }
@@ -36,11 +37,22 @@ public abstract class ServerEventHandler {
         int x = Integer.parseInt(eventInfo[4]);
         int y = Integer.parseInt(eventInfo[5]);
 
-        GameObject gameObject = serverThread.spawnObject(gameObjectType, id, x, y, true);
+        boolean isBomb = gameObjectType == GameObjectType.BOMB;
 
-        if (gameObjectType == GameObjectType.BOMB) {
+        if(!isBomb) {
 
-            setDestroyTimer((Bomb) gameObject, Constants.BOMB_DELAY);
+            serverThread.spawnObject(gameObjectType, id, x, y, true);
+        }
+        else {
+
+            GameObject player = Utils.getObjectAt(serverThread.getGameObjectMap().values(), x, y);
+            if(player == null || !(player instanceof Player)) {
+
+                return id;
+            }
+
+            GameObject bomb = serverThread.spawnBomb(id, (Player) player);
+            setDestroyTimer(bomb, Constants.BOMB_DELAY);
         }
 
         return ++id;
@@ -48,7 +60,7 @@ public abstract class ServerEventHandler {
 
     public static void handleObjectMoveEvent(String[] eventInfo, ServerThread serverThread) {
 
-        if (!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
+        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3]) || !Utils.isNumber(eventInfo[4])) {
 
             System.out.println("not a number!");
             return;
@@ -60,7 +72,7 @@ public abstract class ServerEventHandler {
 
         GameObject gameObject = serverThread.getGameObjectMap().get(id);
 
-        if (gameObject == null) {
+        if(gameObject == null) {
             return;
         }
 
@@ -73,12 +85,13 @@ public abstract class ServerEventHandler {
         Timer timer = new Timer();
 
         timer.schedule(new TimerTask() {
+
             @Override
             public void run() {
 
-                if (Game.getInstance().getServerThread().getGameObjectMap().get(object.getId()) != null) {
+                if(Game.getInstance().getServerThread().getGameObjectMap().get(object.getId()) != null) {
 
-                    if (object instanceof Bomb) {
+                    if(object instanceof Bomb) {
                         ((Bomb) object).explode();
                     }
 
@@ -90,4 +103,38 @@ public abstract class ServerEventHandler {
         }, delay);
     }
 
+    public static void handlePickupPowerupEvent(String[] eventInfo, ServerThread serverThread) {
+
+        if(!Utils.isNumber(eventInfo[2]) || !Utils.isNumber(eventInfo[3])) {
+
+            System.out.println("not a number!");
+            return;
+        }
+
+        int powerUpId = Integer.parseInt(eventInfo[2]);
+        GameObject powerup = serverThread.getGameObjectMap().get(powerUpId);
+
+        if(powerup == null || !(powerup instanceof Powerup)) {
+
+            //Huh? Should not happen...
+            return;
+        }
+
+        int playerId = Integer.parseInt(eventInfo[3]);
+        GameObject player = serverThread.getGameObjectMap().get(playerId);
+
+        if(player == null || !(player instanceof Player)) {
+
+            return;
+        }
+
+        switch(((Powerup) powerup).getPowerupType()) {
+
+            case BOMB_RADIUS_INCREASE:
+                ((Player) player).increaseBombRadius();
+                break;
+        }
+
+        serverThread.removeObject(powerUpId);
+    }
 }

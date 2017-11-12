@@ -26,11 +26,14 @@ public class ServerThread implements Runnable {
 
     private final Map<Integer, GameObject> gameObjectMap;
 
-    private final int[][] PLAYER_SPAWN_POSITIONS = {
-            {1, 1},
-            {Game.WIDTH - 2, Game.HEIGHT - 2},
-            {Game.WIDTH - 2, 1},
-            {1, Game.HEIGHT - 2}};
+    private final int[][] PLAYER_SPAWN_POSITIONS = { { 1,
+            1 },
+            { Game.WIDTH - 2,
+                    Game.HEIGHT - 2 },
+            { Game.WIDTH - 2,
+                    1 },
+            { 1,
+                    Game.HEIGHT - 2 } };
 
     private ServerSocket serverSocket;
 
@@ -60,7 +63,8 @@ public class ServerThread implements Runnable {
         try {
 
             serverSocket = new ServerSocket(Constants.PORT);
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
 
             e.printStackTrace();
         }
@@ -74,14 +78,14 @@ public class ServerThread implements Runnable {
 
         int numberOfConnections = 0;
 
-        while (numberOfConnections < numberOfPlayers) {
+        while(numberOfConnections < numberOfPlayers) {
 
             try {
 
                 clientConnections[numberOfConnections] = serverSocket.accept();
                 threadPool.submit(new ClientDispatcher(clientConnections[numberOfConnections], this));
 
-                synchronized (gameObjectMap) {
+                synchronized(gameObjectMap) {
 
                     sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
 
@@ -90,7 +94,8 @@ public class ServerThread implements Runnable {
                     id++;
                 }
 
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
                 e.printStackTrace();
             }
 
@@ -111,7 +116,8 @@ public class ServerThread implements Runnable {
 
             out.write(message + "\n");
             out.flush();
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
             System.out.println("Socket closed: " + e.getMessage());
         }
     }
@@ -123,9 +129,9 @@ public class ServerThread implements Runnable {
 
     public void broadcast(String message) {
 
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
-            if (s == null) {
+            if(s == null) {
 
                 continue;
             }
@@ -145,9 +151,9 @@ public class ServerThread implements Runnable {
 
         EventType eType = EventType.values()[eventId];
 
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
 
-            switch (eType) {
+            switch(eType) {
 
                 case OBJECT_SPAWN:
 
@@ -163,6 +169,12 @@ public class ServerThread implements Runnable {
                 case OBJECT_DESTROY:
 
                     //ServerEventHandler.handleObjectDestroyEvent(eventInfo, this);
+                    //Client will never send this event
+                    break;
+
+                case POWERUP_PICKUP:
+
+                    ServerEventHandler.handlePickupPowerupEvent(eventInfo, this);
                     break;
             }
         }
@@ -171,9 +183,9 @@ public class ServerThread implements Runnable {
     private void createGameObjects() {
 
         GameObject temp = null;
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
 
-            for (GameObject go : gameObjectMap.values()) {
+            for(GameObject go : gameObjectMap.values()) {
                 temp = go;
                 broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY(), false).toString());
             }
@@ -187,11 +199,11 @@ public class ServerThread implements Runnable {
             String line;
             int y = 0;
 
-            while ((line = bf.readLine()) != null) {
+            while((line = bf.readLine()) != null) {
 
                 char[] chars = line.toCharArray();
 
-                for (int x = 0; x < chars.length; x++) {
+                for(int x = 0; x < chars.length; x++) {
 
                     createObject(chars[x] + "", x, y);
                 }
@@ -199,13 +211,14 @@ public class ServerThread implements Runnable {
                 y++;
             }
 
-            if (temp == null) {
+            if(temp == null) {
 
                 return;
             }
 
             broadcast(new ObjectMoveEvent(temp, Direction.STAY));
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
 
             System.out.println("Could not read file: " + e.getMessage());
         }
@@ -213,9 +226,9 @@ public class ServerThread implements Runnable {
 
     private void createObject(String objectChar, int x, int y) {
 
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
 
-            switch (objectChar) {
+            switch(objectChar) {
 
                 case Constants.BRICK_CHAR:
                 case Constants.PLAYER_CHAR:
@@ -233,7 +246,7 @@ public class ServerThread implements Runnable {
 
     public GameObject spawnObject(GameObjectType gameObjectType, int id, int x, int y, boolean shouldRefresh) {
 
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
 
             GameObject gameObject = GameObjectFactory.byType(id, gameObjectType, x, y);
             gameObjectMap.put(id, gameObject);
@@ -244,7 +257,13 @@ public class ServerThread implements Runnable {
 
     public void removeObject(int id) {
 
-        synchronized (gameObjectMap) {
+        synchronized(gameObjectMap) {
+
+            GameObject gameObject = gameObjectMap.get(id);
+            if(gameObject != null && gameObject instanceof Brick) {
+
+                spawnObject(GameObjectType.POWER_UP, this.id++, gameObject.getX(), gameObject.getY(), true);
+            }
 
             gameObjectMap.remove(id);
             broadcast(new ObjectDestroyEvent(id));
@@ -253,9 +272,9 @@ public class ServerThread implements Runnable {
 
     public boolean allowMorePlayers() {
 
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
-            if (s == null) {
+            if(s == null) {
 
                 return true;
             }
@@ -265,7 +284,7 @@ public class ServerThread implements Runnable {
 
     public void explode(int x, int y, int blastRadius) {
 
-        for (Direction d : Direction.values()) {
+        for(Direction d : Direction.values()) {
             propagateExplosion(d, x, y, blastRadius);
         }
     }
@@ -275,19 +294,19 @@ public class ServerThread implements Runnable {
         int horizontal = dir.getHorizontal();
         int vertical = dir.getVertical();
 
-        for (int i = 1; i < blastRadius + 1; i++) {
+        for(int i = 1; i < blastRadius + 1; i++) {
 
-            synchronized (gameObjectMap) {
+            synchronized(gameObjectMap) {
                 GameObject gameObject = Utils.getObjectAt(gameObjectMap.values(), x + i * horizontal, y + i * vertical);
 
-                if (gameObject instanceof Wall) {
+                if(gameObject instanceof Wall) {
                     break;
                 }
 
-                if (gameObject instanceof Destroyable) {
+                if(gameObject instanceof Destroyable) {
                     removeObject(gameObject.getId());
 
-                    if (!(gameObject instanceof Player)) {
+                    if(!(gameObject instanceof Player)) {
 
                         break;
                     }
@@ -295,7 +314,6 @@ public class ServerThread implements Runnable {
 
                 ServerEventHandler.setDestroyTimer(spawnObject(GameObjectType.FLAME, id++, x + i * horizontal, y + i * vertical, true), Constants.FLAME_DELAY);
             }
-
         }
     }
 
@@ -303,15 +321,31 @@ public class ServerThread implements Runnable {
 
         threadPool.shutdown();
 
-        for (Socket s : clientConnections) {
+        for(Socket s : clientConnections) {
 
             try {
 
-                s.close();
+                if(s == null) {
 
-            } catch (IOException e) {
+                    continue;
+                }
+
+                s.close();
+            }
+            catch(IOException e) {
                 e.getMessage();
             }
         }
+    }
+
+    public GameObject spawnBomb(int bombId, Player player) {
+
+        GameObject gameObject = spawnObject(GameObjectType.BOMB, bombId, player.getX(), player.getY(), true);
+
+        if(gameObject instanceof Bomb) {
+
+            ((Bomb) gameObject).setBlastRadius(player.getBombRadius());
+        }
+        return gameObject;
     }
 }
