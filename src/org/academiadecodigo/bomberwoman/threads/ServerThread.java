@@ -5,10 +5,7 @@ import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.*;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectFactory;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.gameObjects.Wall;
+import org.academiadecodigo.bomberwoman.gameObjects.*;
 import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.server.ClientDispatcher;
@@ -289,7 +286,11 @@ public class ServerThread implements Runnable {
 
                 if (gameObject instanceof Destroyable) {
                     removeObject(gameObject.getId());
-                    break;
+
+                    if (!(gameObject instanceof Player)) {
+
+                        break;
+                    }
                 }
 
                 ServerEventHandler.setDestroyTimer(spawnObject(GameObjectType.FLAME, id++, x + i * horizontal, y + i * vertical, true), Constants.FLAME_DELAY);
