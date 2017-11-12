@@ -14,7 +14,7 @@ public abstract class Powerup extends GameObject implements Destroyable {
 
     public Powerup(PowerupType powerupType, int id, int x, int y, String color) {
 
-        super(id, GameObjectType.POWER_UP.getDrawChar(), x, y, color);
+        super(id, powerupType.getDrawChar(), x, y, color);
         this.powerupType = powerupType;
     }
 

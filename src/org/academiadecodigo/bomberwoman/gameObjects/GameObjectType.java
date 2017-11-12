@@ -15,6 +15,7 @@ public enum GameObjectType {
     BOMB(Constants.OBJECT_BOMB),
     FLAME(Constants.OBJECT_FLAME),
     POWER_UP(Constants.POWERUP),
+    POWER_UP_DOOR(Constants.DOOR),
     EMPTY(" ");
 
     private String drawChar;

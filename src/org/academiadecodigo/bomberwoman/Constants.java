@@ -16,6 +16,7 @@ public class Constants {
     public static final int INVALID_POSITION = -100;
 
     public static final String POWERUP = "¤";
+    public static final String DOOR = "O";
 
     public static final int MAX_BOMB_RADIUS = 5;
 

@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman.threads;
 
+import com.sun.tools.internal.jxc.ap.Const;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
@@ -7,6 +8,7 @@ import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.*;
 import org.academiadecodigo.bomberwoman.gameObjects.*;
 import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
+import org.academiadecodigo.bomberwoman.gameObjects.control.DoorBrick;
 import org.academiadecodigo.bomberwoman.gameObjects.powerups.Powerup;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.server.ClientDispatcher;
@@ -233,6 +235,7 @@ public class ServerThread implements Runnable {
                 case Constants.PLAYER_CHAR:
                 case Constants.WALL_CHAR:
                 case Constants.WALL_CHAR_BLUE:
+                case Constants.DOOR:
                     spawnObject(GameObjectType.byChar(objectChar), id, x, y, false);
                     break;
                 default:
@@ -261,10 +264,11 @@ public class ServerThread implements Runnable {
             GameObject gameObject = gameObjectMap.get(id);
             if(gameObject != null && gameObject instanceof Brick) {
 
-                //20%
-                if(new Random().nextInt(100) < Constants.POWERUP_ODD) {
+                boolean isDoor = gameObject instanceof DoorBrick;
 
-                    spawnObject(GameObjectType.POWER_UP, this.id++, gameObject.getX(), gameObject.getY(), true);
+                if(new Random().nextInt(100) < Constants.POWERUP_ODD || isDoor) {
+
+                    spawnObject(isDoor ? GameObjectType.POWER_UP_DOOR : GameObjectType.POWER_UP, this.id++, gameObject.getX(), gameObject.getY(), true);
                 }
             }
 
