@@ -11,7 +11,7 @@ class ScreenFrame {
 
     private StringBuilder content = new StringBuilder("");
 
-    private volatile String[][] cells;
+    private final String[][] cells;
 
     ScreenFrame(int width, int height) {
 
