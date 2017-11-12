@@ -17,6 +17,8 @@ public class Constants {
 
     public static final String POWERUP = "¤";
 
+    public static final int MAX_BOMB_RADIUS = 5;
+
     public static String CORNER_CHAR = "▓";
 
     public static String OBJECT_CONTROL_MENU = ">";
@@ -34,5 +36,7 @@ public class Constants {
     public static int FLAME_DELAY = 500;
 
     public static String PLAYER_COLOR = ConsoleColors.GREEN;
-    public static String ENEMY_COLOR = ConsoleColors.RED;
+    public static String ENEMY_PLAYER_COLOR = ConsoleColors.RED;
+
+    public static final int POWERUP_ODD = 20;
 }

@@ -7,6 +7,7 @@ import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.*;
 import org.academiadecodigo.bomberwoman.gameObjects.*;
 import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
+import org.academiadecodigo.bomberwoman.gameObjects.powerups.Powerup;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.server.ClientDispatcher;
 import org.academiadecodigo.bomberwoman.threads.server.ServerEventHandler;
@@ -16,6 +17,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -259,7 +261,11 @@ public class ServerThread implements Runnable {
             GameObject gameObject = gameObjectMap.get(id);
             if(gameObject != null && gameObject instanceof Brick) {
 
-                spawnObject(GameObjectType.POWER_UP, this.id++, gameObject.getX(), gameObject.getY(), true);
+                //20%
+                if(new Random().nextInt(100) < Constants.POWERUP_ODD) {
+
+                    spawnObject(GameObjectType.POWER_UP, this.id++, gameObject.getX(), gameObject.getY(), true);
+                }
             }
 
             gameObjectMap.remove(id);
@@ -303,7 +309,7 @@ public class ServerThread implements Runnable {
                 if(gameObject instanceof Destroyable) {
                     removeObject(gameObject.getId());
 
-                    if(!(gameObject instanceof Player)) {
+                    if(!(gameObject instanceof Player) && !(gameObject instanceof Powerup)) {
 
                         break;
                     }

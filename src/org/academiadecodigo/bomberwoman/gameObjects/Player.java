@@ -12,14 +12,16 @@ public class Player extends GameObject implements Destroyable {
     private int bombRadius = Constants.BOMB_RADIUS;
 
     public Player(int id, int x, int y, boolean self) {
-        super(id, (self ? Constants.PLAYER_COLOR : Constants.ENEMY_COLOR) + GameObjectType.PLAYER.getDrawChar() + ConsoleColors.RESET, x, y);
 
-        System.out.println("y = " + y);
+        super(id, (self ? Constants.PLAYER_COLOR : Constants.ENEMY_PLAYER_COLOR) + GameObjectType.PLAYER.getDrawChar() + ConsoleColors.RESET, x, y);
     }
 
     public void increaseBombRadius() {
 
-        bombRadius++;
+        if(bombRadius + 1 < Constants.MAX_BOMB_RADIUS) {
+
+            bombRadius++;
+        }
     }
 
     public int getBombRadius() {
