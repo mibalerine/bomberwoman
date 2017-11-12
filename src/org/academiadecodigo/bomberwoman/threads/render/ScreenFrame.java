@@ -11,7 +11,7 @@ class ScreenFrame {
 
     private StringBuilder content = new StringBuilder("");
 
-    private final String[][] cells;
+    private volatile String[][] cells;
 
     ScreenFrame(int width, int height) {
 
@@ -104,7 +104,7 @@ class ScreenFrame {
         cells[x][y] = objectString;
     }
 
-    String getContent() {
+    synchronized String getContent() {
 
         return content.toString();
     }
