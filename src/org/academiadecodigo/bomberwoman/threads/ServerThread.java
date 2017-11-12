@@ -1,6 +1,5 @@
 package org.academiadecodigo.bomberwoman.threads;
 
-import com.sun.tools.internal.jxc.ap.Const;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
@@ -30,11 +29,16 @@ public class ServerThread implements Runnable {
 
     private final Map<Integer, GameObject> gameObjectMap;
 
-    private final int[][] PLAYER_SPAWN_POSITIONS = {
-            { 1, 1 },
-            { Game.WIDTH - 2, Game.HEIGHT - 5 },
-            { Game.WIDTH - 2, 1 },
-            { 1, Game.HEIGHT - 2 } };
+    private final Map<Integer, GameObject> playerMap;
+
+    private final int[][] PLAYER_SPAWN_POSITIONS = { { 1,
+            1 },
+            { Game.WIDTH - 2,
+                    Game.HEIGHT - 5 },
+            { Game.WIDTH - 2,
+                    1 },
+            { 1,
+                    Game.HEIGHT - 2 } };
 
     private ServerSocket serverSocket;
 
@@ -48,13 +52,16 @@ public class ServerThread implements Runnable {
 
     private int nextPlayerPosition = 0;
 
+    private ScreenHolder currentLevel;
+
     public ServerThread(int numberOfPlayers) {
 
         this.numberOfPlayers = numberOfPlayers;
         clientConnections = new Socket[numberOfPlayers];
         threadPool = Executors.newFixedThreadPool(numberOfPlayers);
         gameObjectMap = new Hashtable<>();
-        id = 4000;
+        playerMap = new Hashtable<>();
+        id = Constants.INITIAL_ID;
         System.out.println("SERVER THREAD IS RUNNING");
     }
 
@@ -91,7 +98,9 @@ public class ServerThread implements Runnable {
                     sendMessage(clientConnections[numberOfConnections], new PlayerAssignEvent(id).toString());
 
                     int[] playerPosition = PLAYER_SPAWN_POSITIONS[nextPlayerPosition++];
-                    gameObjectMap.put(id, GameObjectFactory.byType(id, GameObjectType.PLAYER, playerPosition[0], playerPosition[1]));
+                    GameObject player = GameObjectFactory.byType(id, GameObjectType.PLAYER, playerPosition[0], playerPosition[1]);
+                    gameObjectMap.put(id, player);
+                    playerMap.put(id, player);
                     id++;
                 }
 
@@ -106,8 +115,9 @@ public class ServerThread implements Runnable {
 
     private void startGame() {
 
-        broadcast(new LevelStartEvent().toString());
-        createGameObjects();
+        broadcast(new LevelStartEvent());
+
+        loadLevel(ScreenHolder.LEVEL_1);
     }
 
     private void sendMessage(Socket clientSocket, String message) {
@@ -123,7 +133,7 @@ public class ServerThread implements Runnable {
         }
     }
 
-    public void broadcast(Event event) {
+    private void broadcast(Event event) {
 
         broadcast(event.toString());
     }
@@ -181,20 +191,15 @@ public class ServerThread implements Runnable {
         }
     }
 
-    private void createGameObjects() {
+    private void loadLevel(ScreenHolder screenHolder) {
 
-        GameObject temp = null;
-        synchronized(gameObjectMap) {
+        currentLevel = screenHolder;
 
-            for(GameObject go : gameObjectMap.values()) {
-                temp = go;
-                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY(), false).toString());
-            }
-        }
+        spawnPlayers();
 
         try {
 
-            InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(ScreenHolder.LEVEL_1.getFilePath()));
+            InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(currentLevel.getFilePath()));
             BufferedReader bf = new BufferedReader(new InputStreamReader(inputStream));
 
             String line;
@@ -212,16 +217,36 @@ public class ServerThread implements Runnable {
                 y++;
             }
 
-            if(temp == null) {
-
-                return;
-            }
-
-            broadcast(new ObjectMoveEvent(temp, Direction.STAY));
+            broadcast(new RefreshScreenEvent());
         }
         catch(IOException e) {
 
             System.out.println("Could not read file: " + e.getMessage());
+        }
+    }
+
+    public void loadNextLevel() {
+
+        gameObjectMap.clear();
+        id = Constants.INITIAL_ID;
+
+        broadcast(new LevelStartEvent());
+
+        loadLevel(currentLevel.next());
+    }
+
+    private void spawnPlayers() {
+
+        synchronized(gameObjectMap) {
+
+            int i = 0;
+
+            for(GameObject go : playerMap.values()) {
+
+                go.setPosition(PLAYER_SPAWN_POSITIONS[i][0], PLAYER_SPAWN_POSITIONS[i][1]);
+                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY(), false));
+                i++;
+            }
         }
     }
 
@@ -236,6 +261,7 @@ public class ServerThread implements Runnable {
                 case Constants.WALL_CHAR:
                 case Constants.WALL_CHAR_BLUE:
                 case Constants.DOOR:
+                case Constants.DOOR_HIDDEN:
                     spawnObject(GameObjectType.byChar(objectChar), id, x, y, false);
                     break;
                 default:
@@ -313,6 +339,7 @@ public class ServerThread implements Runnable {
                 }
 
                 if(gameObject instanceof Destroyable) {
+
                     removeObject(gameObject.getId());
 
                     if(!(gameObject instanceof Player) && !(gameObject instanceof Powerup)) {
@@ -356,5 +383,10 @@ public class ServerThread implements Runnable {
             ((Bomb) gameObject).setBlastRadius(player.getBombRadius());
         }
         return gameObject;
+    }
+
+    public ScreenHolder getCurrentLevel() {
+
+        return currentLevel;
     }
 }

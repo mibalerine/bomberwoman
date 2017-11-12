@@ -1,7 +1,7 @@
 package org.academiadecodigo.bomberwoman.gameObjects.powerups;
 
+import org.academiadecodigo.bomberwoman.events.PowerUpPickupEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
 import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 
@@ -18,7 +18,10 @@ public abstract class Powerup extends GameObject implements Destroyable {
         this.powerupType = powerupType;
     }
 
-    public abstract void pickup(int playerId, NetworkThread networkThread);
+    public void pickup(int playerId, NetworkThread networkThread) {
+
+        networkThread.sendEvent(new PowerUpPickupEvent(playerId, getId()));
+    }
 
     public PowerupType getPowerupType() {
 

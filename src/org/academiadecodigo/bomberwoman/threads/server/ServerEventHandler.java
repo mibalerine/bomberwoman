@@ -133,6 +133,9 @@ public abstract class ServerEventHandler {
             case BOMB_RADIUS_INCREASE:
                 ((Player) player).increaseBombRadius();
                 break;
+            case DOOR:
+                serverThread.loadNextLevel();
+                break;
         }
 
         serverThread.removeObject(powerUpId);

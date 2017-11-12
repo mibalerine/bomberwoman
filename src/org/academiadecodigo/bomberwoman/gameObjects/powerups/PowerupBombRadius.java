@@ -13,10 +13,4 @@ public class PowerupBombRadius extends Powerup {
 
         super(PowerupType.BOMB_RADIUS_INCREASE, id, x, y, ConsoleColors.PURPLE_BOLD_BRIGHT);
     }
-
-    @Override
-    public void pickup(int playerId, NetworkThread networkThread) {
-
-        networkThread.sendEvent(new PowerUpPickupEvent(playerId, getId()));
-    }
 }

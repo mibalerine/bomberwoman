@@ -17,8 +17,11 @@ public class Constants {
 
     public static final String POWERUP = "¤";
     public static final String DOOR = "O";
+    public static final String DOOR_HIDDEN = "o";
 
     public static final int MAX_BOMB_RADIUS = 5;
+
+    public static final int INITIAL_ID = 4000;
 
     public static String CORNER_CHAR = "▓";
 
