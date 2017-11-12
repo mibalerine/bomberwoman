@@ -15,7 +15,6 @@ public class Player extends GameObject implements Destroyable {
     public Player(int id, int x, int y, boolean self) {
 
         super(id, (self ? Constants.PLAYER_COLOR : Constants.ENEMY_PLAYER_COLOR) + GameObjectType.PLAYER.getDrawChar() + ConsoleColors.RESET, x, y);
-        vest = false;
     }
 
     public void increaseBombRadius() {
@@ -37,5 +36,9 @@ public class Player extends GameObject implements Destroyable {
 
     public boolean wearingVest() {
         return vest;
+    }
+
+    public void stripVest() {
+        vest = false;
     }
 }

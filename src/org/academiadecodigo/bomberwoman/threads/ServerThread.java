@@ -309,6 +309,13 @@ public class ServerThread implements Runnable {
                 }
 
                 if(gameObject instanceof Destroyable) {
+                    Player player;
+                    if ((gameObject instanceof Player) && (player = (Player)gameObject).wearingVest()) {
+                        player.stripVest();
+                        System.out.println("strip");
+                        break;
+                    }
+
                     removeObject(gameObject.getId());
 
                     if(!(gameObject instanceof Player) && !(gameObject instanceof Powerup)) {
