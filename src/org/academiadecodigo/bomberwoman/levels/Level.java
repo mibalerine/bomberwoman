@@ -273,6 +273,7 @@ public class Level {
 
     private void host(Screen screen) {
 
+        System.out.println("Level.host");
         screen.changeFrame(ScreenHolder.MENU_MP_WAIT_CLIENT, letters);
 
         Utils.hostAndConnect(2);

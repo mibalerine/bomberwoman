@@ -114,8 +114,10 @@ public class Screen {
                     level.moveSelectionBy(2);
                     break;
                 case ENTER:
+
                     ScreenHolder nextScreen = chooseMenu(level.choice());
-                    if(nextScreen == ScreenHolder.LEVEL_1) {
+
+                    if(nextScreen == ScreenHolder.LEVEL_0) {
 
                         Utils.hostAndConnect(1);
                     }

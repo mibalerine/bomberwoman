@@ -17,11 +17,11 @@ public enum ScreenHolder {
     MENU_MP_HOST("/menu/MenuMPHost", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
     MENU_MP_JOIN("/menu/MenuMPJoin", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_MAIN.ordinal()),
     /*5*/MENU_MP_WAIT_CLIENT("/menu/MenuMPWaitingClients", NO_LEVEL_CREATED, NO_LEVEL_CREATED, MENU_MP_HOST.ordinal()),
-    /*6*/LEVEL_0("/levels/level0", 7, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
-    /*7*/LEVEL_1("/levels/level1", 8, NO_LEVEL_CREATED, 6),
-    /*8*/LEVEL_2("/levels/level2", 9, NO_LEVEL_CREATED, 7),
-    /*9*/LEVEL_3("/levels/level3", 10, NO_LEVEL_CREATED, 8),
-    /*10*/LEVEL_4("/levels/level4", NO_LEVEL_CREATED, NO_LEVEL_CREATED, 9);
+    /*6*/LEVEL_0("/levels/level0", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*7*/LEVEL_1("/levels/level1", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*8*/LEVEL_2("/levels/level2", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*9*/LEVEL_3("/levels/level3", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED),
+    /*10*/LEVEL_4("/levels/level4", NO_LEVEL_CREATED, NO_LEVEL_CREATED, NO_LEVEL_CREATED);
 
     private String filePath;
 
