@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman.gameObjects.powerups;
 
+import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.events.PowerUpPickupEvent;
 import org.academiadecodigo.bomberwoman.threads.NetworkThread;
 
@@ -10,7 +11,7 @@ public class PowerupBombRadius extends Powerup {
 
     public PowerupBombRadius(int id, int x, int y) {
 
-        super(PowerupType.BOMB_RADIUS_INCREASE, id, x, y);
+        super(PowerupType.BOMB_RADIUS_INCREASE, id, x, y, ConsoleColors.PURPLE_BOLD_BRIGHT);
     }
 
     @Override
