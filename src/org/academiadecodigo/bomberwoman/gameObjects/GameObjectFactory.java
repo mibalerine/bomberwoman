@@ -2,6 +2,7 @@ package org.academiadecodigo.bomberwoman.gameObjects;
 
 import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
+import org.academiadecodigo.bomberwoman.Game;
 
 import java.io.Console;
 
@@ -17,7 +18,7 @@ public class GameObjectFactory {
         switch(gameObjectType) {
 
             case PLAYER:
-                return new Player(id, x, y);
+                return new Player(id, x, y, id == Game.getInstance().getPlayerId());
 
             case BRICK:
                 return new Brick(id, x, y);

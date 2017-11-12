@@ -33,6 +33,8 @@ public class Game {
 
     private ExecutorService executorService;
 
+    private int playerId;
+
     private Game() {
 
         gameObjects = new HashMap<>();
@@ -99,7 +101,12 @@ public class Game {
 
     public void setPlayerId(int id) {
 
+        playerId = id;
         logicThread.setPlayerId(id);
+    }
+
+    public int getPlayerId() {
+        return playerId;
     }
 
     public Map<Integer, GameObject> getGameObjects() {
