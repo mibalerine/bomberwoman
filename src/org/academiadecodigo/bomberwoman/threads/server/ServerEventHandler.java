@@ -133,6 +133,10 @@ public abstract class ServerEventHandler {
             case BOMB_RADIUS_INCREASE:
                 ((Player) player).increaseBombRadius();
                 break;
+
+            case VEST:
+                ((Player) player).wearVest();
+                break;
         }
 
         serverThread.removeObject(powerUpId);
