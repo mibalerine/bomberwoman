@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman.threads.server;
 
+import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.threads.ServerThread;
 
@@ -25,29 +26,41 @@ public class ClientDispatcher implements Runnable {
     @Override
     public void run() {
 
-        while(clientConnection != null && !clientConnection.isClosed()) {
+        while (clientConnection != null && !clientConnection.isClosed()) {
 
             try {
 
-                if(bufferedReader == null) {
+                if (bufferedReader == null) {
 
                     bufferedReader = new BufferedReader(new InputStreamReader(clientConnection.getInputStream()));
                 }
 
                 String line = bufferedReader.readLine();
-                if(line != null) {
 
-                    if(!Event.isEvent(line)) {
-                        continue;
-                    }
-
-                    serverThread.handleEvent(line.split(Event.SEPARATOR));
+                if (line == null) {
+                    break;
                 }
-            }
-            catch(IOException e) {
 
-                e.printStackTrace();
+                if (!Event.isEvent(line)) {
+                    continue;
+                }
+
+                serverThread.handleEvent(line.split(Event.SEPARATOR));
+            } catch (IOException e) {
+                clientConnection = null;
             }
+        }
+
+        try {
+            if (clientConnection != null) {
+
+                clientConnection.close();
+            }
+
+        } catch (IOException e) {
+
+            Utils.bufferedMode();
+            e.printStackTrace();
         }
     }
 }

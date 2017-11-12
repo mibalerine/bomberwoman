@@ -1,5 +1,6 @@
 package org.academiadecodigo.bomberwoman;
 
+import org.academiadecodigo.bomberwoman.events.PlayerQuitEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.*;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by codecadet on 06/11/17.
@@ -32,6 +34,8 @@ public class Game {
     private ServerThread serverThread;
 
     private ExecutorService executorService;
+
+    private Future<?> networkThreadCancel;
 
     private int playerId;
 
@@ -58,8 +62,6 @@ public class Game {
         networkThread = new NetworkThread("localhost", this);
 
         Utils.rawMode();
-
-        networkThread = new NetworkThread("localhost", this);
 
         renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
 
@@ -128,7 +130,7 @@ public class Game {
 
         networkThread.setIpAddress(ipAddress);
 
-        executorService.submit(networkThread);
+        networkThreadCancel = executorService.submit(networkThread);
     }
 
     public ServerThread getServerThread() {
@@ -147,5 +149,18 @@ public class Game {
 
             gameObjects.clear();
         }
+    }
+
+    public void closeClient() {
+
+        Game.getInstance().changeScreen(ScreenHolder.SPLASH);
+        Game.getInstance().changeScreen(ScreenHolder.MENU_MAIN);
+
+        networkThread.sendMessage((new PlayerQuitEvent(playerId)).toString());
+
+        if (serverThread != null) {
+            serverThread.closeServer();
+        }
+
     }
 }
