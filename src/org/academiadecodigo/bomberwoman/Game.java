@@ -59,8 +59,6 @@ public class Game {
 
         Utils.rawMode();
 
-        networkThread = new NetworkThread("localhost", this);
-
         renderThread = new RenderThread(ScreenHolder.SPLASH, 50, gameObjects);
 
         logicThread = new LogicThread(gameObjects);

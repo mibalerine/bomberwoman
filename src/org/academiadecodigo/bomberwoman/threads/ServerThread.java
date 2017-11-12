@@ -117,6 +117,8 @@ public class ServerThread implements Runnable {
 
         broadcast(new LevelStartEvent());
 
+        spawnPlayers();
+
         loadLevel(ScreenHolder.LEVEL_1);
     }
 
@@ -195,8 +197,6 @@ public class ServerThread implements Runnable {
 
         currentLevel = screenHolder;
 
-        spawnPlayers();
-
         try {
 
             InputStream inputStream = new BufferedInputStream(getClass().getResourceAsStream(currentLevel.getFilePath()));
@@ -228,11 +228,26 @@ public class ServerThread implements Runnable {
     public void loadNextLevel() {
 
         gameObjectMap.clear();
-        id = Constants.INITIAL_ID;
+        gameObjectMap.putAll(playerMap);
+
+        id = Constants.INITIAL_ID + 5;
 
         broadcast(new LevelStartEvent());
 
-        loadLevel(currentLevel.next());
+        //spawnPlayers();
+
+        int i = 0;
+        for(GameObject go : playerMap.values()) {
+
+            broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), PLAYER_SPAWN_POSITIONS[i][0], PLAYER_SPAWN_POSITIONS[i][1], true));
+            Event event = new ObjectMoveEvent(go, PLAYER_SPAWN_POSITIONS[i][0], PLAYER_SPAWN_POSITIONS[i][1]);
+            broadcast(event);
+
+            //sendMessage(clientConnections[i], new PlayerAssignEvent(go.getId()).toString());
+            i++;
+        }
+
+        //loadLevel(currentLevel.next());
     }
 
     private void spawnPlayers() {
@@ -240,11 +255,9 @@ public class ServerThread implements Runnable {
         synchronized(gameObjectMap) {
 
             int i = 0;
-
             for(GameObject go : playerMap.values()) {
 
-                go.setPosition(PLAYER_SPAWN_POSITIONS[i][0], PLAYER_SPAWN_POSITIONS[i][1]);
-                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), go.getX(), go.getY(), false));
+                broadcast(new ObjectSpawnEvent(GameObjectType.PLAYER, go.getId(), PLAYER_SPAWN_POSITIONS[i][0], PLAYER_SPAWN_POSITIONS[i][1], true));
                 i++;
             }
         }
