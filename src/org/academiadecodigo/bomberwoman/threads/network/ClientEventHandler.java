@@ -16,7 +16,7 @@ public class ClientEventHandler {
     public static void handleLevelStartEvent() {
 
         Game.getInstance().changeScreen(ScreenHolder.LEVEL_0);
-        //Game.getInstance().clearScreen();
+        Game.getInstance().clearScreen();
     }
 
     public static void handleObjectSpawnEvent(String[] eventInfo, Game game) {
