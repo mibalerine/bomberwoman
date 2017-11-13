@@ -100,36 +100,34 @@ public class Screen {
             }
         }
 
-        if(level.getScreenHolder() == ScreenHolder.MENU_MP_WAIT_CLIENT) {
+        switch(key) {
+            case UP:
+                level.moveSelectionBy(-2);
+                break;
+            case DOWN:
+                level.moveSelectionBy(2);
+                break;
+            case ENTER:
 
-            level.pressedKeyOnWaitClient(key, gameObjectMap.values());
-        }
-        else {
+                ScreenHolder nextScreen = chooseMenu(level.choice());
 
-            switch(key) {
-                case UP:
-                    level.moveSelectionBy(-2);
-                    break;
-                case DOWN:
-                    level.moveSelectionBy(2);
-                    break;
-                case ENTER:
+                if(nextScreen == ScreenHolder.LEVEL_0) {
 
-                    ScreenHolder nextScreen = chooseMenu(level.choice());
+                    Utils.hostAndConnect(1);
+                }
+                else {
 
-                    if(nextScreen == ScreenHolder.LEVEL_0) {
+                    if(level.getScreenHolder() == ScreenHolder.MENU_MP_WAIT_CLIENT) {
 
-                        Utils.hostAndConnect(1);
+                        level.tryToStart();
+                        return;
                     }
-                    else {
-
-                        changeFrame(nextScreen, gameObjectMap);
-                    }
-                    break;
-                case TAB:
-                    changeFrame(chooseMenu(2), gameObjectMap);
-                    break;
-            }
+                    changeFrame(nextScreen, gameObjectMap);
+                }
+                break;
+            case TAB:
+                changeFrame(chooseMenu(2), gameObjectMap);
+                break;
         }
 
         Game.getInstance().refreshRenderThread();

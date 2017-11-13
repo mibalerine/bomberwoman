@@ -4,18 +4,15 @@ import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
-import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -276,46 +273,11 @@ public class Level {
         Utils.hostAndConnect(2);
     }
 
-    public void pressedKeyOnWaitClient(Keys key, Collection<GameObject> objects) {
+    public void tryToStart() {
 
-        if(key == Keys.PLACE_BOMB) {
+        if(Game.getInstance().getServerThread().allowMorePlayers()) {
 
-            if(!Game.getInstance().getServerThread().allowMorePlayers()) {
-
-                return;
-            }
-
-            addNewClient();
+            Game.getInstance().refreshRenderThread();
         }
-        else {
-
-            removeClient(objects);
-        }
-    }
-
-    private void addNewClient() {
-
-        try {
-
-            Game.getInstance().getServerThread().spawnObject(GameObjectType.BRICK, id++, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY(), true);
-            specialObjectHolder.getPlayerPointer().translate(0, 1);
-        }
-        catch(NullPointerException e) {
-
-            e.printStackTrace();
-        }
-    }
-
-    private void removeClient(Collection<GameObject> objects) {
-
-        GameObject gameObject = Utils.getObjectAt(objects, specialObjectHolder.getPlayerPointer().getX() + 1, specialObjectHolder.getPlayerPointer().getY() - 1);
-
-        if(gameObject == null) {
-
-            return;
-        }
-
-        specialObjectHolder.getPlayerPointer().translate(0, -1);
-        Game.getInstance().getServerThread().removeObject(gameObject.getId());
     }
 }
