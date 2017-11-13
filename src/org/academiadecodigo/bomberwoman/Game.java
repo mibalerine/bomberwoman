@@ -35,8 +35,6 @@ public class Game {
 
     private ExecutorService executorService;
 
-    private Future<?> networkThreadCancel;
-
     private int playerId;
 
     private Game() {
@@ -130,7 +128,7 @@ public class Game {
 
         networkThread.setIpAddress(ipAddress);
 
-        networkThreadCancel = executorService.submit(networkThread);
+        executorService.submit(networkThread);
     }
 
     public ServerThread getServerThread() {
