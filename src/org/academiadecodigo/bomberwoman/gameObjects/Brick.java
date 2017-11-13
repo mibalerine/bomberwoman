@@ -1,7 +1,6 @@
 package org.academiadecodigo.bomberwoman.gameObjects;
 
 import org.academiadecodigo.bomberwoman.ConsoleColors;
-import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.gameObjects.control.Destroyable;
 
 /**

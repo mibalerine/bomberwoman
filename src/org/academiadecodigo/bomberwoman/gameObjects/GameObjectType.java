@@ -1,6 +1,5 @@
 package org.academiadecodigo.bomberwoman.gameObjects;
 
-import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 
 /**

@@ -8,7 +8,6 @@ import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
 import org.academiadecodigo.bomberwoman.gameObjects.control.MenuSelect;
 import org.academiadecodigo.bomberwoman.gameObjects.control.PlayerPointer;
 import org.academiadecodigo.bomberwoman.gameObjects.control.UserInput;
-import org.academiadecodigo.bomberwoman.threads.ServerThread;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.render.Screen;
 

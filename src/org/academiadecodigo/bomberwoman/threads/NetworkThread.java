@@ -2,7 +2,6 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
-import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.threads.network.ClientEventHandler;

@@ -1,10 +1,7 @@
 package org.academiadecodigo.bomberwoman.events;
 
-import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.gameObjects.Player;
 
 /**
  * Created by codecadet on 09/11/17.

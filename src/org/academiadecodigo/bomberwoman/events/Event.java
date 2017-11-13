@@ -1,8 +1,5 @@
 package org.academiadecodigo.bomberwoman.events;
 
-import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
-import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-
 /**
  * Created by miro on 06/11/2017.
  */

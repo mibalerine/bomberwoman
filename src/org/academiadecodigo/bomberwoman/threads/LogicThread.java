@@ -6,7 +6,6 @@ import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
-import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.logic.CollisionDetector;
 
