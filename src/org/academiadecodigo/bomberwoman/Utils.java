@@ -78,6 +78,10 @@ public class Utils {
 
         bufferedMode();
         clearScreen();
+        if(Game.getInstance().getServerThread() != null) {
+
+            Game.getInstance().getServerThread().closeServer();
+        }
         System.exit(0);
     }
 

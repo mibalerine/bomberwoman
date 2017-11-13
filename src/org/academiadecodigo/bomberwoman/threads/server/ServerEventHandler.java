@@ -5,6 +5,7 @@ import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
+import org.academiadecodigo.bomberwoman.events.RefreshScreenEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.Bomb;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
@@ -73,10 +74,12 @@ public abstract class ServerEventHandler {
         GameObject gameObject = serverThread.getGameObjectMap().get(id);
 
         if(gameObject == null) {
+
             return;
         }
 
         gameObject.setPosition(x, y);
+
         serverThread.broadcast(new ObjectMoveEvent(gameObject, Direction.STAY).toString());
     }
 
@@ -133,6 +136,8 @@ public abstract class ServerEventHandler {
             case BOMB_RADIUS_INCREASE:
                 ((Player) player).increaseBombRadius();
                 break;
+            case DOOR:
+                serverThread.loadNextLevel();
 
             case VEST:
                 ((Player) player).wearVest();

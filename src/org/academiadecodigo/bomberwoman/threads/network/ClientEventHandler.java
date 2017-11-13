@@ -14,8 +14,9 @@ import java.util.Map;
 public class ClientEventHandler {
 
     public static void handleLevelStartEvent() {
+
         Game.getInstance().changeScreen(ScreenHolder.LEVEL_0);
-        Game.getInstance().clearScreen();
+        //Game.getInstance().clearScreen();
     }
 
     public static void handleObjectSpawnEvent(String[] eventInfo, Game game) {
@@ -30,11 +31,6 @@ public class ClientEventHandler {
             boolean shouldRefresh = Boolean.valueOf(eventInfo[6]);
 
             spawnObject(goType, id, x, y, game);
-
-            if (goType == GameObjectType.PLAYER) {
-                //System.out.println("x = " + x);
-                //System.out.println("y = " + y);
-            }
 
             if (!shouldRefresh) {
 

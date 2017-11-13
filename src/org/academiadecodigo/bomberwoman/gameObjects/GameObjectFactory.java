@@ -3,6 +3,8 @@ package org.academiadecodigo.bomberwoman.gameObjects;
 import org.academiadecodigo.bomberwoman.ConsoleColors;
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
+import org.academiadecodigo.bomberwoman.gameObjects.control.DoorBrick;
+import org.academiadecodigo.bomberwoman.gameObjects.powerups.Door;
 import org.academiadecodigo.bomberwoman.gameObjects.powerups.PowerupFactory;
 
 import static org.academiadecodigo.bomberwoman.ConsoleColors.BLUE;
@@ -34,6 +36,12 @@ public class GameObjectFactory {
 
             case FLAME:
                 return new Flame(id, x, y);
+
+            case POWER_UP_DOOR:
+                return new Door(id, x, y);
+
+            case POWER_UP_DOOR_HIDDEN:
+                return new DoorBrick(id, x, y);
 
             case POWER_UP:
                 return PowerupFactory.random(id, x, y);

@@ -53,4 +53,9 @@ public abstract class Event {
 
         return eventType;
     }
+
+    public String[] getInfo() {
+
+        return toString().split(Event.SEPARATOR);
+    }
 }
