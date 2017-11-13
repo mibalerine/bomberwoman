@@ -24,10 +24,10 @@ public class GameObjectFactory {
                 return new Brick(id, x, y);
 
             case WALL:
-                return new Wall(id, x, y);
+                return new Wall(id, x, y, false);
 
             case BLUE_WALL:
-                return new GameObject(id, Constants.WALL_CHAR, x, y, ConsoleColors.BLUE);
+                return new Wall(id, x, y, true);
 
             case BOMB:
                 return new Bomb(id, x, y);
