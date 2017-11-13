@@ -136,7 +136,7 @@ public class ServerThread implements Runnable {
             out.flush();
         }
         catch(IOException e) {
-            System.out.println("Socket closed: " + e.getMessage());
+            // System.out.println("Socket closed: " + e.getMessage());
         }
     }
 
