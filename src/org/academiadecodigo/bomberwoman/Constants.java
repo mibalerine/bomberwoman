@@ -42,5 +42,5 @@ public class Constants {
     public static String PLAYER_COLOR = ConsoleColors.GREEN;
     public static String ENEMY_PLAYER_COLOR = ConsoleColors.RED;
 
-    public static final int POWERUP_ODD = 20;
+    public static final int POWERUP_ODD = 10;
 }

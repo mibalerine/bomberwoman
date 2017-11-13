@@ -62,7 +62,6 @@ public class ServerThread implements Runnable {
         gameObjectMap = new Hashtable<>();
         playerMap = new Hashtable<>();
         id = Constants.INITIAL_ID;
-        System.out.println("SERVER THREAD IS RUNNING");
     }
 
     @Override
