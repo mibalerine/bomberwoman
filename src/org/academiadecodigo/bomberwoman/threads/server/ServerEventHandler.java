@@ -79,6 +79,7 @@ public abstract class ServerEventHandler {
         }
 
         gameObject.setPosition(x, y);
+
         serverThread.broadcast(new ObjectMoveEvent(gameObject, Direction.STAY).toString());
     }
 

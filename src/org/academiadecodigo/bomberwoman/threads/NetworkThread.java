@@ -2,7 +2,6 @@ package org.academiadecodigo.bomberwoman.threads;
 
 import org.academiadecodigo.bomberwoman.Constants;
 import org.academiadecodigo.bomberwoman.Game;
-import org.academiadecodigo.bomberwoman.Utils;
 import org.academiadecodigo.bomberwoman.events.Event;
 import org.academiadecodigo.bomberwoman.events.EventType;
 import org.academiadecodigo.bomberwoman.threads.network.ClientEventHandler;
@@ -49,19 +48,21 @@ public class NetworkThread implements Runnable {
             clientSocket = new Socket(ipAddress, Constants.PORT);
             clientReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             clientWriter = new PrintWriter(clientSocket.getOutputStream());
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
 
             e.printStackTrace();
         }
     }
 
     public void sendEvent(Event event) {
+
         sendMessage(event.toString());
     }
 
     public void sendMessage(String message) {
 
-        if (clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
+        if(clientSocket == null || clientSocket.isClosed() || clientWriter == null) {
 
             System.out.println("The Socket for client " + Thread.currentThread().getId() + "is closed!" + "\nRemember to call establishConnection()");
             return;
@@ -73,42 +74,54 @@ public class NetworkThread implements Runnable {
 
     private void start() {
 
-        while (!clientSocket.isClosed() && clientReader != null) {
+        while(!clientSocket.isClosed() && clientReader != null) {
 
             try {
 
                 String line = clientReader.readLine();
 
-                if (line == null) {
+                if(line == null) {
                     break;
                 }
 
                 handleEvent(line);
-            } catch (IOException e) {
+            }
+            catch(IOException e) {
 
                 try {
 
                     clientReader.close();
                     clientReader = null;
 
-                } catch (IOException b) {
+                }
+                catch(IOException b) {
                 }
 
             }
         }
 
         try {
-            clientSocket.close();
-            clientReader.close();
 
-        } catch (IOException e) {
+            if(clientSocket != null) {
+
+                clientSocket.close();
+            }
+
+            if(clientReader != null) {
+
+                clientReader.close();
+            }
+
+        }
+        catch(IOException e) {
             e.printStackTrace();
         }
     }
 
     private void handleEvent(String eventPacket) {
 
-        if (!Event.isEvent(eventPacket)) {
+        if(!Event.isEvent(eventPacket)) {
+
             return;
         }
 
@@ -116,7 +129,7 @@ public class NetworkThread implements Runnable {
 
         EventType eType = EventType.values()[Integer.parseInt(eventInfo[1])];
 
-        switch (eType) {
+        switch(eType) {
 
             case LEVEL_START:
                 ClientEventHandler.handleLevelStartEvent();
@@ -155,10 +168,12 @@ public class NetworkThread implements Runnable {
     }
 
     public void close() {
+
         try {
             clientSocket.close();
 
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
             e.printStackTrace();
         }
 

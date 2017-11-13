@@ -36,6 +36,8 @@ public class LogicThread implements Runnable {
     public void keyPressed(Keys keyPressed) {
 
         if (keyPressed == Keys.TAB) {
+
+            //Game.getInstance().getServerThread().loadNextLevel();
             Game.getInstance().closeClient();
             return;
         }
@@ -43,6 +45,7 @@ public class LogicThread implements Runnable {
         GameObject go = gameObjects.get(playerId);
 
         if(go == null) {
+
             return;
         }
 
