@@ -14,6 +14,9 @@ public class PowerupFactory {
         int r = new Random().nextInt(PowerupType.values().length);
         switch(PowerupType.values()[r]) {
 
+            case VEST:
+                return new PowerupVest(id, x, y);
+
             case BOMB_RADIUS_INCREASE:
             default:
                 return new PowerupBombRadius(id, x, y);

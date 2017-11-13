@@ -11,5 +11,7 @@ public enum EventType {
     PLAYER_ID,
     LEVEL_START,
     POWERUP_PICKUP,
-    REFRESH_SCREEN
+    REFRESH_SCREEN,
+    PLAYER_QUIT,
+    SERVER_CLOSE
 }

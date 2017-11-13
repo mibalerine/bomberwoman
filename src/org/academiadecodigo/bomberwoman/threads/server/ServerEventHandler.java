@@ -137,6 +137,9 @@ public abstract class ServerEventHandler {
                 break;
             case DOOR:
                 serverThread.loadNextLevel();
+
+            case VEST:
+                ((Player) player).wearVest();
                 break;
         }
 

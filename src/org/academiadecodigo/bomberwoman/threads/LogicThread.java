@@ -1,10 +1,12 @@
 package org.academiadecodigo.bomberwoman.threads;
 
+import org.academiadecodigo.bomberwoman.Game;
 import org.academiadecodigo.bomberwoman.direction.Direction;
 import org.academiadecodigo.bomberwoman.events.ObjectMoveEvent;
 import org.academiadecodigo.bomberwoman.events.ObjectSpawnEvent;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObject;
 import org.academiadecodigo.bomberwoman.gameObjects.GameObjectType;
+import org.academiadecodigo.bomberwoman.levels.ScreenHolder;
 import org.academiadecodigo.bomberwoman.threads.input.Keys;
 import org.academiadecodigo.bomberwoman.threads.logic.CollisionDetector;
 
@@ -32,6 +34,11 @@ public class LogicThread implements Runnable {
     }
 
     public void keyPressed(Keys keyPressed) {
+
+        if (keyPressed == Keys.TAB) {
+            Game.getInstance().closeClient();
+            return;
+        }
 
         GameObject go = gameObjects.get(playerId);
 
