@@ -19,6 +19,6 @@ _Bomberman_ inspired game
 - Francisco Machado
 - Milena Balerine
 
-![alt text](resources/images/initial-screen.png "Initial screen")
+![alt text](images/initial-screen.png "Initial screen")
 
-![alt text](resources/images/first-level.png "1P mode")
+![alt text](images/first-level.png "1P mode")
