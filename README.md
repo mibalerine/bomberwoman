@@ -3,7 +3,7 @@
 # Bomberwoman
 
 
-_Bomberman_ inspired game
+_Bomberman_ inspired game for the terminal
 
 ### Features:
 
